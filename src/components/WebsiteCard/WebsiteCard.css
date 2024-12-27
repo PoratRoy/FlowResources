@@ -1,0 +1,48 @@
+.website-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.website-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.website-card-image {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.website-card-content {
+  padding: 1rem;
+}
+
+.website-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.website-card-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.website-card-category {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+}
