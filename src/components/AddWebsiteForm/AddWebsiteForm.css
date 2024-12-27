@@ -33,6 +33,7 @@
   background-color: var(--input-bg);
   color: var(--text-color);
   font-size: 1rem;
+  min-width: 30vw;
   width: 100%;
   transition: border-color 0.2s;
 }

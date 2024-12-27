@@ -1,16 +1,16 @@
-import WebsiteGrid from "@/components/WebsiteGrid/WebsiteGrid";
-import { Navigation } from "@/components/Navigation/Navigation";
+import FlowSelection from '@/components/FlowSelection/FlowSelection';
+import WebsiteGrid from '@/components/WebsiteGrid/WebsiteGrid';
+import './page.css';
+
+const categories = ['All', 'Development', 'Design', 'Marketing', 'Productivity', 'Learning'];
 
 export default function HomePage() {
   return (
-    <>
-      <Navigation />
-      <main>
-        <div className="container">
-          <h1 className="page-title">Discover Resources</h1>
-          <WebsiteGrid />
-        </div>
-      </main>
-    </>
+    <main>
+      <div className="container">
+        <FlowSelection options={categories} />
+        <WebsiteGrid />
+      </div>
+    </main>
   );
 }

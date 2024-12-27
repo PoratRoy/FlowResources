@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./AddWebsiteForm.css";
+import { Website } from "@/models/types/website";
+import { useWebsitesContext, WebsitesContext } from "@/context/WebsitesContext";
 
 const categories = [
   "Development",
@@ -15,22 +17,24 @@ const categories = [
 export function AddWebsiteForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { websites, setWebsites, addWebsite } = useWebsitesContext();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
-    const websiteData = {
-      url: formData.get("url"),
-      title: formData.get("title"),
-      description: formData.get("description"),
-      category: formData.get("category"),
+    const websiteData: Omit<Website, "id"> = {
+      url: formData.get("url") as string,
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      category: formData.get("category") as Website["category"],
+      image: "",
     };
 
     try {
-      // Here you would typically send the data to your backend
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const updatedWebsites = addWebsite(websites, websiteData);
+      setWebsites(updatedWebsites);
       router.push("/");
       router.refresh();
     } catch (error) {

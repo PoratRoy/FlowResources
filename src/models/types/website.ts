@@ -7,7 +7,7 @@ export type Category =
   | "Learning";
 
 export interface Website {
-  id: number;
+  id: string;
   title: string;
   description: string;
   url: string;
