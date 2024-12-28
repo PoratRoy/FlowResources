@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import "./AddWebsiteForm.css";
 import { Website } from "@/models/types/website";
 import { useWebsitesContext } from "@/context/WebsitesContext";
+import "./AddWebsiteForm.css";
+import { LinkPreviewResponse } from "@/models/types/thumbnail";
 
 const categories = [
   "Development",
@@ -19,17 +20,29 @@ export function AddWebsiteForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { websites, setWebsites, addWebsite } = useWebsitesContext();
 
+  const handleThumbnail = async (url: string) => {
+    const response = await fetch('/api/thumbnail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url })
+    });
+    const data = await response.json() as LinkPreviewResponse;
+    return data.image;
+  };
+
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true);
 
     const formData = new FormData(event.currentTarget);
+    // const thumbnailUrl = await handleThumbnail(formData.get("url") as string);
     const websiteData: Omit<Website, "id"> = {
       url: formData.get("url") as string,
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       category: formData.get("category") as Website["category"],
-      image: "",
+      // image: thumbnailUrl,
+      image: "https://cdn.dribbble.com/assets/apple-touch-icon-precomposed-182fb6df572b99fd9f7c870e5bd4441188121518640c0fa57782b258434d1e0f.png",
     };
 
     try {

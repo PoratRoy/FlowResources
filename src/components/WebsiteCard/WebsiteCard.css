@@ -1,48 +1,106 @@
 .website-card {
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.website-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.website-card-image {
   position: relative;
-  display: block;
-  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 370px;
+  height: 520px;
+  z-index: 1;
 }
 
-.image {
+.website-card-banner {
+  position: relative;
+  height: 150px;
+  background: linear-gradient(135deg, #4e6ef7 0%, #2e4dd4 100%);
+}
+
+.website-card-logo-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 2rem;
+  transform: translateY(50%);
+  background: white;
+  padding: 0.75rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.website-card-logo {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logo-image {
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .website-card-content {
-  padding: 1rem;
+  padding: 4rem 2rem 2rem;
 }
 
 .website-card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #2d3748;
 }
 
 .website-card-description {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: #4a5568;
+  margin-bottom: 2rem;
 }
 
-.website-card-category {
-  display: inline-block;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  background-color: var(--tag-bg);
-  color: var(--tag-text);
+.visit-site-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  color: #2d3748;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.visit-site-button:hover {
+  background-color: #f7fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.visit-site-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.website-card-category-absolute{
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 1rem 2rem;
+  z-index: 2;
+}
+
+
+.website-card-footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f7fafc;
 }
