@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import "./AddWebsiteForm.css";
 import { Website } from "@/models/types/website";
-import { useWebsitesContext, WebsitesContext } from "@/context/WebsitesContext";
+import { useWebsitesContext } from "@/context/WebsitesContext";
 
 const categories = [
   "Development",
