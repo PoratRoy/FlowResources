@@ -1,11 +1,15 @@
-export const Categories: { key: string; value: string }[] = [
-  { key: 'all', value: 'All' },
-  { key: 'design', value: 'Design UI/UX' },
-  { key: 'coding', value: 'Coding' },
-  { key: 'database', value: 'Database' },
-  { key: 'cloud', value: 'Cloud' },
-  { key: 'domains', value: 'Domains' },
-  { key: 'analitics', value: 'Analitics' },
-  { key: 'hosting', value: 'Hosting' },
-  { key: 'ai', value: 'AI' },
+import { SelectOption } from '../types/select';
+
+export const Projects: SelectOption[] = [{ value: 'all', label: 'All' }];
+
+export const Categories: SelectOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'design', label: 'Design UI/UX' },
+  { value: 'coding', label: 'Coding' },
+  { value: 'database', label: 'Database' },
+  { value: 'cloud', label: 'Cloud' },
+  { value: 'domains', label: 'Domains' },
+  { value: 'analitics', label: 'Analitics' },
+  { value: 'hosting', label: 'Hosting' },
+  { value: 'ai', label: 'AI' },
 ];

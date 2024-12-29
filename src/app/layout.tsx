@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { WebsitesProvider } from '@/context/WebsitesContext';
 import { PopupProvider } from '@/context/PopupContext';
-import { Popup } from '@/components/Popup/Popup';
 import { CategoryProvider } from '@/context/CategoryContext';
+import { ProjectProvider } from '@/context/ProjectContext';
+import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,15 +19,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WebsitesProvider>
+        <ProjectProvider>
           <CategoryProvider>
-            <PopupProvider>
-              <Navigation />
-              {children}
-              <Popup />
-            </PopupProvider>
+            <WebsitesProvider>
+              <PopupProvider>
+                <Navigation />
+                {children}
+                <PopupAddAWebsite />
+              </PopupProvider>
+            </WebsitesProvider>
           </CategoryProvider>
-        </WebsitesProvider>
+        </ProjectProvider>
       </body>
     </html>
   );

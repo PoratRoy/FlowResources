@@ -18,11 +18,11 @@ const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
       <div className="selection-links">
         {Categories.map((option) => (
           <Link
-            key={option.key}
-            href={`/?category=${option.key}`}
-            className={`selection-link ${currentCategory === option.key ? 'active' : ''}`}
+            key={option.value}
+            href={`/?category=${option.value}`}
+            className={`selection-link ${currentCategory === option.value ? 'active' : ''}`}
           >
-            {option.value}
+            {option.label}
           </Link>
         ))}
       </div>
