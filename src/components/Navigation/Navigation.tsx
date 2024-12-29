@@ -14,10 +14,8 @@ export function Navigation() {
           FlowResources
         </Link>
         <div className="navigation-actions">
-          <button
-            className="add-button"
-            onClick={openPopup}
-          >
+          <button className="manage-button">Manage Categories</button>
+          <button className="add-button" onClick={openPopup}>
             <svg
               viewBox="0 0 24 24"
               width="16"

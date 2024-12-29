@@ -8,7 +8,8 @@ interface WebsitesContextType {
   setWebsites: (websites: Website[]) => void;
   addWebsite: (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>) => Website[];
   removeWebsite: (currentWebsites: Website[], websiteId: string) => Website[];
-  getAllWebsites: (currentWebsites: Website[], category?: string) => Website[];
+  getAllWebsites: () => Website[];
+  getWebsitesByCategory: (category: string) => Website[]; 
 }
 
 export const WebsitesContext = createContext<WebsitesContextType | undefined>(undefined);
@@ -36,18 +37,24 @@ export function WebsitesProvider({ children }: { children: ReactNode }) {
     return currentWebsites.filter((website) => website.id !== websiteId);
   };
 
-  const getAllWebsites = (currentWebsites: Website[], category?: string): Website[] => {
-    if (!category || category.toLowerCase() === 'all') {
-      return currentWebsites;
-    }
-    return currentWebsites.filter(
-      (website) => website.category.toLowerCase() === category.toLowerCase()
-    );
+  const getAllWebsites = (): Website[] => {
+    return websites;
+  };
+
+  const getWebsitesByCategory = (category: string): Website[] => {
+    return websites.filter((website) => website.category === category);
   };
 
   return (
     <WebsitesContext.Provider
-      value={{ websites, setWebsites, addWebsite, removeWebsite, getAllWebsites }}
+      value={{
+        websites,
+        setWebsites,
+        addWebsite,
+        removeWebsite,
+        getAllWebsites,
+        getWebsitesByCategory,
+      }}
     >
       {children}
     </WebsitesContext.Provider>

@@ -5,19 +5,21 @@ import { IoClose } from 'react-icons/io5';
 import { RiLoader4Line } from 'react-icons/ri';
 import { usePopupContext } from '@/context/PopupContext';
 import { useWebsitesContext } from '@/context/WebsitesContext';
-import { Category, Website } from '@/models/types/website';
+import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
-import './Popup.css';
+import { Categories } from '@/models/resources/options';
+import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
-
-const categories = ['Development', 'Design', 'Marketing', 'Productivity', 'Learning'];
+import './Popup.css';
 
 export function Popup() {
+  const router = useRouter();
   const { isOpen, closePopup } = usePopupContext();
   const { websites, setWebsites, addWebsite } = useWebsitesContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [url, setUrl] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -25,7 +27,8 @@ export function Popup() {
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
 
-  const handleClose = () => {
+  const handleClose = (to?: string) => {
+    if (to) router.push('/?category=' + to);
     setUrl('');
     setTitle('');
     setDescription('');
@@ -41,17 +44,26 @@ export function Popup() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url }),
     });
+    if(!response.ok) {
+      throw new Error('Failed to fetch link preview');
+    }
     const data = (await response.json()) as LinkPreviewResponse;
     setIsFetchingThumbnail(false);
     return data;
   };
 
   const checkUrl = async (url: string) => {
-    if (isValidURL(url)) {
-      const data = await handleThumbnail(url);
-      setTitle(data.title);
-      setDescription(data.description);
-      setThumbnail(data.image);
+    try {
+      if (isValidURL(url)) {
+        setError(null);
+        const data = await handleThumbnail(url);
+        setTitle(data.title);
+        setDescription(data.description);
+        setThumbnail(data.image);
+      }
+    } catch (error) {
+      setError('Failed to fetch link preview');
+      setIsFetchingThumbnail(false);
     }
   };
 
@@ -63,14 +75,15 @@ export function Popup() {
       url,
       title,
       description,
-      category: category as Category,
+      category: category,
+      // image: 'https://www.youtube.com/yts/img/yt_1200-vflhSIVnY.png',
       image: thumbnail,
     };
 
     try {
       const updatedWebsites = addWebsite(websites, websiteData);
       setWebsites(updatedWebsites);
-      handleClose();
+      handleClose(category);
     } catch (error) {
       console.error('Error adding website:', error);
     } finally {
@@ -82,9 +95,9 @@ export function Popup() {
 
   return (
     <>
-      <div className="popup-overlay" onClick={handleClose} />
+      <div className="popup-overlay" onClick={() => handleClose()} />
       <div className={`popup-container ${isOpen ? 'popup-open' : ''}`}>
-        <button className="popup-close" onClick={handleClose}>
+        <button className="popup-close" onClick={() => handleClose()}>
           <IoClose size={24} />
         </button>
         <div className="form-card">
@@ -98,7 +111,7 @@ export function Popup() {
                 id="url"
                 name="url"
                 type="url"
-                placeholder="https://example.com"
+                placeholder="https://example.com/"
                 required
                 className="form-input"
                 value={url}
@@ -107,6 +120,7 @@ export function Popup() {
                   checkUrl(e.target.value);
                 }}
               />
+              {error ? <div className="error-message">{error}</div> : null}
             </div>
 
             <div className="form-group">
@@ -153,9 +167,9 @@ export function Popup() {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="">Select a category</option>
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                {Categories.map((category) => (
+                  <option key={category.key} value={category.key}>
+                    {category.value}
                   </option>
                 ))}
               </select>

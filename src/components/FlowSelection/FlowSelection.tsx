@@ -1,35 +1,33 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import "./FlowSelection.css";
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import './FlowSelection.css';
+import { Categories } from '@/models/resources/options';
 
 interface FlowSelectionProps {
-  options: string[];
   width?: string;
 }
 
-const FlowSelection: React.FC<FlowSelectionProps> = ({ options, width = "1200px" }) => {
+const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
   const searchParams = useSearchParams();
-  const currentCategory = searchParams.get("category") || "all";
+  const currentCategory = searchParams.get('category') || 'all';
 
   return (
     <div className="selection" style={{ maxWidth: width }}>
       <div className="selection-links">
-        {options.map((option) => (
+        {Categories.map((option) => (
           <Link
-            key={option}
-            href={`/?category=${option.toLowerCase()}`}
-            className={`selection-link ${
-              currentCategory === option.toLowerCase() ? "active" : ""
-            }`}
+            key={option.key}
+            href={`/?category=${option.key}`}
+            className={`selection-link ${currentCategory === option.key ? 'active' : ''}`}
           >
-            {option}
+            {option.value}
           </Link>
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default FlowSelection;

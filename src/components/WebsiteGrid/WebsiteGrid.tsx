@@ -1,17 +1,30 @@
 "use client";
 
-import { useWebsitesContext, WebsitesContext } from "@/context/WebsitesContext";
+import { useWebsitesContext } from "@/context/WebsitesContext";
 import WebsiteCard from "../WebsiteCard/WebsiteCard";
-import "./WebsiteGrid.css";
+import { useState, useEffect } from "react";
 import { Website } from "@/models/types/website";
-import { useContext } from "react";
+import { useSearchParams } from "next/navigation";
+import "./WebsiteGrid.css";
 
 const WebsiteGrid: React.FC = () => {
-  const { websites } = useWebsitesContext();
+  const { getAllWebsites, getWebsitesByCategory } = useWebsitesContext();
+  const searchParams = useSearchParams();
+  const [category, setCategory] = useState<string>("all");
+
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setCategory(categoryParam);
+    }
+  }, [searchParams]);
+
+  const filteredWebsites =
+    category === "all" ? getAllWebsites() : getWebsitesByCategory(category);
 
   return (
     <div className="website-grid">
-      {websites.map((website: Website) => (
+      {filteredWebsites.map((website: Website) => (
         <WebsiteCard key={website.id} website={website} />
       ))}
     </div>

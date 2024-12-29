@@ -7,7 +7,7 @@ import "./WebsiteCard.css";
 type WebsiteCardProps = {
   website: Website;
 };
-
+// http://www.google.com/s2/favicons?domain=www.google.com
 const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
   return (
     <article className="website-card">
@@ -23,6 +23,9 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
               fill 
               className="logo-image"
               unoptimized
+              onError={({ currentTarget }) => {
+                currentTarget.src = "/icons/website.svg";
+              }}
             />
           </div>
         </div>
