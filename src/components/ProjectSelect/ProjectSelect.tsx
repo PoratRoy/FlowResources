@@ -1,33 +1,37 @@
-import { Projects } from '@/models/resources/options';
 import { SelectOption } from '@/models/types/select';
-import { selectStyles } from '@/style/select';
-import React, { useState } from 'react';
-import { ActionMeta, CreateOptionActionMeta } from 'react-select';
+import { selectProjectStyles } from '@/style/select';
+import { useState } from 'react';
+import { SingleValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-type ProjectSelectProps = {
-  onChange?: (newValue: SelectOption | null, actionMeta: ActionMeta<SelectOption>) => void;
-  value?: SelectOption | null;
-};
+type ProjectSelectProps = {};
 
-const ProjectSelect: React.FC<ProjectSelectProps> = ({ onChange, value }) => {
-  const [options, setOptions] = useState<SelectOption[]>(Projects);
+const ProjectSelect: React.FC<ProjectSelectProps> = () => {
+  const [val, setVal] = useState<SingleValue<SelectOption>>({ value: 'all', label: 'All Projects' });
+  const [options, setOptions] = useState<SelectOption[]>([{ value: 'all', label: 'All Projects' }]);
 
-  const handleCreate = (inputValue: string) => {
-    const newOption = { value: inputValue.toLowerCase(), label: inputValue };
-    setOptions([...options, newOption]);
-    onChange?.(newOption, { action: 'create-option' } as CreateOptionActionMeta<SelectOption>);
+  const handleCreate = (newValue: unknown) => {
+    const value = newValue as string;
+    const option = { value, label: value };
+    if (option) {
+      setVal(option);
+      setOptions((prevOptions) => [...prevOptions, option]);
+    }
+  };
+
+  const handleChange = (option: SingleValue<SelectOption>) => {
+    setVal(option);
   };
 
   return (
     <CreatableSelect
-      options={options}
-      value={value}
-      onChange={onChange}
+      instanceId={'projectId'}
       onCreateOption={handleCreate}
-      styles={selectStyles}
-      isClearable
-      placeholder="Select or create a project..."
+      options={options}
+      value={val}
+      onChange={handleChange}
+      isSearchable={true}
+      styles={selectProjectStyles}
     />
   );
 };

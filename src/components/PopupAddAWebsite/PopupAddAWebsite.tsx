@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
 import Select from 'react-select';
 import './PopupAddAWebsite.css';
-import { selectStyles } from '@/style/select';
+import { selectCategoryStyles } from '@/style/select';
 import Popup from '../Popup/Popup';
 
 const PopupAddAWebsite: React.FC = () => {
@@ -159,7 +159,7 @@ const PopupAddAWebsite: React.FC = () => {
               name="category"
               required
               options={Categories}
-              styles={selectStyles}
+              styles={selectCategoryStyles}
               value={category ? { value: category, label: category } : null}
               onChange={(option: any) => setCategory(option.value)}
             />
