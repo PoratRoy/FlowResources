@@ -85,7 +85,7 @@ const PopupAddAWebsite: React.FC = () => {
     };
 
     try {
-      const updatedWebsites = addWebsite(websites, websiteData);
+      const updatedWebsites = await addWebsite(websites, websiteData);
       setWebsites(updatedWebsites);
       handleClose(category);
     } catch (error) {

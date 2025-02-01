@@ -1,15 +1,17 @@
 'use client';
 
 import { Website } from '@/models/types/website';
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createWebsite, fetchWebsites } from '@/lib/database';
 
 interface WebsitesContextType {
   websites: Website[];
   setWebsites: (websites: Website[]) => void;
-  addWebsite: (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>) => Website[];
+  addWebsite: (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>) => Promise<Website[]>;
   removeWebsite: (currentWebsites: Website[], websiteId: string) => Website[];
   getAllWebsites: () => Website[];
-  getWebsitesByCategory: (category: string) => Website[]; 
+  getWebsitesByCategory: (category: string) => Website[];
+  isLoading: boolean;
 }
 
 export const WebsitesContext = createContext<WebsitesContextType | undefined>(undefined);
@@ -24,13 +26,25 @@ export function useWebsitesContext() {
 
 export function WebsitesProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const addWebsite = (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>): Website[] => {
-    const websiteWithId: Website = {
-      ...newWebsite,
-      id: crypto.randomUUID(),
+  useEffect(() => {
+    const loadWebsites = async () => {
+      setIsLoading(true);
+      const websitesData = await fetchWebsites();
+      setWebsites(websitesData);
+      setIsLoading(false);
     };
-    return [...currentWebsites, websiteWithId];
+
+    loadWebsites();
+  }, []);
+
+  const addWebsite = async (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>): Promise<Website[]> => {
+    const createdWebsite = await createWebsite(newWebsite);
+    if (createdWebsite) {
+      return [...currentWebsites, createdWebsite];
+    }
+    return currentWebsites;
   };
 
   const removeWebsite = (currentWebsites: Website[], websiteId: string): Website[] => {
@@ -54,6 +68,7 @@ export function WebsitesProvider({ children }: { children: ReactNode }) {
         removeWebsite,
         getAllWebsites,
         getWebsitesByCategory,
+        isLoading,
       }}
     >
       {children}

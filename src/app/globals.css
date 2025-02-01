@@ -10,6 +10,8 @@
   --border-color: #334155;
   --tag-bg: #334155;
   --tag-text: #e2e8f0;
+
+  --footer-height: 90px;
 }
 
 * {

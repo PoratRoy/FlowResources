@@ -6,6 +6,7 @@ import { PopupProvider } from '@/context/PopupContext';
 import { CategoryProvider } from '@/context/CategoryContext';
 import { ProjectProvider } from '@/context/ProjectContext';
 import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
+import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -17,8 +18,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={inter.className}>
+        <AuthProvider>
         <ProjectProvider>
           <CategoryProvider>
             <WebsitesProvider>
@@ -30,7 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </WebsitesProvider>
           </CategoryProvider>
         </ProjectProvider>
-      </body>
+        </AuthProvider>
+      </body> 
     </html>
   );
 }

@@ -1,3 +1,4 @@
+import { useProjectContext } from '@/context/ProjectContext';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
 import { useState } from 'react';
@@ -7,16 +8,18 @@ import CreatableSelect from 'react-select/creatable';
 type ProjectSelectProps = {};
 
 const ProjectSelect: React.FC<ProjectSelectProps> = () => {
-  const [val, setVal] = useState<SingleValue<SelectOption>>({ value: 'all', label: 'All Projects' });
-  const [options, setOptions] = useState<SelectOption[]>([{ value: 'all', label: 'All Projects' }]);
+  const { addProject, projects, isLoading } = useProjectContext();
+  const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
-  const handleCreate = (newValue: unknown) => {
-    const value = newValue as string;
+  const projectOptions: SelectOption[] = projects.map((project) => ({
+    value: project.id,
+    label: project.title,
+  }));
+
+  const handleCreate = async (value: string) => {
+    await addProject(value);
     const option = { value, label: value };
-    if (option) {
-      setVal(option);
-      setOptions((prevOptions) => [...prevOptions, option]);
-    }
+    setVal(option);
   };
 
   const handleChange = (option: SingleValue<SelectOption>) => {
@@ -27,11 +30,13 @@ const ProjectSelect: React.FC<ProjectSelectProps> = () => {
     <CreatableSelect
       instanceId={'projectId'}
       onCreateOption={handleCreate}
-      options={options}
+      options={projectOptions}
       value={val}
       onChange={handleChange}
       isSearchable={true}
       styles={selectProjectStyles}
+      placeholder={'Create new project'}
+      isLoading={isLoading}
     />
   );
 };

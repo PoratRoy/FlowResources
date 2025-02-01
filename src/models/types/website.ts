@@ -1,4 +1,4 @@
-export interface Website {
+export type Website = {
   id: string;
   title: string;
   description: string;
