@@ -1,24 +1,43 @@
 import { Project } from '@/models/types/project';
 import { Website } from '@/models/types/website';
+import { Category } from '@/models/types/category'; 
 import { supabase } from './supabase';
 
 export async function createProject(title: string): Promise<Project | null> {
   try {
-    const { data, error } = await supabase
+    // First create the project
+    const { data: project, error: projectError } = await supabase
       .from('projects')
       .insert([{ title }])
       .select()
       .single();
 
-    if (error) {
-      console.error('Error creating project:', error);
+    if (projectError) {
+      console.error('Error creating project:', projectError);
+      return null;
+    }
+
+    // Add default categories to the project
+    const defaultCategoryIds = ['1', '2', '3'];
+    const projectCategories = defaultCategoryIds.map(categoryId => ({
+      project_id: project.id,
+      category_id: categoryId
+    }));
+
+    const { error: categoriesError } = await supabase
+      .from('project_categories')
+      .insert(projectCategories);
+
+    if (categoriesError) {
+      console.error('Error adding project categories:', categoriesError);
       return null;
     }
 
     return {
-      id: data.id,
-      title: data.title,
-      websites: []
+      id: project.id,
+      title: project.title,
+      websites: [],
+      categories: []
     } as Project;
   } catch (error) {
     console.error('Error creating project:', error);
@@ -39,7 +58,8 @@ export async function fetchProjects(): Promise<Project[]> {
 
     return data.map(project => ({
       ...project,
-      websites: []
+      websites: [],
+      categories: []
     })) as Project[];
   } catch (error) {
     console.error('Error fetching projects:', error);
@@ -82,5 +102,52 @@ export async function fetchWebsites(): Promise<Website[]> {
   } catch (error) {
     console.error('Error fetching websites:', error);
     return [];
+  }
+}
+
+export async function fetchProjectDetails(projectId: string): Promise<{ websites: Website[], categories: Category[] } | null> {
+  try {
+    // Fetch websites for the project
+    const { data: websites, error: websitesError } = await supabase
+      .from('websites')
+      .select('*')
+      .eq('project_id', projectId);
+
+    if (websitesError) {
+      console.error('Error fetching project websites:', websitesError);
+      return null;
+    }
+
+    // Fetch categories through project_categories
+    const { data: projectCategories, error: categoriesError } = await supabase
+      .from('project_categories')
+      .select(`
+        categories (
+          id,
+          title
+        )
+      `)
+      .eq('project_id', projectId);
+
+    if (categoriesError) {
+      console.error('Error fetching project categories:', categoriesError);
+      return null;
+    }
+
+    console.log('Project Categories Response:', JSON.stringify(projectCategories, null, 2));
+
+    // Map the response to Category type
+    const categories = (projectCategories || []).map((pc: any) => ({
+      id: pc.categories.id,
+      title: pc.categories.title
+    }));
+
+    return {
+      websites: websites || [],
+      categories
+    };
+  } catch (error) {
+    console.error('Error fetching project details:', error);
+    return null;
   }
 }
