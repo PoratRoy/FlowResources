@@ -8,6 +8,7 @@ import { ProjectProvider } from '@/context/ProjectContext';
 import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
+import { DataContextProvider } from '@/context/DataContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,19 +22,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
         <AuthProvider>
-        <ProjectProvider>
-          <CategoryProvider>
-            <WebsitesProvider>
-              <PopupProvider>
-                <Navigation />
-                {children}
-                <PopupAddAWebsite />
-              </PopupProvider>
-            </WebsitesProvider>
-          </CategoryProvider>
-        </ProjectProvider>
+          <DataContextProvider>
+            <ProjectProvider>
+              <CategoryProvider>
+                <WebsitesProvider>
+                  <PopupProvider>
+                    <Navigation />
+                    {children}
+                    <PopupAddAWebsite />
+                  </PopupProvider>
+                </WebsitesProvider>
+              </CategoryProvider>
+            </ProjectProvider>
+          </DataContextProvider>
         </AuthProvider>
-      </body> 
+      </body>
     </html>
   );
 }

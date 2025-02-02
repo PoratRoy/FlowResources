@@ -67,11 +67,27 @@ export async function fetchProjects(): Promise<Project[]> {
   }
 }
 
-export async function createWebsite(websiteData: Omit<Website, 'id'>): Promise<Website | null> {
+export async function createWebsite(
+  websiteData: Omit<Website, 'id'>,
+  projectId: string
+): Promise<Website | null> {
   try {
+    // First verify the category belongs to the project
+    const { data: projectCategory, error: categoryCheckError } = await supabase
+      .from('project_categories')
+      .select()
+      .match({ project_id: projectId, category_id: websiteData.category })
+      .single();
+
+    if (categoryCheckError || !projectCategory) {
+      console.error('Category does not belong to project:', categoryCheckError);
+      throw new Error('Category must belong to the project');
+    }
+
+    // If category check passes, create the website
     const { data, error } = await supabase
       .from('websites')
-      .insert([websiteData])
+      .insert([{ ...websiteData, project_id: projectId }])
       .select()
       .single();
 
@@ -133,8 +149,6 @@ export async function fetchProjectDetails(projectId: string): Promise<{ websites
       console.error('Error fetching project categories:', categoriesError);
       return null;
     }
-
-    console.log('Project Categories Response:', JSON.stringify(projectCategories, null, 2));
 
     // Map the response to Category type
     const categories = (projectCategories || []).map((pc: any) => ({

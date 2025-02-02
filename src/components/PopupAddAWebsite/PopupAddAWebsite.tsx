@@ -1,23 +1,23 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import { RiLoader4Line } from 'react-icons/ri';
 import { usePopupContext } from '@/context/PopupContext';
 import { useWebsitesContext } from '@/context/WebsitesContext';
 import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
-import { Categories } from '@/models/resources/options';
 import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
 import Select from 'react-select';
 import './PopupAddAWebsite.css';
 import { selectCategoryStyles } from '@/style/select';
 import Popup from '../Popup/Popup';
+import { useDataContext } from '@/context/DataContext';
 
 const PopupAddAWebsite: React.FC = () => {
   const router = useRouter();
   const { isOpen, closePopup } = usePopupContext();
-  const { websites, setWebsites, addWebsite } = useWebsitesContext();
+  const { categories, websites, addWebsite } = useDataContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
@@ -28,6 +28,11 @@ const PopupAddAWebsite: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
+
+  const Categories = useMemo(
+    () => categories.map((category) => ({ value: category.id, label: category.title })),
+    [categories]
+  );
 
   const handleClose = (to?: string) => {
     if (to) router.push('/?category=' + to);
@@ -85,8 +90,7 @@ const PopupAddAWebsite: React.FC = () => {
     };
 
     try {
-      const updatedWebsites = await addWebsite(websites, websiteData);
-      setWebsites(updatedWebsites);
+      await addWebsite(websites, websiteData);
       handleClose(category);
     } catch (error) {
       console.error('Error adding website:', error);

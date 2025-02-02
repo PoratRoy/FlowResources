@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useWebsitesContext } from "@/context/WebsitesContext";
-import WebsiteCard from "../WebsiteCard/WebsiteCard";
-import { useState, useEffect } from "react";
-import { Website } from "@/models/types/website";
-import { useSearchParams } from "next/navigation";
-import "./WebsiteGrid.css";
+import WebsiteCard from '../WebsiteCard/WebsiteCard';
+import { useState, useEffect } from 'react';
+import { Website } from '@/models/types/website';
+import { useSearchParams } from 'next/navigation';
+import './WebsiteGrid.css';
+import { useDataContext } from '@/context/DataContext';
 
 const WebsiteGrid: React.FC = () => {
-  const { getAllWebsites, getWebsitesByCategory } = useWebsitesContext();
+  const { websites } = useDataContext();
   const searchParams = useSearchParams();
-  const [category, setCategory] = useState<string>("all");
+  const [category, setCategory] = useState<string>('0');
 
   useEffect(() => {
     const categoryParam = searchParams.get('category');
@@ -19,8 +19,14 @@ const WebsiteGrid: React.FC = () => {
     }
   }, [searchParams]);
 
+  if (websites.length === 0) {
+    return <div className="website-grid">Add websites to get started</div>;
+  }
+
   const filteredWebsites =
-    category === "all" ? getAllWebsites() : getWebsitesByCategory(category);
+    category === '0'
+      ? websites
+      : websites.filter((website: Website) => website.category === category);
 
   return (
     <div className="website-grid">
@@ -29,6 +35,6 @@ const WebsiteGrid: React.FC = () => {
       ))}
     </div>
   );
-}
+};
 
 export default WebsiteGrid;

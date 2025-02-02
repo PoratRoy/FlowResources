@@ -1,4 +1,5 @@
-import { useProjectContext } from '@/context/ProjectContext';
+import { useDataContext } from '@/context/DataContext';
+import { fetchProjectDetails } from '@/lib/database';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
 import { useState } from 'react';
@@ -8,7 +9,8 @@ import CreatableSelect from 'react-select/creatable';
 type ProjectSelectProps = {};
 
 const ProjectSelect: React.FC<ProjectSelectProps> = () => {
-  const { addProject, projects, isLoading } = useProjectContext();
+  const { addProject, selectProject, setProjectDetails, projects, isProjectLoading } =
+    useDataContext();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
   const projectOptions: SelectOption[] = projects.map((project) => ({
@@ -17,13 +19,30 @@ const ProjectSelect: React.FC<ProjectSelectProps> = () => {
   }));
 
   const handleCreate = async (value: string) => {
-    await addProject(value);
-    const option = { value, label: value };
-    setVal(option);
+    const project = await addProject(value);
+    if (project && project.id) {
+      const option = { value: project.id, label: value };
+      setVal(option);
+      selectProject(project);
+      const result = await fetchProjectDetails(project.id);
+      if (result) {
+        const { websites, categories } = result;
+        setProjectDetails(websites, categories);
+      }
+    }
   };
 
-  const handleChange = (option: SingleValue<SelectOption>) => {
-    setVal(option);
+  const handleChange = async (value: SingleValue<SelectOption>) => {
+    setVal(value);
+    const selectedProject = projects.find((project) => project.id === value?.value);
+    if (selectedProject) {
+      selectProject(selectedProject);
+    }
+    const result = await fetchProjectDetails(value?.value || '');
+    if (result) {
+      const { websites, categories } = result;
+      setProjectDetails(websites, categories);
+    }
   };
 
   return (
@@ -36,7 +55,7 @@ const ProjectSelect: React.FC<ProjectSelectProps> = () => {
       isSearchable={true}
       styles={selectProjectStyles}
       placeholder={'Create new project'}
-      isLoading={isLoading}
+      isLoading={isProjectLoading}
     />
   );
 };

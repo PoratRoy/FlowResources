@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import './FlowSelection.css';
-import { Categories } from '@/models/resources/options';
+import { useDataContext } from '@/context/DataContext';
 
 interface FlowSelectionProps {
   width?: string;
@@ -11,18 +11,26 @@ interface FlowSelectionProps {
 
 const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
   const searchParams = useSearchParams();
-  const currentCategory = searchParams.get('category') || 'all';
+  const currentCategory = searchParams.get('category') || '0';
+  const { categories } = useDataContext();
 
   return (
     <div className="selection" style={{ maxWidth: width }}>
       <div className="selection-links">
-        {Categories.map((option) => (
+        <Link
+          key='0'
+          href={`/?category=${'0'}`}
+          className={`selection-link ${currentCategory === '0' ? 'active' : ''}`}
+        >
+          All
+        </Link>
+        {categories.map((option) => (
           <Link
-            key={option.value}
-            href={`/?category=${option.value}`}
-            className={`selection-link ${currentCategory === option.value ? 'active' : ''}`}
+            key={option.id}
+            href={`/?category=${option.id}`}
+            className={`selection-link ${currentCategory == option.id ? 'active' : ''}`}
           >
-            {option.label}
+            {option.title}
           </Link>
         ))}
       </div>
