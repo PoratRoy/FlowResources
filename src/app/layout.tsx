@@ -1,10 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/Navigation/Navigation';
-import { WebsitesProvider } from '@/context/WebsitesContext';
 import { PopupProvider } from '@/context/PopupContext';
 import { CategoryProvider } from '@/context/CategoryContext';
-import { ProjectProvider } from '@/context/ProjectContext';
 import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
@@ -23,17 +21,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <AuthProvider>
           <DataContextProvider>
-            <ProjectProvider>
-              <CategoryProvider>
-                <WebsitesProvider>
-                  <PopupProvider>
-                    <Navigation />
-                    {children}
-                    <PopupAddAWebsite />
-                  </PopupProvider>
-                </WebsitesProvider>
-              </CategoryProvider>
-            </ProjectProvider>
+            <CategoryProvider>
+              <PopupProvider>
+                <Navigation />
+                {children}
+                <PopupAddAWebsite />
+              </PopupProvider>
+            </CategoryProvider>
           </DataContextProvider>
         </AuthProvider>
       </body>

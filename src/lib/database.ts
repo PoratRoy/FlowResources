@@ -1,7 +1,6 @@
 import { Project } from '@/models/types/project';
 import { Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
-import { revalidatePath } from 'next/cache';
 import { supabase } from './supabase';
 
 export async function createProject(title: string): Promise<Project | null> {
@@ -37,8 +36,6 @@ export async function createProject(title: string): Promise<Project | null> {
     return {
       id: project.id,
       title: project.title,
-      websites: [],
-      categories: [],
     } as Project;
   } catch (error) {
     console.error('Error creating project:', error);
@@ -57,50 +54,12 @@ export async function fetchProjects(): Promise<Project[]> {
 
     return data.map((project) => ({
       ...project,
-      websites: [],
-      categories: [],
     })) as Project[];
   } catch (error) {
     console.error('Error fetching projects:', error);
     return [];
   }
 }
-
-// export async function createWebsite(
-//   websiteData: Omit<Website, 'id'>,
-//   projectId: string
-// ): Promise<Website | null> {
-//   try {
-//     // First verify the category belongs to the project
-//     const { data: projectCategory, error: categoryCheckError } = await supabase
-//       .from('project_categories')
-//       .select()
-//       .match({ project_id: projectId, category_id: websiteData.category })
-//       .single();
-
-//     if (categoryCheckError || !projectCategory) {
-//       console.error('Category does not belong to project:', categoryCheckError);
-//       throw new Error('Category must belong to the project');
-//     }
-
-//     // If category check passes, create the website
-//     const { data, error } = await supabase
-//       .from('websites')
-//       .insert([{ ...websiteData, project_id: projectId }])
-//       .select()
-//       .single();
-
-//     if (error) {
-//       console.error('Error creating website:', error);
-//       return null;
-//     }
-
-//     return data as Website;
-//   } catch (error) {
-//     console.error('Error creating website:', error);
-//     return null;
-//   }
-// }
 
 export async function createWebsite(websiteData: Omit<Website, 'id'>, projectId: string) {
   try {
@@ -151,10 +110,6 @@ export async function createWebsite(websiteData: Omit<Website, 'id'>, projectId:
     if (websiteError) {
       throw websiteError;
     }
-
-    // Revalidate the projects page to show the new website
-    revalidatePath('/projects');
-
     return { success: true, data: website };
   } catch (error) {
     console.error('Error creating website:', error);

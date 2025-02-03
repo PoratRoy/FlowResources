@@ -1,7 +1,5 @@
 import { SelectOption } from '../types/select';
 
-export const Projects: SelectOption[] = [{ value: 'all', label: 'All' }];
-
 export const Categories: SelectOption[] = [
   { value: 'all', label: 'All' },
   { value: 'design', label: 'Design UI/UX' },

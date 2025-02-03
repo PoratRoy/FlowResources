@@ -3,7 +3,6 @@
 import { ChangeEvent, useMemo, useState } from 'react';
 import { RiLoader4Line } from 'react-icons/ri';
 import { usePopupContext } from '@/context/PopupContext';
-import { useWebsitesContext } from '@/context/WebsitesContext';
 import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
 import { useRouter } from 'next/navigation';
@@ -17,9 +16,8 @@ import { useDataContext } from '@/context/DataContext';
 const PopupAddAWebsite: React.FC = () => {
   const router = useRouter();
   const { isOpen, closePopup } = usePopupContext();
-  const { categories, websites, addWebsite } = useDataContext();
+  const { categories, isWebsitesLoading, addWebsite } = useDataContext();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,8 +76,6 @@ const PopupAddAWebsite: React.FC = () => {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsLoading(true);
-
     const categoryId = categories.find((cat) => cat.title === category)?.id;
     const websiteData: Omit<Website, 'id'> = {
       url,
@@ -90,12 +86,10 @@ const PopupAddAWebsite: React.FC = () => {
     };
 
     try {
-      await addWebsite(websites, websiteData);
-      handleClose(category);
+      const result = await addWebsite(websiteData);
+      if (result) handleClose(categoryId);
     } catch (error) {
       console.error('Error adding website:', error);
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -169,8 +163,8 @@ const PopupAddAWebsite: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="submit-button" disabled={isLoading}>
-            {isLoading ? 'Adding...' : 'Add Website'}
+          <button type="submit" className="submit-button" disabled={isWebsitesLoading}>
+            {isWebsitesLoading ? 'Adding...' : 'Add Website'}
           </button>
         </form>
       </div>

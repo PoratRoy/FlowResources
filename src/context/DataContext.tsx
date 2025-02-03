@@ -2,36 +2,37 @@
 
 import { Project } from '@/models/types/project';
 import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
-import { createProject, createWebsite, fetchProjects } from '@/lib/database';
+import { createProject, createWebsite, fetchProjectDetails, fetchProjects } from '@/lib/database';
 import { Category } from '@/models/types/category';
 import { Website } from '@/models/types/website';
+import SessionStorage, { SKey } from '@/utils/sessionStorage';
 
 type DataContextType = {
   projects: Project[];
   addProject: (title: string) => Promise<Project | null>;
   removeProject: (projectKey: string) => void;
-  selectProject: (project: Project) => void;
-  setProjectDetails: (websites: Website[], categories: Category[]) => void;
+  selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
-  isProjectLoading: boolean;
   categories: Category[];
   websites: Website[];
-  addWebsite: (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>) => Promise<Website[]>;
+  addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<boolean>;
   removeWebsite: (currentWebsites: Website[], websiteId: string) => Website[];
+  isProjectLoading: boolean;
+  isWebsitesLoading: boolean;
 };
 
 const initialDataContext: DataContextType = {
   projects: [],
-  addProject: async (title: string) => null,
-  removeProject: (projectKey: string) => {},
-  selectProject: (project: Project) => {},
-  setProjectDetails: (websites: Website[], categories: Category[]) => {},
+  addProject: async (_: string) => null,
+  removeProject: (_: string) => {},
+  selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
-  isProjectLoading: false,
   categories: [],
   websites: [],
-  addWebsite: async (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>) => [],
-  removeWebsite: (currentWebsites: Website[], websiteId: string) => [],
+  addWebsite: async (_: Omit<Website, 'id'>) => false,
+  removeWebsite: (_: Website[], __: string) => [],
+  isProjectLoading: false,
+  isWebsitesLoading: false,
 };
 
 export const DataContext = createContext<DataContextType | undefined>(initialDataContext);
@@ -53,14 +54,46 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
+  const selectProject = async (project: Project) => {
+    setSelectedProject(project);
+    await getProjectDetails(project.id);
+  };
+
+  const getProjectDetails = async (projectId: string) => {
+    const result = await fetchProjectDetails(projectId);
+    if (result) {
+      const { websites, categories } = result;
+      SessionStorage.set(SKey.Categories, categories);
+      SessionStorage.set(SKey.Websites, websites);
+      setCategories(categories);
+      setWebsites(websites);
+    }
+  };
+
   const blockRef = useRef<boolean>(true);
   useEffect(() => {
     const loadProjects = async () => {
       setIsProjectLoading(true);
       try {
-        const projectsData = await fetchProjects();
-        setProjects(projectsData);
-        if (projectsData.length > 0) setSelectedProject(projectsData[0]);
+        const sessionProjects: Project[] = SessionStorage.get(SKey.Projects);
+        const sessionCategories: Category[] = SessionStorage.get(SKey.Categories);
+        const sessionWebsites: Website[] = SessionStorage.get(SKey.Websites);
+        if (sessionProjects && sessionProjects.length > 0) {
+          setProjects(sessionProjects);
+          setSelectedProject(sessionProjects[0]);
+          if (sessionWebsites && sessionWebsites.length > 0) {
+            setWebsites(sessionWebsites);
+          } else {
+            await getProjectDetails(sessionProjects[0]?.id);
+          }
+        } else {
+          const projectsData = await fetchProjects();
+          if (projectsData.length > 0) {
+            setProjects(projectsData);
+            await selectProject(projectsData[0]);
+            SessionStorage.set(SKey.Projects, projectsData);
+          }
+        }
         blockRef.current = false;
       } catch (error) {
         console.error('Error loading projects:', error);
@@ -73,11 +106,16 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addProject = async (title: string) => {
-    setIsProjectLoading(true);
     try {
+      setIsProjectLoading(true);
       const newProject = await createProject(title);
       if (newProject) {
-        setProjects((prevProjects) => [...prevProjects, newProject]);
+        setProjects((prevProjects) => {
+          const projects = [...prevProjects, newProject];
+          SessionStorage.set(SKey.Projects, projects);
+          return projects;
+        });
+        await selectProject(newProject);
         return newProject;
       }
     } catch (error) {
@@ -92,15 +130,6 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectKey));
   };
 
-  const selectProject = (project: Project) => {
-    setSelectedProject(project);
-  };
-
-  const setProjectDetails = (websites: Website[], categories: Category[]) => {
-    setWebsites(websites);
-    setCategories(categories);
-  };
-
   const addCategory = (newCategory: Category): void => {
     setCategories((prevCategories) => [...prevCategories, newCategory]);
   };
@@ -111,23 +140,29 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const addWebsite = async (
-    currentWebsites: Website[],
-    newWebsite: Omit<Website, 'id'>
-  ): Promise<Website[]> => {
+  const addWebsite = async (newWebsite: Omit<Website, 'id'>): Promise<boolean> => {
     if (!selectedProject) {
       console.error('No project selected');
-      return currentWebsites;
+      return false;
     }
-
-    const result = await createWebsite(newWebsite, selectedProject.id);
-    if (result?.success) {
-      const { data: createdWebsite } = result;
-      const newWebsites = [...currentWebsites, createdWebsite];
-      setWebsites(newWebsites);
-      return newWebsites;
+    try {
+      setIsWebsitesLoading(true);
+      const result = await createWebsite(newWebsite, selectedProject.id);
+      if (result?.success) {
+        const { data: createdWebsite } = result;
+        setWebsites((prevWebsites) => {
+          const websites = [...prevWebsites, createdWebsite];
+          SessionStorage.set(SKey.Websites, websites);
+          return websites;
+        });
+        return true;
+      }
+    } catch (error) {
+      console.error('Error adding website:', error);
+    } finally {
+      setIsWebsitesLoading(false);
     }
-    return currentWebsites;
+    return false;
   };
 
   const removeWebsite = (currentWebsites: Website[], websiteId: string): Website[] => {
@@ -141,13 +176,13 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         addProject,
         removeProject,
         selectProject,
-        setProjectDetails,
         selectedProject,
-        isProjectLoading,
         categories,
         websites,
         addWebsite,
         removeWebsite,
+        isProjectLoading,
+        isWebsitesLoading,
       }}
     >
       {children}
