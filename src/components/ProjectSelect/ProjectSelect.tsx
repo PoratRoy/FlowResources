@@ -1,22 +1,49 @@
+'use client';
+
 import { useDataContext } from '@/context/DataContext';
 import { fetchProjectDetails } from '@/lib/database';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { SingleValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-type ProjectSelectProps = {};
-
-const ProjectSelect: React.FC<ProjectSelectProps> = () => {
-  const { addProject, selectProject, setProjectDetails, projects, isProjectLoading } =
-    useDataContext();
+const ProjectSelect: React.FC = () => {
+  const {
+    addProject,
+    selectProject,
+    setProjectDetails,
+    projects,
+    selectedProject,
+    isProjectLoading,
+  } = useDataContext();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
-  const projectOptions: SelectOption[] = projects.map((project) => ({
-    value: project.id,
-    label: project.title,
-  }));
+  const projectOptions = useMemo(
+    () =>
+      projects.map((project) => ({
+        value: project.id,
+        label: project.title,
+      })),
+    [projects]
+  );
+
+  const getProjectDetails = async (value: string) => {
+    const result = await fetchProjectDetails(value);
+    if (result) {
+      const { websites, categories } = result;
+      setProjectDetails(websites, categories);
+    }
+  };
+
+  const blockRef = useRef<boolean>(true);
+  useEffect(() => {
+    if (blockRef.current && selectedProject) {
+      setVal({ value: selectedProject.id, label: selectedProject.title });
+      getProjectDetails(selectedProject.id);
+      blockRef.current = false;
+    }
+  }, [selectedProject]);
 
   const handleCreate = async (value: string) => {
     const project = await addProject(value);
@@ -24,11 +51,7 @@ const ProjectSelect: React.FC<ProjectSelectProps> = () => {
       const option = { value: project.id, label: value };
       setVal(option);
       selectProject(project);
-      const result = await fetchProjectDetails(project.id);
-      if (result) {
-        const { websites, categories } = result;
-        setProjectDetails(websites, categories);
-      }
+      getProjectDetails(project.id);
     }
   };
 
@@ -38,11 +61,7 @@ const ProjectSelect: React.FC<ProjectSelectProps> = () => {
     if (selectedProject) {
       selectProject(selectedProject);
     }
-    const result = await fetchProjectDetails(value?.value || '');
-    if (result) {
-      const { websites, categories } = result;
-      setProjectDetails(websites, categories);
-    }
+    getProjectDetails(value?.value || '');
   };
 
   return (

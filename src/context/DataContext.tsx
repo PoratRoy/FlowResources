@@ -60,6 +60,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       try {
         const projectsData = await fetchProjects();
         setProjects(projectsData);
+        if (projectsData.length > 0) setSelectedProject(projectsData[0]);
         blockRef.current = false;
       } catch (error) {
         console.error('Error loading projects:', error);
@@ -119,8 +120,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       return currentWebsites;
     }
 
-    const createdWebsite = await createWebsite(newWebsite, selectedProject.id);
-    if (createdWebsite) {
+    const result = await createWebsite(newWebsite, selectedProject.id);
+    if (result?.success) {
+      const { data: createdWebsite } = result;
       const newWebsites = [...currentWebsites, createdWebsite];
       setWebsites(newWebsites);
       return newWebsites;
