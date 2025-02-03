@@ -10,12 +10,16 @@ import { useDataContext } from '@/context/DataContext';
 const WebsiteGrid: React.FC = () => {
   const { websites } = useDataContext();
   const searchParams = useSearchParams();
-  const [category, setCategory] = useState<string>('0');
+  const [filteredWebsites, setFilteredWebsites] = useState<Website[]>(websites);
 
   useEffect(() => {
     const categoryParam = searchParams.get('category');
     if (categoryParam) {
-      setCategory(categoryParam);
+      setFilteredWebsites(
+        categoryParam === '0'
+          ? websites
+          : websites.filter((website: Website) => website.category == categoryParam)
+      );
     }
   }, [searchParams]);
 
@@ -23,15 +27,10 @@ const WebsiteGrid: React.FC = () => {
     return <div className="website-grid">Add websites to get started</div>;
   }
 
-  const filteredWebsites =
-    category === '0'
-      ? websites
-      : websites.filter((website: Website) => website.category === category);
-
   return (
     <div className="website-grid">
-      {filteredWebsites.map((website: Website) => (
-        <WebsiteCard key={website.id} website={website} />
+      {filteredWebsites.map((website: Website, index: number) => (
+        <WebsiteCard key={website?.id || index} website={website} />
       ))}
     </div>
   );

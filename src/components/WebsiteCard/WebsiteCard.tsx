@@ -1,24 +1,18 @@
 import type { Website } from '@/models/types/website';
-import Image from 'next/image';
 import Link from 'next/link';
 import { FiExternalLink } from 'react-icons/fi';
 import './WebsiteCard.css';
 import { useState } from 'react';
+import BannerImg from '../UI/BannerImg/BannerImg';
+import SiteIconImg from '../UI/SiteIconImg/SiteIconImg';
+import { useDataContext } from '@/context/DataContext';
 
 type WebsiteCardProps = {
   website: Website;
 };
 
-const getDomainFromUrl = (url: string): string => {
-  const urlObject = new URL(url);
-  return urlObject.hostname;
-};
-
-const getFaviconUrl = (url: string, size: number): string => {
-  return `https://www.google.com/s2/favicons?domain=${getDomainFromUrl(url)}&sz=${size}`;
-};
-
 const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
+  const { categories } = useDataContext();
   const [showMore, setShowMore] = useState<boolean>(false);
 
   const toggleShowMore = () => {
@@ -28,31 +22,13 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
   return (
     <article className="website-card">
       <div className="website-card-category-absolute">
-        <span className="website-card-category">{website.category}</span>
+        <span className="website-card-category">{categories.find((cat) => cat.id == website.category)?.title || ""}</span>
       </div>
       <div className="website-card-banner">
-        <Image
-          src={website.image}
-          alt={website.title}
-          fill
-          className="logo-banner-image"
-          unoptimized
-          onError={({ currentTarget }) => {
-            currentTarget.src = '/icons/website.svg';
-          }}
-        />
+        <BannerImg website={website} />
         <div className="website-card-logo-wrapper">
           <div className="website-card-logo">
-            <Image
-              src={getFaviconUrl(website.url, 256)}
-              alt={website.title}
-              fill
-              className="logo-image"
-              unoptimized
-              onError={({ currentTarget }) => {
-                currentTarget.src = '/icons/website.svg';
-              }}
-            />
+            <SiteIconImg website={website} />
           </div>
         </div>
       </div>
@@ -67,7 +43,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
       </div>
       <div className="website-card-footer">
         <Link
-          href={website.url}
+          href={website.url.toString()}
           target="_blank"
           rel="noopener noreferrer"
           className="visit-site-button"

@@ -30,7 +30,7 @@ const PopupAddAWebsite: React.FC = () => {
   const [thumbnail, setThumbnail] = useState<string>('');
 
   const Categories = useMemo(
-    () => categories.map((category) => ({ value: category.id, label: category.title })),
+    () => categories.map((category) => ({ value: category.title, label: category.title })),
     [categories]
   );
 
@@ -80,12 +80,12 @@ const PopupAddAWebsite: React.FC = () => {
     event.preventDefault();
     setIsLoading(true);
 
+    const categoryId = categories.find((cat) => cat.title === category)?.id;
     const websiteData: Omit<Website, 'id'> = {
       url,
       title,
       description,
-      category: category,
-      // image: 'https://www.youtube.com/yts/img/yt_1200-vflhSIVnY.png',
+      category: categoryId || '',
       image: thumbnail,
     };
 

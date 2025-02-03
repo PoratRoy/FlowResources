@@ -7,6 +7,7 @@
   width: 370px;
   height: 520px;
   z-index: 1;
+  font-size: 16px;
 }
 
 .website-card-banner {
@@ -17,6 +18,7 @@
 
 .logo-banner-image {
   object-fit: cover;
+  width: 100%;
 }
 
 .website-card-logo-wrapper {
@@ -38,26 +40,21 @@
   overflow: hidden;
 }
 
-.logo-image {
-  object-fit: cover;
-  border-radius: 50%;
-}
-
 .website-card-content {
   padding: 4rem 2rem 2rem;
   height: 100%;
 }
 
 .website-card-title {
-  font-size: 1.75rem;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 600;
   margin-bottom: 1rem;
   color: #2d3748;
 }
 
 .website-card-description {
-  font-size: 1.125rem;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 24x;
   color: #4a5568;
   margin-bottom: 14rem;
 }

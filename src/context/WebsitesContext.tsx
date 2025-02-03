@@ -41,9 +41,9 @@ export function WebsitesProvider({ children }: { children: ReactNode }) {
 
   const addWebsite = async (currentWebsites: Website[], newWebsite: Omit<Website, 'id'>): Promise<Website[]> => {
     const createdWebsite = await createWebsite(newWebsite, "");
-    if (createdWebsite) {
-      return [...currentWebsites, createdWebsite];
-    }
+    // if (createdWebsite) {
+    //   return [...currentWebsites, createdWebsite];
+    // }
     return currentWebsites;
   };
 
