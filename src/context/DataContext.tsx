@@ -1,11 +1,12 @@
 'use client';
 
 import { Project } from '@/models/types/project';
-import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
-import { createProject, createWebsite, fetchProjectDetails, fetchProjects } from '@/lib/database';
+import { fetchProjectDetails } from '@/lib/database';
 import { Category } from '@/models/types/category';
 import { Website } from '@/models/types/website';
-import SessionStorage, { SKey } from '@/utils/sessionStorage';
+import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
+import { getSessionData, setSessionCategories, setSessionProjects, setSessionWebsites } from '@/utils/storage';
+import { fetchCreateProject, fetchCreateWebsite, fetchGetAllProjects } from '@/utils/services';
 
 type DataContextType = {
   projects: Project[];
@@ -63,8 +64,8 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     const result = await fetchProjectDetails(projectId);
     if (result) {
       const { websites, categories } = result;
-      SessionStorage.set(SKey.Categories, categories);
-      SessionStorage.set(SKey.Websites, websites);
+      setSessionCategories(categories);
+      setSessionWebsites(websites);
       setCategories(categories);
       setWebsites(websites);
     }
@@ -75,23 +76,27 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     const loadProjects = async () => {
       setIsProjectLoading(true);
       try {
-        const sessionProjects: Project[] = SessionStorage.get(SKey.Projects);
-        const sessionCategories: Category[] = SessionStorage.get(SKey.Categories);
-        const sessionWebsites: Website[] = SessionStorage.get(SKey.Websites);
+        const { sessionProjects, sessionCategories, sessionWebsites } = getSessionData();
         if (sessionProjects && sessionProjects.length > 0) {
           setProjects(sessionProjects);
           setSelectedProject(sessionProjects[0]);
-          if (sessionWebsites && sessionWebsites.length > 0) {
+          if (
+            sessionWebsites &&
+            sessionWebsites.length > 0 &&
+            sessionCategories &&
+            sessionCategories.length > 0
+          ) {
+            setCategories(sessionCategories);
             setWebsites(sessionWebsites);
           } else {
             await getProjectDetails(sessionProjects[0]?.id);
           }
         } else {
-          const projectsData = await fetchProjects();
+          const projectsData = await fetchGetAllProjects();
           if (projectsData.length > 0) {
             setProjects(projectsData);
             await selectProject(projectsData[0]);
-            SessionStorage.set(SKey.Projects, projectsData);
+            setSessionProjects(projectsData);
           }
         }
         blockRef.current = false;
@@ -108,11 +113,11 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const addProject = async (title: string) => {
     try {
       setIsProjectLoading(true);
-      const newProject = await createProject(title);
+      const newProject = await fetchCreateProject(title);
       if (newProject) {
         setProjects((prevProjects) => {
           const projects = [...prevProjects, newProject];
-          SessionStorage.set(SKey.Projects, projects);
+          setSessionProjects(projects);
           return projects;
         });
         await selectProject(newProject);
@@ -147,12 +152,11 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
     try {
       setIsWebsitesLoading(true);
-      const result = await createWebsite(newWebsite, selectedProject.id);
-      if (result?.success) {
-        const { data: createdWebsite } = result;
+      const createdWebsite = await fetchCreateWebsite(newWebsite, selectedProject.id);
+      if (createdWebsite) {
         setWebsites((prevWebsites) => {
           const websites = [...prevWebsites, createdWebsite];
-          SessionStorage.set(SKey.Websites, websites);
+          setSessionWebsites(websites);
           return websites;
         });
         return true;

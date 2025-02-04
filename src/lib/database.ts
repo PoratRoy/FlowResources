@@ -2,123 +2,79 @@ import { Project } from '@/models/types/project';
 import { Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
 import { supabase } from './supabase';
+import { PostgrestError } from '@supabase/supabase-js';
 
-export async function createProject(title: string): Promise<Project | null> {
-  try {
-    // First create the project
-    const { data: project, error: projectError } = await supabase
-      .from('projects')
-      .insert([{ title }])
-      .select()
-      .single();
-
-    if (projectError) {
-      console.error('Error creating project:', projectError);
-      return null;
-    }
-
-    // Add default categories to the project
-    const defaultCategoryIds = ['1', '2', '3'];
-    const projectCategories = defaultCategoryIds.map((categoryId) => ({
-      project_id: project.id,
-      category_id: categoryId,
-    }));
-
-    const { error: categoriesError } = await supabase
-      .from('project_categories')
-      .insert(projectCategories);
-
-    if (categoriesError) {
-      console.error('Error adding project categories:', categoriesError);
-      return null;
-    }
-
-    return {
-      id: project.id,
-      title: project.title,
-    } as Project;
-  } catch (error) {
-    console.error('Error creating project:', error);
-    return null;
-  }
+export async function createProject(
+  title: string
+): Promise<{ data: Project | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase.from('projects').insert([{ title }]).select().single();
+  return { data, error };
 }
 
-export async function fetchProjects(): Promise<Project[]> {
-  try {
-    const { data, error } = await supabase.from('projects').select('id, title');
-
-    if (error) {
-      console.error('Error fetching projects:', error);
-      return [];
-    }
-
-    return data.map((project) => ({
-      ...project,
-    })) as Project[];
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return [];
-  }
+export async function createProjectCategories(
+  projectCategories: {
+    project_id: string;
+    category_id: string;
+  }[]
+): Promise<PostgrestError | null> {
+  const { error } = await supabase.from('project_categories').insert(projectCategories);
+  return error;
 }
 
-export async function createWebsite(websiteData: Omit<Website, 'id'>, projectId: string) {
-  try {
-    // First, verify that the project exists
-    const { data: project, error: projectError } = await supabase
-      .from('projects')
-      .select('id')
-      .eq('id', projectId)
-      .single();
+export async function getProjectById(
+  projectId: string
+): Promise<{ data: Project | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('id, title')
+    .eq('id', projectId)
+    .single();
+  return { data, error };
+}
 
-    if (projectError || !project) {
-      console.error('Project not found');
-      return null;
-    }
+export async function getProjectCategory(
+  projectId: string,
+  categoryId: string
+): Promise<{ data: any | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('project_categories')
+    .select('id')
+    .eq('project_id', projectId)
+    .eq('category_id', categoryId)
+    .single();
+  return { data, error };
+}
 
-    // Verify that the category exists
-    const { data: category, error: categoryError } = await supabase
-      .from('categories')
-      .select('id')
-      .eq('id', websiteData.category)
-      .single();
+export async function getCategoryById(categoryId: string): Promise<{
+  data: Omit<Category, 'title'> | null;
+  error: PostgrestError | null;
+}> {
+  const { data, error } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('id', categoryId)
+    .single();
+  return { data, error };
+}
 
-    if (categoryError || !category) {
-      console.error('Category not found');
-      return null;
-    }
+export async function getAllProjects(): Promise<{
+  data: Project[] | null;
+  error: PostgrestError | null;
+}> {
+  const { data, error } = await supabase.from('projects').select('id, title');
+  return { data, error };
+}
 
-    // Check if project and category are already linked in project_categories
-    const { data: projectCategory, error: linkError } = await supabase
-      .from('project_categories')
-      .select('id')
-      .eq('project_id', projectId)
-      .eq('category_id', websiteData.category)
-      .single();
-
-    // If no link exists, create it
-    if (!projectCategory && !linkError) {
-      return null;
-    }
-
-    // Create the website
-    const { data: website, error: websiteError } = await supabase
-      .from('websites')
-      .insert([{ ...websiteData, category_id: websiteData.category, project_id: projectId }])
-      .select()
-      .single();
-
-    if (websiteError) {
-      throw websiteError;
-    }
-    return { success: true, data: website };
-  } catch (error) {
-    console.error('Error creating website:', error);
-    return {
-      success: false,
-      error:
-        error instanceof Error ? error.message : 'An error occurred while creating the website',
-    };
-  }
+export async function createWebsite(
+  websiteData: Omit<Website, 'id'>,
+  projectId: string
+): Promise<{ data: Website | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('websites')
+    .insert([{ ...websiteData, category_id: websiteData.category, project_id: projectId }])
+    .select()
+    .single();
+  return { data, error };
 }
 
 export async function fetchWebsites(): Promise<Website[]> {

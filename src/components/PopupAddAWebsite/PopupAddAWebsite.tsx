@@ -12,6 +12,7 @@ import './PopupAddAWebsite.css';
 import { selectCategoryStyles } from '@/style/select';
 import Popup from '../Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
+import Input from '../UI/Input/Input';
 
 const PopupAddAWebsite: React.FC = () => {
   const router = useRouter();
@@ -99,39 +100,29 @@ const PopupAddAWebsite: React.FC = () => {
     <Popup isOpen={isOpen} onClose={() => handleClose()}>
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
-          <div className="form-group">
-            <label htmlFor="url" className="form-label">
-              Website URL
-              {isFetchingThumbnail && <RiLoader4Line className="spinner" size={24} />}
-            </label>
-            <input
-              id="url"
-              name="url"
-              type="url"
-              placeholder="https://example.com/"
-              required
-              className="form-input"
-              value={url}
-              onChange={handleUrlChange}
-            />
-            {error ? <div className="error-message">{error}</div> : null}
-          </div>
+          <Input 
+            type="url"
+            placeholder="https://example.com/"
+            value={url}
+            onChange={handleUrlChange}
+            label="Website URL"
+            id="url"
+            error={error}
+            isLoading={isFetchingThumbnail}
+            isRequired
+          />
 
-          <div className="form-group">
-            <label htmlFor="title" className="form-label">
-              Title
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              placeholder="Website Title"
-              required
-              className="form-input"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
+          <Input 
+            type="text"
+            placeholder="Website Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            label="Title"
+            id="title"
+            error={null}
+            isLoading={false}
+            isRequired
+          />
 
           <div className="form-group">
             <label htmlFor="description" className="form-label">

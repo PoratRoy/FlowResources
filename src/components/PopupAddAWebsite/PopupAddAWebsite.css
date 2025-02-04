@@ -15,7 +15,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 450px;
-  height: 600px;
+  min-height: 600px;
+  height: fit-content;
+  max-height: 90vh;
   background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -95,7 +97,7 @@
 }
 
 .form-textarea {
-  min-height: 100px;
+  min-height: 200px;
   resize: vertical;
 }
 
