@@ -7,6 +7,7 @@ import { Popups } from '@/models/enum';
 import AddWebsiteBtn from '../UI/btn/AddWebsiteBtn/AddWebsiteBtn';
 import './Navigation.css';
 import MoreActionsBtn from '../UI/btn/MoreActionsBtn/MoreActionsBtn';
+import { ActionsOptions } from '@/models/resources/options';
 
 export function Navigation() {
   const { openPopup } = usePopupContext();
@@ -22,11 +23,7 @@ export function Navigation() {
         </div>
         <div className="navigation-actions">
           <AddWebsiteBtn onClick={() => openPopup(Popups.addWebsite)} />
-          <MoreActionsBtn options={[
-            { label: 'Reorder sites', onClick: () => console.log('Reorder sites') },
-            { label: 'Remove category', onClick: () => console.log('Remove category') },
-            { label: 'Remove project', onClick: () => console.log('Remove project') },
-          ]}/>
+          <MoreActionsBtn options={ActionsOptions} />
         </div>
       </div>
     </nav>

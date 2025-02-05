@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
   if (isProjectLoading) {
     return (
       <main className="main-container empty">
-        <Loading />
+        <Loading size='lg' color='secondary' />
       </main>
     );
   }

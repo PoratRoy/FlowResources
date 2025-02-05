@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 
 interface MoreActionsBtnProps {
   options: Array<{
-    label: string;
+    label: React.JSX.Element;
     onClick: () => void;
   }>;
 }

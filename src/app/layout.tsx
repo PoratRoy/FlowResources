@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { PopupProvider } from '@/context/PopupContext';
-import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
+import PopupAddWebsite from '@/components/PopupAddWebsite/PopupAddWebsite';
 import { DataContextProvider } from '@/context/DataContext';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PopupProvider>
               <Navigation />
               {children}
-              <PopupAddAWebsite />
+              <PopupAddWebsite />
               <PopupAddCategory />
             </PopupProvider>
           </DataContextProvider>

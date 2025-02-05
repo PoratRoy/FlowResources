@@ -1,6 +1,6 @@
 import React from 'react';
-import { RiLoader4Line } from 'react-icons/ri';
 import './FormInputLayout.css';
+import Loading from '../empty/Loading/Loading';
 
 type FormInputLayoutProps = {
   label: string;
@@ -21,7 +21,7 @@ const FormInputLayout = ({
     <div className="form-group">
       <label htmlFor={id} className="form-label">
         {label}
-        {isLoading && <RiLoader4Line className="spinner" size={24} />}
+        {isLoading && <Loading size='sm' />}
       </label>
       {children}
       {error ? <div className="error-message">{error}</div> : null}

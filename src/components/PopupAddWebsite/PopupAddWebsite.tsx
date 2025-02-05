@@ -13,9 +13,9 @@ import { Popups } from '@/models/enum';
 import SubmitBtn from '../UI/btn/SubmitBtn/SubmitBtn';
 import CategorySelect from '../UI/select/CategorySelect/CategorySelect';
 import TextArea from '../UI/TextArea/TextArea';
-import './PopupAddAWebsite.css';
+import './PopupAddWebsite.css';
 
-const PopupAddAWebsite: React.FC = () => {
+const PopupAddWebsite: React.FC = () => {
   const router = useRouter();
   const { isOpen, closePopup } = usePopupContext();
   const { categories, isWebsitesLoading, addWebsite } = useDataContext();
@@ -145,7 +145,7 @@ const PopupAddAWebsite: React.FC = () => {
   );
 };
 
-export default PopupAddAWebsite;
+export default PopupAddWebsite;
 
 //TODO: handle blur
 //TODO: add option for
