@@ -2,7 +2,7 @@
 
 import React from 'react';
 import './Dashboard.css';
-import FlowSelection from '../FlowSelection/FlowSelection';
+import FlowToggle from '../UI/FlowToggle/FlowToggle';
 import WebsiteGrid from '../WebsiteGrid/WebsiteGrid';
 import NoProjects from '../empty/NoProjects/NoProjects';
 import { useDataContext } from '@/context/DataContext';
@@ -38,7 +38,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <main className="main-container">
-      <FlowSelection />
+      <FlowToggle />
       <WebsiteGrid />
     </main>
   );

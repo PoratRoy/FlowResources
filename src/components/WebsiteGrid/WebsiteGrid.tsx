@@ -25,7 +25,15 @@ const WebsiteGrid: React.FC = () => {
   if (websites.length === 0) {
     return (
       <div className="empty-websites">
-        <NoWebsites />
+        <NoWebsites text="Add a website to get started" />
+      </div>
+    );
+  }
+
+  if (websites.length > 0 && filteredWebsites.length === 0) {
+    return (
+      <div className="empty-websites">
+        <NoWebsites text="Add a new website to the category" />
       </div>
     );
   }

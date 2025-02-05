@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { usePopupContext } from '@/context/PopupContext';
-import Popup from '../Popup/Popup';
+import Popup from '../UI/Popup/Popup';
 import Input from '../UI/Input/Input';
 import './PopupAddCategory.css';
 import { Popups } from '@/models/enum';

@@ -1,0 +1,33 @@
+.website-card-content {
+    position: relative;
+    padding: 4rem 2rem 2rem;
+    height: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.website-card-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.website-card-description {
+    font-size: 16px;
+    line-height: 24x;
+    color: #4a5568;
+    margin-bottom: 14rem;
+}
+
+.show-more-button {
+    position: absolute;
+    bottom: var(--footer-height);
+    left: 0;
+    width: 100%;
+    height: 35px;
+    background-image: linear-gradient(to top, #c0c0c050, #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}

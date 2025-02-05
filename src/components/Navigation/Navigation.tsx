@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { usePopupContext } from '@/context/PopupContext';
-import ProjectSelect from '../ProjectSelect/ProjectSelect';
+import ProjectSelect from '../UI/select/ProjectSelect/ProjectSelect';
 import { Popups } from '@/models/enum';
-import AddWebsiteBtn from '../UI/AddWebsiteBtn/AddWebsiteBtn';
+import AddWebsiteBtn from '../UI/btn/AddWebsiteBtn/AddWebsiteBtn';
 import './Navigation.css';
 
 export function Navigation() {

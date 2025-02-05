@@ -2,16 +2,16 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import './FlowSelection.css';
+import './FlowToggle.css';
 import { useDataContext } from '@/context/DataContext';
 import { usePopupContext } from '@/context/PopupContext';
 import { Popups } from '@/models/enum';
 
-interface FlowSelectionProps {
+interface FlowToggleProps {
   width?: string;
 }
 
-const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
+const FlowToggle: React.FC<FlowToggleProps> = ({ width = '1200px' }) => {
   const searchParams = useSearchParams();
   const { openPopup } = usePopupContext();
   //TODO: handle if id is not in the list of categories
@@ -58,4 +58,4 @@ const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
   );
 };
 
-export default FlowSelection;
+export default FlowToggle;

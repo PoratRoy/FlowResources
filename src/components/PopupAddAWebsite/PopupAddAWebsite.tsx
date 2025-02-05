@@ -1,20 +1,19 @@
 'use client';
 
 import { ChangeEvent, useMemo, useState } from 'react';
-import { RiLoader4Line } from 'react-icons/ri';
 import { usePopupContext } from '@/context/PopupContext';
 import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
 import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
-import Select from 'react-select';
-import './PopupAddAWebsite.css';
-import { selectCategoryStyles } from '@/style/select';
-import Popup from '../Popup/Popup';
+import Popup from '../UI/Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../UI/Input/Input';
 import { Popups } from '@/models/enum';
 import SubmitBtn from '../cardUI/SubmitBtn/SubmitBtn';
+import CategorySelect from '../UI/select/CategorySelect/CategorySelect';
+import TextArea from '../UI/TextArea/TextArea';
+import './PopupAddAWebsite.css';
 
 const PopupAddAWebsite: React.FC = () => {
   const router = useRouter();
@@ -126,35 +125,18 @@ const PopupAddAWebsite: React.FC = () => {
             isRequired
           />
 
-          <div className="form-group">
-            <label htmlFor="description" className="form-label">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Write a brief description of the website..."
-              required
-              className="form-textarea"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
+          <TextArea
+            placeholder="Write a brief description of the website..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            label="Description"
+            id="description"
+            error={null}
+            isLoading={false}
+            isRequired
+          />
 
-          <div className="form-group form-select">
-            <label htmlFor="category" className="form-label">
-              Category
-            </label>
-            <Select
-              id="category"
-              name="category"
-              required
-              options={Categories}
-              styles={selectCategoryStyles}
-              value={category ? { value: category, label: category } : null}
-              onChange={(option: any) => setCategory(option.value)}
-            />
-          </div>
+          <CategorySelect category={category} setCategory={setCategory} />
 
           <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
         </form>
@@ -170,5 +152,4 @@ export default PopupAddAWebsite;
 //- free
 //- score (1-5)
 //- type of website (app, docs, util etc)
-//TODO: delete 
-
+//TODO: delete

@@ -1,12 +1,11 @@
 import React from 'react';
 import FormInputLayout from '@/components/FormInputLayout/FormInputLayout';
-import './Input.css';
+import './TextArea.css';
 
-type InputProps = {
-  type: string;
+type TextAreaProps = {
   placeholder: string;
   value: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   label: string;
   id: string;
   error: string | null;
@@ -14,8 +13,7 @@ type InputProps = {
   isRequired?: boolean;
 };
 
-const Input = ({
-  type,
+const TextArea = ({
   placeholder,
   value,
   onChange,
@@ -24,16 +22,15 @@ const Input = ({
   error,
   isLoading = false,
   isRequired = false,
-}: InputProps) => {
+}: TextAreaProps) => {
   return (
     <FormInputLayout label={label} id={id} error={error} isLoading={isLoading}>
-      <input
+      <textarea
         id={id}
         name={id}
-        type={type}
         placeholder={placeholder}
         required={isRequired}
-        className="form-input"
+        className="form-textarea"
         value={value}
         onChange={onChange}
       />
@@ -41,4 +38,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default TextArea;

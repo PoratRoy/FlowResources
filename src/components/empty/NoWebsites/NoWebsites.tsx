@@ -2,16 +2,20 @@
 
 import React from 'react';
 import './NoWebsites.css';
-import AddWebsiteBtn from '@/components/UI/AddWebsiteBtn/AddWebsiteBtn';
+import AddWebsiteBtn from '@/components/UI/btn/AddWebsiteBtn/AddWebsiteBtn';
 import { Popups } from '@/models/enum';
 import { usePopupContext } from '@/context/PopupContext';
 
-const NoWebsites: React.FC = () => {
+type NoWebsitesProps = {
+  text: string;
+};
+
+const NoWebsites: React.FC<NoWebsitesProps> = ({ text }) => {
   const { openPopup } = usePopupContext();
 
   return (
     <section className="no-websites">
-      <div>Add a website to get started</div>
+      <div>{text}</div>
       <AddWebsiteBtn onClick={() => openPopup(Popups.addWebsite)} />
     </section>
   );
