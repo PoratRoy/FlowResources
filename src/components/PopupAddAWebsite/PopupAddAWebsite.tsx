@@ -164,3 +164,11 @@ const PopupAddAWebsite: React.FC = () => {
 };
 
 export default PopupAddAWebsite;
+
+//TODO: handle blur
+//TODO: add option for
+//- free
+//- score (1-5)
+//- type of website (app, docs, util etc)
+//TODO: delete 
+

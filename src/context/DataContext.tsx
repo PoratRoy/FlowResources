@@ -142,14 +142,16 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const addCategory = async (title: string): Promise<Category | null> => {
     try {
       setIsCategoriesLoading(true);
-      const newCategory = await fetchCreateCategory(title);
-      if (newCategory) {
-        setCategories((prevCategories) => {
-          const categories = [...prevCategories, newCategory];
-          setSessionCategories(categories);
-          return categories;
-        });
-        return newCategory;
+      if(selectedProject){
+        const newCategory = await fetchCreateCategory(title, selectedProject?.id || '');
+        if (newCategory) {
+          setCategories((prevCategories) => {
+            const categories = [...prevCategories, newCategory];
+            setSessionCategories(categories);
+            return categories;
+          });
+          return newCategory;
+        }
       }
     } catch (error) {
       console.error('Error adding category:', error);

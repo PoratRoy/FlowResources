@@ -9,28 +9,30 @@
 }
 
 .navigation-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  min-width: fit-content;
+  max-width: 90vw;
+  margin: 0 auto; 
   height: 4rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 5vw;
+}
+
+.navigation-links {
+  display: flex;
+  align-items: center;
+  gap: 3vw;
+  padding: 0.5rem 0;
 }
 
 .navigation-logo {
+  padding: 0;
+  margin: 0;
   font-size: 1.25rem;
   font-weight: bold;
   text-decoration: none;
   color: var(--text-color);
-}
-
-.navigation-links{
-  display: flex;
-  align-items: center; 
-  gap: 1.5rem;
-  margin-left: 2rem;
-  /* overflow-x: auto; ??? */
-  padding: 0.5rem 0;
 }
 
 .navigation-actions {
@@ -40,7 +42,7 @@
   align-items: center;
 }
 
-.manage-button-categories{
+.manage-button-categories {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -58,4 +60,3 @@
   min-width: 150px;
   justify-content: center;
 }
-

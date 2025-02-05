@@ -26,3 +26,5 @@ export function Navigation() {
     </nav>
   );
 }
+
+//TODO: geer option with the options to reorder the sites and to remove categories or projects

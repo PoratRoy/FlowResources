@@ -14,6 +14,7 @@ interface FlowSelectionProps {
 const FlowSelection: React.FC<FlowSelectionProps> = ({ width = '1200px' }) => {
   const searchParams = useSearchParams();
   const { openPopup } = usePopupContext();
+  //TODO: handle if id is not in the list of categories
   const currentCategory = searchParams.get('category') || '0';
   const { categories } = useDataContext();
 

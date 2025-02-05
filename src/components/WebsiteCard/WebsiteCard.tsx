@@ -40,6 +40,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
     <section className="website-card">
       <div className="website-card-banner">
         <BannerImg website={website} />
+        {/* TODO: add bottom border */}
         <div className="website-card-logo-wrapper">
           <div className="website-card-logo">
             <SiteIconImg website={website} />

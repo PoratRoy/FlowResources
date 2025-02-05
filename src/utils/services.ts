@@ -1,4 +1,5 @@
 import {
+  addCategoryToProject,
   createCategory,
   createProject,
   createProjectCategories,
@@ -98,13 +99,23 @@ export const fetchCreateWebsite = async (
   }
 };
 
-export const fetchCreateCategory = async (title: string): Promise<Category | null> => {
+export const fetchCreateCategory = async (
+  title: string,
+  projectId: string
+): Promise<Category | null> => {
   try {
-    const { data: category, error: categoryError } = await createCategory(title);
+    const { data: category, error: categoryError } = await createCategory(title, projectId);
     if (categoryError || !category) {
       console.error('Error creating category:', categoryError);
       return null;
     }
+
+    const error = await addCategoryToProject(category.id, projectId);
+    if (error) {
+      console.error('Error adding category to project:', error);
+      return null;
+    }
+
     return category;
   } catch (error) {
     console.error('Error creating category:', error);

@@ -77,9 +77,23 @@ export async function createWebsite(
   return { data, error };
 }
 
-export async function createCategory(title: string) {
-  const { data, error } = await supabase.from('categories').insert([{ title }]).select().single();
+export async function createCategory(title: string, projectId: string) {
+  const { data, error } = await supabase
+    .from('categories')
+    .insert([{ title }])
+    .select()
+    .single();
   return { data, error };
+}
+
+export async function addCategoryToProject(
+  categoryId: string,
+  projectId: string
+): Promise<PostgrestError | null> {
+  const { error } = await supabase
+    .from('project_categories')
+    .insert([{ project_id: projectId, category_id: categoryId }]);
+  return error;
 }
 
 export async function fetchProjectDetails(
