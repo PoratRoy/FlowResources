@@ -6,6 +6,7 @@ import './FlowToggle.css';
 import { useDataContext } from '@/context/DataContext';
 import { usePopupContext } from '@/context/PopupContext';
 import { Popups } from '@/models/enum';
+import AddCategoryBtn from '../btn/AddCategoryBtn/AddCategoryBtn';
 
 interface FlowToggleProps {
   width?: string;
@@ -13,7 +14,6 @@ interface FlowToggleProps {
 
 const FlowToggle: React.FC<FlowToggleProps> = ({ width = '1200px' }) => {
   const searchParams = useSearchParams();
-  const { openPopup } = usePopupContext();
   //TODO: handle if id is not in the list of categories
   const currentCategory = searchParams.get('category') || '0';
   const { categories } = useDataContext();
@@ -38,21 +38,7 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ width = '1200px' }) => {
           </Link>
         ))}
         <div className="divider"></div>
-        <div className="selection-add" onClick={() => openPopup(Popups.addCategory)}>
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            stroke="currentColor"
-            fill="none"
-            className="plus-icon"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="16" />
-            <line x1="8" y1="12" x2="16" y2="12" />
-          </svg>
-          Add
-        </div>
+        <AddCategoryBtn />
       </div>
     </div>
   );

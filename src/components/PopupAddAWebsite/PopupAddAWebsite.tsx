@@ -10,7 +10,7 @@ import Popup from '../UI/Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../UI/Input/Input';
 import { Popups } from '@/models/enum';
-import SubmitBtn from '../cardUI/SubmitBtn/SubmitBtn';
+import SubmitBtn from '../UI/btn/SubmitBtn/SubmitBtn';
 import CategorySelect from '../UI/select/CategorySelect/CategorySelect';
 import TextArea from '../UI/TextArea/TextArea';
 import './PopupAddAWebsite.css';

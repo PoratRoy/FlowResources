@@ -6,7 +6,7 @@ import Popup from '../UI/Popup/Popup';
 import Input from '../UI/Input/Input';
 import './PopupAddCategory.css';
 import { Popups } from '@/models/enum';
-import SubmitBtn from '../cardUI/SubmitBtn/SubmitBtn';
+import SubmitBtn from '../UI/btn/SubmitBtn/SubmitBtn';
 import { useDataContext } from '@/context/DataContext';
 
 const PopupAddCategory: React.FC = () => {
