@@ -1,4 +1,5 @@
 import {
+  createCategory,
   createProject,
   createProjectCategories,
   createWebsite,
@@ -7,6 +8,7 @@ import {
   getProjectById,
   getProjectCategory,
 } from '@/lib/database';
+import { Category } from '@/models/types/category';
 import { Project } from '@/models/types/project';
 import { Website } from '@/models/types/website';
 
@@ -92,6 +94,20 @@ export const fetchCreateWebsite = async (
     return website;
   } catch (error) {
     console.error('Error creating website:', error);
+    return null;
+  }
+};
+
+export const fetchCreateCategory = async (title: string): Promise<Category | null> => {
+  try {
+    const { data: category, error: categoryError } = await createCategory(title);
+    if (categoryError || !category) {
+      console.error('Error creating category:', categoryError);
+      return null;
+    }
+    return category;
+  } catch (error) {
+    console.error('Error creating category:', error);
     return null;
   }
 };

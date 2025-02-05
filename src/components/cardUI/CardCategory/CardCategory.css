@@ -1,0 +1,14 @@
+.website-card-category-absolute {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 15px 20px;
+    z-index: 2;
+}
+
+
+.website-card-category {
+    padding: 4px 10px;
+    background-color: #4a556880;
+    border-radius: 10px;
+}

@@ -7,6 +7,8 @@
 
 .form-label {
     font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.05em;
     color: var(--text-color);
     display: flex;
     align-items: center;
@@ -36,6 +38,16 @@
     color: rgb(187, 62, 62);
     font-size: 0.875rem;
     animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .spinner {

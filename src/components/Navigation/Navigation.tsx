@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePopupContext } from '@/context/PopupContext';
 import './Navigation.css';
 import ProjectSelect from '../ProjectSelect/ProjectSelect';
+import { Popups } from '@/models/enum';
 
 export function Navigation() {
   const { openPopup } = usePopupContext();
@@ -18,8 +19,13 @@ export function Navigation() {
           <ProjectSelect />
         </div>
         <div className="navigation-actions">
-          <button className="manage-button-categories">Category Manager</button>
-          <button className="add-button-website" onClick={openPopup}>
+          <button
+            className="manage-button-categories"
+            onClick={() => openPopup(Popups.addCategory)}
+          >
+            Category Manager
+          </button>
+          <button className="add-button-website" onClick={() => openPopup(Popups.addWebsite)}>
             <svg
               viewBox="0 0 24 24"
               width="16"

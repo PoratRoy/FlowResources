@@ -41,6 +41,7 @@
 }
 
 .website-card-content {
+  position: relative;
   padding: 4rem 2rem 2rem;
   height: 100%;
 }
@@ -95,20 +96,6 @@
 .visit-site-icon {
   width: 1.25rem;
   height: 1.25rem;
-}
-
-.website-card-category-absolute{
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 15px 20px;
-  z-index: 2;
-}
-
-.website-card-category{
-  padding: 4px 10px;
-  background-color: #4a556880;
-  border-radius: 10px;
 }
 
 .website-card-footer{

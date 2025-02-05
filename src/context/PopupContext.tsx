@@ -1,13 +1,12 @@
 "use client";
 
+import { Popups } from "@/models/enum";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface PopupContextType {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  openPopup: () => void;
+  isOpen: (which: Popups) => boolean;
+  openPopup: (which: Popups) => void;
   closePopup: () => void;
-  togglePopup: () => void;
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);
@@ -21,28 +20,27 @@ export function usePopupContext() {
 }
 
 export function PopupProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [popup, setPopup] = useState<Popups | null>(null);
 
-  const openPopup = (): void => {
-    setIsOpen(true);
+  const openPopup = (which: Popups): void => {
+    setPopup(which);
   };
 
   const closePopup = (): void => {
-    setIsOpen(false);
+    setPopup(null);
   };
 
-  const togglePopup = (): void => {
-    setIsOpen((prev) => !prev);
+  const isOpen = (which: Popups) => {
+    if(popup === null || popup != which) return false;
+    return true;
   };
 
   return (
     <PopupContext.Provider
       value={{
         isOpen,
-        setIsOpen,
         openPopup,
         closePopup,
-        togglePopup,
       }}
     >
       {children}

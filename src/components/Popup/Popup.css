@@ -9,22 +9,34 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
-.popup-content {
+.popup-container {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   width: 450px;
-  height: 600px;
+  min-height: 700px;
+  height: fit-content;
+  max-height: 80vh;
   background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 52;
   opacity: 0;
   transform: translate(-50%, -48%) scale(0.96);
-  animation: slideIn 0.3s ease-out forwards;
-  overflow-y: auto;
+  animation: slideIn 0.1s ease-out forwards;
   border: 1px solid var(--border-color);
+  display: none;
+}
+
+.popup-open {
+  display: block;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .popup-close {
@@ -46,4 +58,14 @@
 
 .popup-close:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+
+  to {
+      opacity: 1;
+  }
 }

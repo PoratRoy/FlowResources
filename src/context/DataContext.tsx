@@ -6,7 +6,7 @@ import { Category } from '@/models/types/category';
 import { Website } from '@/models/types/website';
 import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { getSessionData, setSessionCategories, setSessionProjects, setSessionWebsites } from '@/utils/storage';
-import { fetchCreateProject, fetchCreateWebsite, fetchGetAllProjects } from '@/utils/services';
+import { fetchCreateCategory, fetchCreateProject, fetchCreateWebsite, fetchGetAllProjects } from '@/utils/services';
 
 type DataContextType = {
   projects: Project[];
@@ -15,11 +15,13 @@ type DataContextType = {
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
   categories: Category[];
+  addCategory: (title: string) => Promise<Category | null>;
   websites: Website[];
   addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<boolean>;
   removeWebsite: (currentWebsites: Website[], websiteId: string) => Website[];
   isProjectLoading: boolean;
   isWebsitesLoading: boolean;
+  isCategoriesLoading: boolean;
 };
 
 const initialDataContext: DataContextType = {
@@ -29,11 +31,13 @@ const initialDataContext: DataContextType = {
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
   categories: [],
+  addCategory: async (_: string) => null,
   websites: [],
   addWebsite: async (_: Omit<Website, 'id'>) => false,
   removeWebsite: (_: Website[], __: string) => [],
   isProjectLoading: false,
   isWebsitesLoading: false,
+  isCategoriesLoading: false,
 };
 
 export const DataContext = createContext<DataContextType | undefined>(initialDataContext);
@@ -127,16 +131,32 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       console.error('Error adding project:', error);
     } finally {
       setIsProjectLoading(false);
-      return null;
     }
+    return null;
   };
 
   const removeProject = (projectKey: string) => {
     setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectKey));
   };
 
-  const addCategory = (newCategory: Category): void => {
-    setCategories((prevCategories) => [...prevCategories, newCategory]);
+  const addCategory = async (title: string): Promise<Category | null> => {
+    try {
+      setIsCategoriesLoading(true);
+      const newCategory = await fetchCreateCategory(title);
+      if (newCategory) {
+        setCategories((prevCategories) => {
+          const categories = [...prevCategories, newCategory];
+          setSessionCategories(categories);
+          return categories;
+        });
+        return newCategory;
+      }
+    } catch (error) {
+      console.error('Error adding category:', error);
+    } finally {
+      setIsCategoriesLoading(false);
+    }
+    return null;
   };
 
   const removeCategory = (categoryId: string): void => {
@@ -182,11 +202,13 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         selectProject,
         selectedProject,
         categories,
+        addCategory,
         websites,
         addWebsite,
         removeWebsite,
         isProjectLoading,
         isWebsitesLoading,
+        isCategoriesLoading,
       }}
     >
       {children}

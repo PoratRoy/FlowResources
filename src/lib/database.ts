@@ -77,20 +77,9 @@ export async function createWebsite(
   return { data, error };
 }
 
-export async function fetchWebsites(): Promise<Website[]> {
-  try {
-    const { data, error } = await supabase.from('websites').select('*');
-
-    if (error) {
-      console.error('Error fetching websites:', error);
-      return [];
-    }
-
-    return data as Website[];
-  } catch (error) {
-    console.error('Error fetching websites:', error);
-    return [];
-  }
+export async function createCategory(title: string) {
+  const { data, error } = await supabase.from('categories').insert([{ title }]).select().single();
+  return { data, error };
 }
 
 export async function fetchProjectDetails(
@@ -139,5 +128,21 @@ export async function fetchProjectDetails(
   } catch (error) {
     console.error('Error fetching project details:', error);
     return null;
+  }
+}
+
+export async function fetchWebsites(): Promise<Website[]> {
+  try {
+    const { data, error } = await supabase.from('websites').select('*');
+
+    if (error) {
+      console.error('Error fetching websites:', error);
+      return [];
+    }
+
+    return data as Website[];
+  } catch (error) {
+    console.error('Error fetching websites:', error);
+    return [];
   }
 }

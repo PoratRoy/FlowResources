@@ -13,6 +13,8 @@ import { selectCategoryStyles } from '@/style/select';
 import Popup from '../Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../UI/Input/Input';
+import { Popups } from '@/models/enum';
+import SubmitBtn from '../cardUI/SubmitBtn/SubmitBtn';
 
 const PopupAddAWebsite: React.FC = () => {
   const router = useRouter();
@@ -94,13 +96,13 @@ const PopupAddAWebsite: React.FC = () => {
     }
   }
 
-  if (!isOpen) return null;
+  if (!isOpen(Popups.addWebsite)) return null;
 
   return (
-    <Popup isOpen={isOpen} onClose={() => handleClose()}>
+    <Popup isOpen={isOpen(Popups.addWebsite)} onClose={() => handleClose()}>
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
-          <Input 
+          <Input
             type="url"
             placeholder="https://example.com/"
             value={url}
@@ -112,7 +114,7 @@ const PopupAddAWebsite: React.FC = () => {
             isRequired
           />
 
-          <Input 
+          <Input
             type="text"
             placeholder="Website Title"
             value={title}
@@ -139,7 +141,7 @@ const PopupAddAWebsite: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group form-select">
             <label htmlFor="category" className="form-label">
               Category
             </label>
@@ -154,9 +156,7 @@ const PopupAddAWebsite: React.FC = () => {
             />
           </div>
 
-          <button type="submit" className="submit-button" disabled={isWebsitesLoading}>
-            {isWebsitesLoading ? 'Adding...' : 'Add Website'}
-          </button>
+          <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
         </form>
       </div>
     </Popup>

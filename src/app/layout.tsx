@@ -6,6 +6,7 @@ import PopupAddAWebsite from '@/components/PopupAddAWebsite/PopupAddAWebsite';
 import { DataContextProvider } from '@/context/DataContext';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
+import PopupAddCategory from '@/components/PopupAddCategory/PopupAddCategory';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Navigation />
               {children}
               <PopupAddAWebsite />
+              <PopupAddCategory />
             </PopupProvider>
           </DataContextProvider>
         </AuthProvider>
