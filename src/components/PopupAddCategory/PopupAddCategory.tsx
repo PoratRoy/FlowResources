@@ -32,7 +32,7 @@ const PopupAddCategory: React.FC = () => {
   if (!isOpen(Popups.addCategory)) return null;
 
   return (
-    <Popup isOpen={isOpen(Popups.addCategory)} onClose={() => handleClose()}>
+    <Popup isOpen={isOpen(Popups.addCategory)} onClose={() => handleClose()} size="sm">
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
           <Input

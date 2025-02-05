@@ -53,7 +53,7 @@ export function useDataContext() {
 export function DataContextProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isProjectLoading, setIsProjectLoading] = useState(false);
+  const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
   const [websites, setWebsites] = useState<Website[]>([]);

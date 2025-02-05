@@ -1,6 +1,5 @@
 .selection {
   margin: 0 auto;
-  padding: 0 1rem;
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
 }
@@ -15,7 +14,7 @@
 
 .selection-link {
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  font-size: 16px;
   font-weight: 500;
   text-decoration: none;
   color: var(--text-secondary);
@@ -31,4 +30,25 @@
 .selection-link.active {
   color: var(--text-color);
   background-color: var(--primary-color);
+}
+
+.divider{
+  padding: 0.5rem 0;
+  width: 1px;
+  background-color: var(--text-secondary);
+}
+
+.selection-add {
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.selection-add:hover {
+  color: var(--text-color);
 }

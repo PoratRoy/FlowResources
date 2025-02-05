@@ -99,7 +99,7 @@ const PopupAddAWebsite: React.FC = () => {
   if (!isOpen(Popups.addWebsite)) return null;
 
   return (
-    <Popup isOpen={isOpen(Popups.addWebsite)} onClose={() => handleClose()}>
+    <Popup isOpen={isOpen(Popups.addWebsite)} onClose={() => handleClose()} size="lg">
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
           <Input

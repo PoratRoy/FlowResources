@@ -11,12 +11,8 @@
 
 .popup-container {
   position: fixed;
-  top: 50%;
   left: 50%;
   width: 450px;
-  min-height: 700px;
-  height: fit-content;
-  max-height: 80vh;
   background-color: var(--card-bg);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -27,6 +23,28 @@
   border: 1px solid var(--border-color);
   display: none;
 }
+
+.popup-container.sm {
+  top: 35%;
+  min-height: 300px;
+  height: fit-content;
+  max-height: 80vh;
+}
+
+.popup-container.md {
+  top: 40%;
+  min-height: 500px;
+  height: fit-content;
+  max-height: 80vh;
+}
+
+.popup-container.lg {
+  top: 45%;
+  min-height: 700px;
+  height: fit-content;
+  max-height: 80vh;
+}
+
 
 .popup-open {
   display: block;
@@ -62,10 +80,10 @@
 
 @keyframes fadeIn {
   from {
-      opacity: 0;
+    opacity: 0;
   }
 
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }

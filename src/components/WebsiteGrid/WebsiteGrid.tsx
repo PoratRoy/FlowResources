@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Website } from '@/models/types/website';
 import { useSearchParams } from 'next/navigation';
 import { useDataContext } from '@/context/DataContext';
+import NoWebsites from '../empty/NoWebsites/NoWebsites';
 import './WebsiteGrid.css';
 
 const WebsiteGrid: React.FC = () => {
@@ -22,7 +23,11 @@ const WebsiteGrid: React.FC = () => {
   }, [searchParams, websites]);
 
   if (websites.length === 0) {
-    return <div className="website-grid">Add websites to get started</div>;
+    return (
+      <div className="empty-websites">
+        <NoWebsites />
+      </div>
+    );
   }
 
   return (

@@ -50,6 +50,7 @@ export const selectProjectStyles: StylesConfig<SelectOption, false> = {
     minWidth: '300px',
     width: '100%',
     maxWidth: '500px',
+    cursor: 'pointer',
   }),
   menu: (provided) => ({
     ...provided,

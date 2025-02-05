@@ -6,6 +6,7 @@ type PopupProps = {
     isOpen: boolean;
     onClose?: () => void;
     children: ReactNode;
+    size?: 'sm' | 'md' | 'lg';
     showCloseButton?: boolean;
 }
 
@@ -13,6 +14,7 @@ const Popup: React.FC<PopupProps> = ({
     isOpen, 
     onClose, 
     children, 
+    size = 'md',
     showCloseButton = true 
 }) => {
     if (!isOpen) return null;
@@ -20,7 +22,7 @@ const Popup: React.FC<PopupProps> = ({
     return (
         <>
             <div className="popup-overlay" onClick={onClose} />
-            <div className={`popup-container ${isOpen ? 'popup-open' : ''}`}>
+            <div className={`popup-container ${isOpen ? 'popup-open' : ''} ${size}`}>
                 {showCloseButton ? (
                     <button className="popup-close" onClick={onClose}>
                         <IoClose size={24} />
