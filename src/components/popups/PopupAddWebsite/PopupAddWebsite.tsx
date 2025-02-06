@@ -6,13 +6,13 @@ import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
 import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
-import Popup from '../UI/Popup/Popup';
+import Popup from '../../UI/Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
-import Input from '../UI/Input/Input';
+import Input from '../../UI/Input/Input';
 import { Popups } from '@/models/enum';
-import SubmitBtn from '../UI/btn/SubmitBtn/SubmitBtn';
-import CategorySelect from '../UI/select/CategorySelect/CategorySelect';
-import TextArea from '../UI/TextArea/TextArea';
+import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
+import CategorySelect from '../../UI/select/CategorySelect/CategorySelect';
+import TextArea from '../../UI/TextArea/TextArea';
 import './PopupAddWebsite.css';
 
 const PopupAddWebsite: React.FC = () => {

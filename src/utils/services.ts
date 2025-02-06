@@ -4,10 +4,15 @@ import {
   createProject,
   createProjectCategories,
   createWebsite,
+  deleteCategoryFromProject,
+  deleteProject,
+  deleteWebsite,
   getAllProjects,
+  getCategoriesByProjectId,
   getCategoryById,
   getProjectById,
   getProjectCategory,
+  getWebsitesByProjectId,
 } from '@/lib/database';
 import { Category } from '@/models/types/category';
 import { Project } from '@/models/types/project';
@@ -58,6 +63,65 @@ export const fetchGetAllProjects = async (): Promise<Project[]> => {
   } catch (error) {
     console.error('Error getting projects:', error);
     return [];
+  }
+};
+
+export const fetchDeleteProject = async (projectId: string) => {
+  try {
+    // get all categories associated with the project
+    const { data: categories, error: categoriesError } = await getCategoriesByProjectId(projectId);
+    if (categoriesError) {
+      console.error('Error getting project categories:', categoriesError);
+      return categoriesError;
+    }
+
+    // delete all categories associated with the project
+    const categoriesErrors = categories.map((category: Category) =>
+      deleteCategoryFromProject(category.id, projectId)
+    );
+    if (categoriesErrors) {
+      console.error('Error deleting project categories:', categoriesErrors);
+      return categoriesErrors;
+    }
+
+    // get all websites associated with the project
+    const { data: websites, error: websitesError } = await getWebsitesByProjectId(projectId);
+    if (websitesError || !websites) {
+      console.error('Error getting project websites:', websitesError);
+      return websitesError;
+    }
+
+    // delete all websites associated with the project
+    const websiteErrors = websites.map((website: Website) => deleteWebsite(website.id));
+    if (websiteErrors) {
+      console.error('Error deleting project websites:', websiteErrors);
+      return websiteErrors;
+    }
+
+    // delete the project
+    const error = await deleteProject(projectId);
+    if (error) {
+      console.error('Error deleting project:', error);
+      return error;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    return error;
+  }
+};
+
+export const fetchDeleteWebsite = async (websiteId: string) => {
+  try {
+    const error = await deleteWebsite(websiteId);
+    if (error) {
+      console.error('Error deleting website:', error);
+      return error;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error deleting website:', error);
+    return error;
   }
 };
 
@@ -119,6 +183,40 @@ export const fetchCreateCategory = async (
     return category;
   } catch (error) {
     console.error('Error creating category:', error);
+    return null;
+  }
+};
+
+export const fetchProjectDetails = async (projectId: string) => {
+  try {
+    // Fetch websites for the project
+    const { data: websites, error: websitesError } = await getWebsitesByProjectId(projectId);
+    if (websitesError) {
+      console.error('Error fetching project websites:', websitesError);
+      return null;
+    }
+
+    // Fetch categories through project_categories
+    const { data: projectCategories, error: categoriesError } = await getCategoriesByProjectId(
+      projectId
+    );
+    if (categoriesError) {
+      console.error('Error fetching project categories:', categoriesError);
+      return null;
+    }
+
+    // Map the response to Category type
+    const categories = (projectCategories || []).map((pc: any) => ({
+      id: pc.categories.id,
+      title: pc.categories.title,
+    }));
+
+    return {
+      websites: websites || [],
+      categories,
+    };
+  } catch (error) {
+    console.error('Error fetching project details:', error);
     return null;
   }
 };

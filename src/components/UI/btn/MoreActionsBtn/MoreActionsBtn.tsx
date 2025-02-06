@@ -1,20 +1,26 @@
 import { useState, useRef } from 'react';
 import './MoreActionsBtn.css';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import { ActionOption } from '@/models/types/select';
+import { usePopupContext } from '@/context/PopupContext';
 
 interface MoreActionsBtnProps {
-  options: Array<{
-    label: React.JSX.Element;
-    onClick: () => void;
-  }>;
+  options: ActionOption[];
 }
 
-export default function MoreActionsBtn({ options }: MoreActionsBtnProps) {
+const MoreActionsBtn = ({ options }: MoreActionsBtnProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { openPopup } = usePopupContext();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleClick = (option: ActionOption) => {
+    if (option.open) openPopup(option.open);
+    else if (option.onClick) option.onClick();
+    setIsOpen(false);
   };
 
   return (
@@ -31,14 +37,7 @@ export default function MoreActionsBtn({ options }: MoreActionsBtnProps) {
       {isOpen && (
         <div className="more-actions-menu">
           {options.map((option, index) => (
-            <button
-              key={index}
-              className="menu-item"
-              onClick={() => {
-                option.onClick();
-                setIsOpen(false);
-              }}
-            >
+            <button key={index} className="menu-item" onClick={() => handleClick(option)}>
               {option.label}
             </button>
           ))}
@@ -46,6 +45,7 @@ export default function MoreActionsBtn({ options }: MoreActionsBtnProps) {
       )}
     </div>
   );
-}
+};
 
+export default MoreActionsBtn;
 //TODO: click outside

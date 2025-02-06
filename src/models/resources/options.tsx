@@ -1,7 +1,8 @@
 import React from 'react';
-import { SelectOption } from '../types/select';
+import { ActionOption, SelectOption } from '../types/select';
 import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
+import { Popups } from '../enum';
 
 export const Categories: SelectOption[] = [
   { value: 'all', label: 'All' },
@@ -23,7 +24,7 @@ export const ActionsOptions = [
       </span>
     ),
     onClick: () => console.log('Reorder sites'),
-  },
+  } as ActionOption,
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -31,21 +32,21 @@ export const ActionsOptions = [
       </span>
     ),
     onClick: () => console.log('Remove website'),
-  },
+  } as ActionOption,
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <MdDeleteForever size={20} /> Remove Category
       </span>
     ),
-    onClick: () => console.log('Remove category'),
-  },
+    open: Popups.deleteCategory,
+  } as ActionOption,
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <MdDeleteForever size={20} /> Remove Project
       </span>
     ),
-    onClick: () => console.log('Remove project'),
-  },
+    open: Popups.deleteProject,
+  } as ActionOption,
 ];

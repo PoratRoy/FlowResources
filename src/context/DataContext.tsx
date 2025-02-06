@@ -1,17 +1,28 @@
 'use client';
 
 import { Project } from '@/models/types/project';
-import { fetchProjectDetails } from '@/lib/database';
 import { Category } from '@/models/types/category';
 import { Website } from '@/models/types/website';
 import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
-import { getSessionData, setSessionCategories, setSessionProjects, setSessionWebsites } from '@/utils/storage';
-import { fetchCreateCategory, fetchCreateProject, fetchCreateWebsite, fetchGetAllProjects } from '@/utils/services';
+import {
+  getSessionData,
+  setSessionCategories,
+  setSessionProjects,
+  setSessionWebsites,
+} from '@/utils/storage';
+import {
+  fetchCreateCategory,
+  fetchCreateProject,
+  fetchCreateWebsite,
+  fetchDeleteProject,
+  fetchGetAllProjects,
+  fetchProjectDetails,
+} from '@/utils/services';
 
 type DataContextType = {
   projects: Project[];
   addProject: (title: string) => Promise<Project | null>;
-  removeProject: (projectKey: string) => void;
+  deleteProject: (projectKey: string) => Promise<string | null>;
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
   categories: Category[];
@@ -27,7 +38,7 @@ type DataContextType = {
 const initialDataContext: DataContextType = {
   projects: [],
   addProject: async (_: string) => null,
-  removeProject: (_: string) => {},
+  deleteProject: async (_: string) => null,
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
   categories: [],
@@ -135,14 +146,32 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const removeProject = (projectKey: string) => {
-    setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectKey));
+  const deleteProject = async (projectId: string) => {
+    setIsProjectLoading(true);
+    try {
+      const error = await fetchDeleteProject(projectId);
+      if (error) {
+        console.error('Error deleting project:', error);
+        return null;
+      }
+      setProjects((prevProjects) => {
+        const projects = prevProjects.filter((project) => project.id !== projectId);
+        setSessionProjects(projects);
+        return projects;
+      });
+      return projectId;
+    } catch (error) {
+      console.error('Error deleting project:', error);
+    } finally {
+      setIsProjectLoading(false);
+    }
+    return null;
   };
 
   const addCategory = async (title: string): Promise<Category | null> => {
     try {
       setIsCategoriesLoading(true);
-      if(selectedProject){
+      if (selectedProject) {
         const newCategory = await fetchCreateCategory(title, selectedProject?.id || '');
         if (newCategory) {
           setCategories((prevCategories) => {
@@ -200,7 +229,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       value={{
         projects,
         addProject,
-        removeProject,
+        deleteProject,
         selectProject,
         selectedProject,
         categories,

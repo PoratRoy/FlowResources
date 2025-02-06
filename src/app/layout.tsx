@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { PopupProvider } from '@/context/PopupContext';
-import PopupAddWebsite from '@/components/PopupAddWebsite/PopupAddWebsite';
+import PopupAddWebsite from '@/components/popups/PopupAddWebsite/PopupAddWebsite';
+import PopupAddCategory from '@/components/popups/PopupAddCategory/PopupAddCategory';
 import { DataContextProvider } from '@/context/DataContext';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
-import PopupAddCategory from '@/components/PopupAddCategory/PopupAddCategory';
+import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
               <PopupAddWebsite />
               <PopupAddCategory />
+              <PopupDeleteProject/>
             </PopupProvider>
           </DataContextProvider>
         </AuthProvider>
