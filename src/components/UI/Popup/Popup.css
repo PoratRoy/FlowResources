@@ -12,7 +12,6 @@
 .popup-container {
   position: fixed;
   left: 50%;
-  width: 450px;
   background-color: var(--card-bg-primary);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -26,6 +25,7 @@
 
 .popup-container.sm {
   top: 35%;
+  width: 450px;
   min-height: 300px;
   height: fit-content;
   max-height: 80vh;
@@ -33,16 +33,19 @@
 
 .popup-container.md {
   top: 40%;
+  width: 450px;
   min-height: 500px;
   height: fit-content;
   max-height: 80vh;
 }
 
 .popup-container.lg {
-  top: 45%;
+  top: 50%;
+  width: 700px;
   min-height: 700px;
-  height: fit-content;
-  max-height: 80vh;
+  height: 90%;
+  max-height: 90vh;
+  overflow-y: scroll;
 }
 
 

@@ -32,7 +32,14 @@ const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory }
         required
         options={Categories}
         styles={selectCategoryStyles}
-        value={category ? { value: category.toString(), label: category } : null}
+        value={
+          category
+            ? {
+                value: category,
+                label: categories.find((c) => c.id.toString() == category)?.title,
+              }
+            : null
+        }
         onChange={(option: any) => setCategory(option.value)}
       />
     </FormInputLayout>

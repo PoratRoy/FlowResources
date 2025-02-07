@@ -1,14 +1,16 @@
+"use client";
+
 import { useState, useRef } from 'react';
-import './MoreActionsBtn.css';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ActionOption } from '@/models/types/select';
 import { usePopupContext } from '@/context/PopupContext';
+import './MoreActionsBtn.css';
 
-interface MoreActionsBtnProps {
+type MoreActionsBtnProps = {
   options: ActionOption[];
 }
 
-const MoreActionsBtn = ({ options }: MoreActionsBtnProps) => {
+const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { openPopup } = usePopupContext();
   const menuRef = useRef<HTMLDivElement>(null);

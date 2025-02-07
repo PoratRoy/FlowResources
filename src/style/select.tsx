@@ -36,6 +36,10 @@ export const selectCategoryStyles: StylesConfig<SelectOption, false> = {
     ...provided,
     color: 'var(--text-color)',
   }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: 'var(--text-placeholder)',
+  }),
 };
 
 export const selectProjectStyles: StylesConfig<SelectOption, false> = {
@@ -77,5 +81,8 @@ export const selectProjectStyles: StylesConfig<SelectOption, false> = {
     ...provided,
     color: 'var(--text-color)',
   }),
+  placeholder: (provided) => ({
+    ...provided,
+    color: 'var(--text-color-error)',
+  }),
 };
-

@@ -95,6 +95,7 @@ const PopupAddWebsite: React.FC = () => {
     <Popup isOpen={isOpen(Popups.addWebsite)} onClose={() => handleClose()} size="lg">
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
+          <h2 className="website-form-title">Create</h2>
           <Input
             type="url"
             placeholder="https://example.com/"
@@ -131,6 +132,10 @@ const PopupAddWebsite: React.FC = () => {
           />
 
           <CategorySelect category={category} setCategory={setCategory} />
+
+          TODO: add Free tag
+          TODO: add score
+          TODO: add websuite type
 
           <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
         </form>

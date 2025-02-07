@@ -11,6 +11,10 @@
     width: 100% !important;
 }
 
+.form-textarea::placeholder {
+    color: var(--text-placeholder);
+}
+
 .form-textarea:focus {
     outline: none;
     border-color: var(--primary-color);
