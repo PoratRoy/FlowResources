@@ -1,12 +1,12 @@
 import { Popups } from "../enum";
 
 export type TOption = {
-  value: string;
+  value: number;
   label: string;
 };
 
 export type SelectOption = {
-  readonly value: string;
+  readonly value: number;
   readonly label: JSX.Element | string;
   action?: () => any;
 };

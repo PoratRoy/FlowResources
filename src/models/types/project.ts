@@ -1,4 +1,4 @@
 export type Project = {
-    id: string;
+    id: number;
     title: string;
 };

@@ -4,18 +4,6 @@ import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
 import { Popups } from '../enum';
 
-export const Categories: SelectOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'design', label: 'Design UI/UX' },
-  { value: 'coding', label: 'Coding' },
-  { value: 'database', label: 'Database' },
-  { value: 'cloud', label: 'Cloud' },
-  { value: 'domains', label: 'Domains' },
-  { value: 'analitics', label: 'Analitics' },
-  { value: 'hosting', label: 'Hosting' },
-  { value: 'ai', label: 'AI' },
-];
-
 export const ActionsOptions = [
   {
     label: (
@@ -31,7 +19,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Website
       </span>
     ),
-    onClick: () => console.log('Remove website'),
+    open: Popups.deleteWebsite,
   } as ActionOption,
   {
     label: (

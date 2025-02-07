@@ -4,6 +4,7 @@ import {
   createProject,
   createProjectCategories,
   createWebsite,
+  deleteCategory,
   deleteCategoryFromProject,
   deleteProject,
   deleteWebsite,
@@ -12,6 +13,7 @@ import {
   getCategoryById,
   getProjectById,
   getProjectCategory,
+  getWebsitesByCategoryId,
   getWebsitesByProjectId,
 } from '@/lib/database';
 import { Category } from '@/models/types/category';
@@ -27,7 +29,7 @@ export const fetchCreateProject = async (title: string): Promise<Project | null>
     }
 
     // Add default categories to the project
-    const defaultCategoryIds = ['1', '2', '3'];
+    const defaultCategoryIds = [1, 2, 3];
     const projectCategories = defaultCategoryIds.map((categoryId) => ({
       project_id: data.id,
       category_id: categoryId,
@@ -66,7 +68,7 @@ export const fetchGetAllProjects = async (): Promise<Project[]> => {
   }
 };
 
-export const fetchDeleteProject = async (projectId: string) => {
+export const fetchDeleteProject = async (projectId: number) => {
   try {
     // get all categories associated with the project
     const { data: categories, error: categoriesError } = await getCategoriesByProjectId(projectId);
@@ -76,12 +78,10 @@ export const fetchDeleteProject = async (projectId: string) => {
     }
 
     // delete all categories associated with the project
-    const categoriesErrors = categories.map((category: Category) =>
-      deleteCategoryFromProject(category.id, projectId)
-    );
-    if (categoriesErrors) {
+    const categoriesErrors = await Promise.all(categories.map((category: Category) => deleteCategoryFromProject(category.id, projectId)));
+    if (categoriesErrors.some((error) => error)) {
       console.error('Error deleting project categories:', categoriesErrors);
-      return categoriesErrors;
+      return categoriesErrors.find((error) => error);
     }
 
     // get all websites associated with the project
@@ -92,10 +92,10 @@ export const fetchDeleteProject = async (projectId: string) => {
     }
 
     // delete all websites associated with the project
-    const websiteErrors = websites.map((website: Website) => deleteWebsite(website.id));
-    if (websiteErrors) {
+    const websiteErrors = await Promise.all(websites.map((website: Website) => deleteWebsite(website.id)));
+    if (websiteErrors.some((error) => error)) {
       console.error('Error deleting project websites:', websiteErrors);
-      return websiteErrors;
+      return websiteErrors.find((error) => error);
     }
 
     // delete the project
@@ -111,23 +111,99 @@ export const fetchDeleteProject = async (projectId: string) => {
   }
 };
 
-export const fetchDeleteWebsite = async (websiteId: string) => {
+export const fetchProjectDetails = async (projectId: number) => {
   try {
-    const error = await deleteWebsite(websiteId);
+    // Fetch websites for the project
+    const { data: websites, error: websitesError } = await getWebsitesByProjectId(projectId);
+    if (websitesError) {
+      console.error('Error fetching project websites:', websitesError);
+      return null;
+    }
+
+    // Fetch categories through project_categories
+    const { data: projectCategories, error: categoriesError } = await getCategoriesByProjectId(
+      projectId
+    );
+    if (categoriesError) {
+      console.error('Error fetching project categories:', categoriesError);
+      return null;
+    }
+
+    // Map the response to Category type
+    const categories = (projectCategories || []).map((pc: any) => ({
+      id: pc.categories.id,
+      title: pc.categories.title,
+    }));
+
+    return {
+      websites: websites || [],
+      categories,
+    };
+  } catch (error) {
+    console.error('Error fetching project details:', error);
+    return null;
+  }
+};
+
+export const fetchCreateCategory = async (
+  title: string,
+  projectId: number
+): Promise<Category | null> => {
+  try {
+    const { data: category, error: categoryError } = await createCategory(title);
+    if (categoryError || !category) {
+      console.error('Error creating category:', categoryError);
+      return null;
+    }
+
+    const error = await addCategoryToProject(category.id, projectId);
     if (error) {
-      console.error('Error deleting website:', error);
-      return error;
+      console.error('Error adding category to project:', error);
+      return null;
+    }
+
+    return category;
+  } catch (error) {
+    console.error('Error creating category:', error);
+    return null;
+  }
+};
+
+export const fetchDeleteCategory = async (categoryId: number, projectId: number) => {
+  try {
+    const connectionError = await deleteCategoryFromProject(categoryId, projectId);
+    if (connectionError) {
+      console.error('Error deleting category from project:', connectionError);
+      return connectionError;
+    }
+
+    const { data: websites, error: websitesError } = await getWebsitesByCategoryId(categoryId);
+    if (websitesError || !websites) {
+      console.error('Error getting category websites:', websitesError);
+      return websitesError;
+    }
+
+    const websiteErrors = await Promise.all(websites.map((website: Website) => deleteWebsite(website.id)));
+    if (websiteErrors.some((error) => error)) {
+      console.error('Error deleting category websites:', websiteErrors);
+      return websiteErrors.find((error) => error);
+    }
+
+    const categoryError = await deleteCategory(categoryId);
+    if (categoryError) {
+      console.error('Error deleting category:', categoryError);
+      return categoryError;
     }
     return null;
   } catch (error) {
-    console.error('Error deleting website:', error);
+    console.error('Error deleting category:', error);
     return error;
   }
 };
 
 export const fetchCreateWebsite = async (
   websiteData: Omit<Website, 'id'>,
-  projectId: string
+  projectId: number
 ): Promise<Website | null> => {
   try {
     const { data: project, error: projectError } = await getProjectById(projectId);
@@ -163,60 +239,16 @@ export const fetchCreateWebsite = async (
   }
 };
 
-export const fetchCreateCategory = async (
-  title: string,
-  projectId: string
-): Promise<Category | null> => {
+export const fetchDeleteWebsite = async (websiteId: number) => {
   try {
-    const { data: category, error: categoryError } = await createCategory(title, projectId);
-    if (categoryError || !category) {
-      console.error('Error creating category:', categoryError);
-      return null;
-    }
-
-    const error = await addCategoryToProject(category.id, projectId);
+    const error = await deleteWebsite(websiteId);
     if (error) {
-      console.error('Error adding category to project:', error);
-      return null;
+      console.error('Error deleting website:', error);
+      return error;
     }
-
-    return category;
-  } catch (error) {
-    console.error('Error creating category:', error);
     return null;
-  }
-};
-
-export const fetchProjectDetails = async (projectId: string) => {
-  try {
-    // Fetch websites for the project
-    const { data: websites, error: websitesError } = await getWebsitesByProjectId(projectId);
-    if (websitesError) {
-      console.error('Error fetching project websites:', websitesError);
-      return null;
-    }
-
-    // Fetch categories through project_categories
-    const { data: projectCategories, error: categoriesError } = await getCategoriesByProjectId(
-      projectId
-    );
-    if (categoriesError) {
-      console.error('Error fetching project categories:', categoriesError);
-      return null;
-    }
-
-    // Map the response to Category type
-    const categories = (projectCategories || []).map((pc: any) => ({
-      id: pc.categories.id,
-      title: pc.categories.title,
-    }));
-
-    return {
-      websites: websites || [],
-      categories,
-    };
   } catch (error) {
-    console.error('Error fetching project details:', error);
-    return null;
+    console.error('Error deleting website:', error);
+    return error;
   }
 };

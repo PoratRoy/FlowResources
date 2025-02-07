@@ -29,11 +29,6 @@ const PopupAddWebsite: React.FC = () => {
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
 
-  const Categories = useMemo(
-    () => categories.map((category) => ({ value: category.title, label: category.title })),
-    [categories]
-  );
-
   const handleClose = (to?: string) => {
     if (to) router.push('/?category=' + to);
     setUrl('');
@@ -78,18 +73,17 @@ const PopupAddWebsite: React.FC = () => {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const categoryId = categories.find((cat) => cat.title === category)?.id;
     const websiteData: Omit<Website, 'id'> = {
       url,
       title,
       description,
-      category: categoryId || '',
+      category: Number(category) || 1,
       image: thumbnail,
     };
 
     try {
       const result = await addWebsite(websiteData);
-      if (result) handleClose(categoryId);
+      if (result) handleClose(category);
     } catch (error) {
       console.error('Error adding website:', error);
     }

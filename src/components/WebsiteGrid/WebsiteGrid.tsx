@@ -14,9 +14,9 @@ const WebsiteGrid: React.FC = () => {
   const [filteredWebsites, setFilteredWebsites] = useState<Website[]>(websites);
 
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
+    const categoryParam = Number(searchParams.get('category')) || 0;
     setFilteredWebsites(
-      categoryParam == '0' || !categoryParam
+      categoryParam == 0
         ? websites
         : websites.filter((website: Website) => website.category == categoryParam)
     );

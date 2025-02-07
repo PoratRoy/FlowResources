@@ -1,0 +1,20 @@
+.delete-website-btn{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-bg-secondary);
+    color: var(--text-color-dark);
+    cursor: pointer;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    z-index: 50;
+}
+
+.delete-website-btn:hover{
+    background-color: var(--card-bg-secondary);
+}

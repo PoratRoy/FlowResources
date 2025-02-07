@@ -13,7 +13,7 @@ export const selectCategoryStyles: StylesConfig<SelectOption, false> = {
   }),
   menu: (provided) => ({
     ...provided,
-    backgroundColor: 'var(--card-bg)',
+    backgroundColor: 'var(--card-bg-primary)',
     border: '1px solid var(--border-color)',
   }),
   option: (provided, state) => ({
@@ -54,7 +54,7 @@ export const selectProjectStyles: StylesConfig<SelectOption, false> = {
   }),
   menu: (provided) => ({
     ...provided,
-    backgroundColor: 'var(--card-bg)',
+    backgroundColor: 'var(--card-bg-primary)',
     border: '1px solid var(--border-color)',
   }),
   option: (provided, state) => ({

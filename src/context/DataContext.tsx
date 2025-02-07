@@ -14,7 +14,9 @@ import {
   fetchCreateCategory,
   fetchCreateProject,
   fetchCreateWebsite,
+  fetchDeleteCategory,
   fetchDeleteProject,
+  fetchDeleteWebsite,
   fetchGetAllProjects,
   fetchProjectDetails,
 } from '@/utils/services';
@@ -22,14 +24,17 @@ import {
 type DataContextType = {
   projects: Project[];
   addProject: (title: string) => Promise<Project | null>;
-  deleteProject: (projectKey: string) => Promise<string | null>;
+  deleteProject: (projectKey: number) => Promise<number | null>;
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
   categories: Category[];
   addCategory: (title: string) => Promise<Category | null>;
+  deleteCategory: (categoryId: number) => Promise<number | null>;
+  clearDeletedCategories: () => void;
+  deletedCategories: number[];
   websites: Website[];
   addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<boolean>;
-  removeWebsite: (currentWebsites: Website[], websiteId: string) => Website[];
+  deleteWebsite: (websiteId: number) => Promise<number | null>;
   isProjectLoading: boolean;
   isWebsitesLoading: boolean;
   isCategoriesLoading: boolean;
@@ -38,14 +43,17 @@ type DataContextType = {
 const initialDataContext: DataContextType = {
   projects: [],
   addProject: async (_: string) => null,
-  deleteProject: async (_: string) => null,
+  deleteProject: async (_: number) => null,
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
   categories: [],
   addCategory: async (_: string) => null,
+  deleteCategory: async (_: number) => null,
+  clearDeletedCategories: () => {},
+  deletedCategories: [],
   websites: [],
   addWebsite: async (_: Omit<Website, 'id'>) => false,
-  removeWebsite: (_: Website[], __: string) => [],
+  deleteWebsite: async (_: number) => null,
   isProjectLoading: false,
   isWebsitesLoading: false,
   isCategoriesLoading: false,
@@ -67,6 +75,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
+  const [deletedCategories, setDeletedCategories] = useState<number[]>([]);
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
@@ -75,7 +84,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     await getProjectDetails(project.id);
   };
 
-  const getProjectDetails = async (projectId: string) => {
+  const getProjectDetails = async (projectId: number) => {
     const result = await fetchProjectDetails(projectId);
     if (result) {
       const { websites, categories } = result;
@@ -146,7 +155,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const deleteProject = async (projectId: string) => {
+  const deleteProject = async (projectId: number) => {
     setIsProjectLoading(true);
     try {
       const error = await fetchDeleteProject(projectId);
@@ -172,7 +181,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     try {
       setIsCategoriesLoading(true);
       if (selectedProject) {
-        const newCategory = await fetchCreateCategory(title, selectedProject?.id || '');
+        const newCategory = await fetchCreateCategory(title, selectedProject.id);
         if (newCategory) {
           setCategories((prevCategories) => {
             const categories = [...prevCategories, newCategory];
@@ -190,10 +199,38 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const removeCategory = (categoryId: string): void => {
-    setCategories((prevCategories) =>
-      prevCategories.filter((category) => category.id !== categoryId)
-    );
+  const deleteCategory = async (categoryId: number): Promise<number | null> => {
+    setIsCategoriesLoading(true);
+    try {
+      if (selectedProject && selectedProject.id) {
+        const error = await fetchDeleteCategory(categoryId, selectedProject.id);
+        if (error) {
+          console.error('Error deleting category:', error);
+          return null;
+        }
+        setDeletedCategories((prevDeletedCategories) => [...prevDeletedCategories, categoryId]);
+        setCategories((prevCategories) => {
+          const categories = prevCategories.filter((category) => category.id !== categoryId);
+          setSessionCategories(categories);
+          return categories;
+        });
+        setWebsites((prevWebsites) => {
+          const websites = prevWebsites.filter((website) => website.category != categoryId);
+          setSessionWebsites(websites);
+          return websites;
+        });
+        return categoryId;
+      }
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    } finally {
+      setIsCategoriesLoading(false);
+    }
+    return null;
+  };
+
+  const clearDeletedCategories = () => {
+    setDeletedCategories([]);
   };
 
   const addWebsite = async (newWebsite: Omit<Website, 'id'>): Promise<boolean> => {
@@ -220,8 +257,26 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return false;
   };
 
-  const removeWebsite = (currentWebsites: Website[], websiteId: string): Website[] => {
-    return currentWebsites.filter((website) => website.id !== websiteId);
+  const deleteWebsite = async (websiteId: number): Promise<number | null> => {
+    setIsWebsitesLoading(true);
+    try {
+      const error = await fetchDeleteWebsite(websiteId);
+      if (error) {
+        console.error('Error deleting website:', error);
+        return null;
+      }
+      setWebsites((prevWebsites) => {
+        const websites = prevWebsites.filter((website) => website.id !== websiteId);
+        setSessionWebsites(websites);
+        return websites;
+      });
+      return websiteId;
+    } catch (error) {
+      console.error('Error deleting website:', error);
+    } finally {
+      setIsWebsitesLoading(false);
+    }
+    return null;
   };
 
   return (
@@ -234,9 +289,12 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         selectedProject,
         categories,
         addCategory,
+        deleteCategory,
+        clearDeletedCategories,
+        deletedCategories,
         websites,
         addWebsite,
-        removeWebsite,
+        deleteWebsite,
         isProjectLoading,
         isWebsitesLoading,
         isCategoriesLoading,

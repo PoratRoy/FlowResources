@@ -13,8 +13,8 @@ export async function createProject(
 
 export async function createProjectCategories(
   projectCategories: {
-    project_id: string;
-    category_id: string;
+    project_id: number;
+    category_id: number;
   }[]
 ): Promise<PostgrestError | null> {
   const { error } = await supabase.from('project_categories').insert(projectCategories);
@@ -22,7 +22,7 @@ export async function createProjectCategories(
 }
 
 export async function getProjectById(
-  projectId: string
+  projectId: number
 ): Promise<{ data: Project | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('projects')
@@ -32,14 +32,14 @@ export async function getProjectById(
   return { data, error };
 }
 
-export async function deleteProject(projectId: string): Promise<PostgrestError | null> {
+export async function deleteProject(projectId: number): Promise<PostgrestError | null> {
   const { error } = await supabase.from('projects').delete().eq('id', projectId);
   return error;
 }
 
 export async function getProjectCategory(
-  projectId: string,
-  categoryId: string
+  projectId: number,
+  categoryId: number
 ): Promise<{ data: any | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('project_categories')
@@ -50,7 +50,7 @@ export async function getProjectCategory(
   return { data, error };
 }
 
-export async function getCategoryById(categoryId: string): Promise<{
+export async function getCategoryById(categoryId: number): Promise<{
   data: Omit<Category, 'title'> | null;
   error: PostgrestError | null;
 }> {
@@ -71,8 +71,8 @@ export async function getAllProjects(): Promise<{
 }
 
 export async function addCategoryToProject(
-  categoryId: string,
-  projectId: string
+  categoryId: number,
+  projectId: number
 ): Promise<PostgrestError | null> {
   const { error } = await supabase
     .from('project_categories')
@@ -81,7 +81,7 @@ export async function addCategoryToProject(
 }
 
 export async function getCategoriesByProjectId(
-  projectId: string
+  projectId: number
 ): Promise<{ data: any; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('project_categories')
@@ -98,8 +98,8 @@ export async function getCategoriesByProjectId(
 }
 
 export async function deleteCategoryFromProject(
-  categoryId: string,
-  projectId: string
+  categoryId: number,
+  projectId: number
 ): Promise<PostgrestError | null> {
   const { error } = await supabase
     .from('project_categories')
@@ -109,19 +109,19 @@ export async function deleteCategoryFromProject(
   return error;
 }
 
-export async function createCategory(title: string, projectId: string) {
+export async function createCategory(title: string) {
   const { data, error } = await supabase.from('categories').insert([{ title }]).select().single();
   return { data, error };
 }
 
-export async function deleteCategory(categoryId: string): Promise<PostgrestError | null> {
+export async function deleteCategory(categoryId: number): Promise<PostgrestError | null> {
   const { error } = await supabase.from('categories').delete().eq('id', categoryId);
   return error;
 }
 
 export async function createWebsite(
   websiteData: Omit<Website, 'id'>,
-  projectId: string
+  projectId: number
 ): Promise<{ data: Website | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('websites')
@@ -131,14 +131,24 @@ export async function createWebsite(
   return { data, error };
 }
 
-export async function deleteWebsite(websiteId: string): Promise<PostgrestError | null> {
+export async function deleteWebsite(websiteId: number): Promise<PostgrestError | null> {
   const { error } = await supabase.from('websites').delete().eq('id', websiteId);
   return error;
 }
 
 export async function getWebsitesByProjectId(
-  projectId: string
+  projectId: number
 ): Promise<{ data: Website[] | null; error: PostgrestError | null }> {
   const { data, error } = await supabase.from('websites').select('*').eq('project_id', projectId);
+  return { data, error };
+}
+
+export async function getWebsitesByCategoryId(
+  categoryId: number
+): Promise<{ data: Website[] | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('websites')
+    .select('*')
+    .eq('category_id', categoryId);
   return { data, error };
 }

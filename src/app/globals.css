@@ -1,14 +1,18 @@
 :root {
-  /* Color Variables */
   --bg-color: #0f172a;
-  --card-bg: #1e293b;
+  --card-bg-primary: #1e293b;
+  --card-bg-primary-hover: #2d3748;
+  --card-bg-secondary: #ffffff;
+  --card-bg-secondary-hover: #f8fafc;
   --input-bg: #0f172a;
   --primary-color: #3b82f6;
   --primary-color-dark: #2563eb;
   --text-color: #f8fafc;
   --text-secondary: #94a3b8;
+  --text-color-dark: #1e293b;
   --border-color: #334155;
   --tag-bg: #334155;
+  --tag-bg-hover: #475569;
   --tag-text: #e2e8f0;
 
   --footer-height: 90px;

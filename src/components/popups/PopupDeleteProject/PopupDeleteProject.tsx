@@ -13,14 +13,14 @@ import { Project } from '@/models/types/project';
 const PopupDeleteProject: React.FC = () => {
   const { isOpen, closePopup } = usePopupContext();
   const { projects, deleteProject } = useDataContext();
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
 
   const handleClose = () => {
     setSelectedProjects([]);
     closePopup();
   };
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: number) => {
     setSelectedProjects((prev) => {
       if (prev.includes(value)) {
         return prev.filter((item) => item !== value);

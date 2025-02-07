@@ -16,7 +16,11 @@ const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory }
   const { categories } = useDataContext();
 
   const Categories = useMemo(
-    () => categories.map((category) => ({ value: category.title, label: category.title })),
+    () =>
+      categories.map((category) => ({
+        value: category.id.toString(),
+        label: category.title,
+      })),
     [categories]
   );
 
@@ -28,7 +32,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory }
         required
         options={Categories}
         styles={selectCategoryStyles}
-        value={category ? { value: category, label: category } : null}
+        value={category ? { value: category.toString(), label: category } : null}
         onChange={(option: any) => setCategory(option.value)}
       />
     </FormInputLayout>

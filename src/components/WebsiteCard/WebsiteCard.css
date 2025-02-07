@@ -1,8 +1,13 @@
+.card-container{
+  position: relative;
+  display: inline-block;
+}
+
 .website-card {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  background-color: white;
+  background-color: var(--card-bg-secondary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   width: 370px;
   height: 520px;
@@ -26,7 +31,7 @@
   bottom: 0;
   left: 2rem;
   transform: translateY(50%);
-  background: white;
+  background: var(--card-bg-secondary);
   padding: 0.75rem;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -46,7 +51,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: white;
+  background-color: var(--card-bg-secondary);
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   color: #2d3748;
