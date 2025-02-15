@@ -10,10 +10,12 @@ import FormInputLayout from '@/components/FormInputLayout/FormInputLayout';
 type CategorySelectProps = {
   category: string;
   setCategory: Dispatch<SetStateAction<string>>;
+  defaultCategory?: string;
 };
 
-const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory }) => {
+const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory, defaultCategory }) => {
   const { categories } = useDataContext();
+
 
   const Categories = useMemo(
     () =>

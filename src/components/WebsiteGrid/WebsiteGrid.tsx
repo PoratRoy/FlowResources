@@ -1,46 +1,15 @@
-'use client';
-
 import WebsiteCard from '../WebsiteCard/WebsiteCard';
-import { useState, useEffect } from 'react';
 import { Website } from '@/models/types/website';
-import { useSearchParams } from 'next/navigation';
-import { useDataContext } from '@/context/DataContext';
-import NoWebsites from '../empty/NoWebsites/NoWebsites';
 import './WebsiteGrid.css';
 
-const WebsiteGrid: React.FC = () => {
-  const { websites } = useDataContext();
-  const searchParams = useSearchParams();
-  const [filteredWebsites, setFilteredWebsites] = useState<Website[]>(websites);
+type WebsiteGridProps = {
+  websites: Website[];
+};
 
-  useEffect(() => {
-    const categoryParam = Number(searchParams.get('category')) || 0;
-    setFilteredWebsites(
-      categoryParam == 0
-        ? websites
-        : websites.filter((website: Website) => website.category == categoryParam)
-    );
-  }, [searchParams, websites]);
-
-  if (websites.length === 0) {
-    return (
-      <div className="empty-websites">
-        <NoWebsites text="Add a website to get started" />
-      </div>
-    );
-  }
-
-  if (websites.length > 0 && filteredWebsites.length === 0) {
-    return (
-      <div className="empty-websites">
-        <NoWebsites text="Add a new website to the category" />
-      </div>
-    );
-  }
-
+const WebsiteGrid: React.FC<WebsiteGridProps> = ({ websites }) => {
   return (
     <div className="website-grid">
-      {filteredWebsites.map((website: Website, index: number) => (
+      {websites.map((website: Website, index: number) => (
         <WebsiteCard key={website?.id || index} website={website} />
       ))}
     </div>

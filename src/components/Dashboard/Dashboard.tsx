@@ -1,16 +1,29 @@
 'use client';
 
-import React from 'react';
-import './Dashboard.css';
+import React, { useEffect, useState } from 'react';
 import FlowToggle from '../UI/FlowToggle/FlowToggle';
-import WebsiteGrid from '../WebsiteGrid/WebsiteGrid';
 import NoProjects from '../empty/NoProjects/NoProjects';
 import { useDataContext } from '@/context/DataContext';
 import Loading from '../empty/Loading/Loading';
 import SelectProject from '../empty/SelectProject/SelectProject';
+import query from '@/models/constants/queryParams.json';
+import { useQueryParam } from '@/hooks/useQueryParam';
+import WebsiteDisplay from '../WebsiteDisplay/WebsiteDisplay';
+import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
-  const { projects, selectedProject, isProjectLoading } = useDataContext();
+  const { projects, selectedProject, isProjectLoading, categories } = useDataContext();
+  const {searchParam} = useQueryParam();
+  const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>();
+
+  const currentCategory = searchParam(query.category);
+
+  useEffect(() => {
+    if (currentCategory) {
+      const categoryId = categories.find((category) => category.title === currentCategory)?.id;
+      setCurrentCategoryId(categoryId || 0);
+    }
+  }, [currentCategory]);
 
   if (isProjectLoading) {
     return (
@@ -38,8 +51,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <main className="main-container">
-      <FlowToggle />
-      <WebsiteGrid />
+      {currentCategoryId !== undefined ? <FlowToggle categoryId={currentCategoryId} /> : null}
+      {currentCategoryId !== undefined ? <WebsiteDisplay categoryId={currentCategoryId} display="list" /> : null}
     </main>
   );
 };

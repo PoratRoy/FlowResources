@@ -1,10 +1,9 @@
 'use client';
 
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { usePopupContext } from '@/context/PopupContext';
 import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
-import { useRouter } from 'next/navigation';
 import { isValidURL } from '@/models/validation/url';
 import Popup from '../../UI/Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
@@ -13,12 +12,14 @@ import { Popups } from '@/models/enum';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import CategorySelect from '../../UI/select/CategorySelect/CategorySelect';
 import TextArea from '../../UI/TextArea/TextArea';
+import { useQueryParam } from '@/hooks/useQueryParam';
+import query from '../../../models/constants/queryParams.json';
 import './PopupAddWebsite.css';
 
 const PopupAddWebsite: React.FC = () => {
-  const router = useRouter();
+  const {pushCategoryQueryParam, searchParam} = useQueryParam();
   const { isOpen, closePopup } = usePopupContext();
-  const { categories, isWebsitesLoading, addWebsite } = useDataContext();
+  const { isWebsitesLoading, addWebsite, categories } = useDataContext();
 
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +30,17 @@ const PopupAddWebsite: React.FC = () => {
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
 
+  const currentCategory = searchParam(query.category);
+
+  useEffect(()=> {
+    if(currentCategory){
+      const categoryId = categories.find((category) => category.title === currentCategory)?.id;
+      setCategory(categoryId?.toString() || '');
+    }
+  },[currentCategory])
+
   const handleClose = (to?: string) => {
-    if (to) router.push('/?category=' + to);
+    if (to) pushCategoryQueryParam(to);
     setUrl('');
     setTitle('');
     setDescription('');
@@ -96,6 +106,9 @@ const PopupAddWebsite: React.FC = () => {
       <div className="form-card">
         <form onSubmit={onSubmit} className="website-form">
           <h2 className="website-form-title">Create</h2>
+
+          <CategorySelect category={category} setCategory={setCategory} defaultCategory={currentCategory} />
+
           <Input
             type="url"
             placeholder="https://example.com/"
@@ -130,8 +143,6 @@ const PopupAddWebsite: React.FC = () => {
             isLoading={false}
             isRequired
           />
-
-          <CategorySelect category={category} setCategory={setCategory} />
 
           TODO: add Free tag
           TODO: add score

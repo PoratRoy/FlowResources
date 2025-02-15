@@ -29,7 +29,7 @@ export const fetchCreateProject = async (title: string): Promise<Project | null>
     }
 
     // Add default categories to the project
-    const defaultCategoryIds = [18, 2];
+    const defaultCategoryIds = [18];
     const projectCategories = defaultCategoryIds.map((categoryId) => ({
       project_id: data.id,
       category_id: categoryId,

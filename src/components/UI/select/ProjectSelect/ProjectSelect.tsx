@@ -1,6 +1,7 @@
 'use client';
 
 import { useDataContext } from '@/context/DataContext';
+import { useQueryParam } from '@/hooks/useQueryParam';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -8,13 +9,9 @@ import { SingleValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 const ProjectSelect: React.FC = () => {
-  const {
-    addProject,
-    selectProject,
-    projects,
-    selectedProject,
-    isProjectLoading,
-  } = useDataContext();
+  const { addProjectQueryParam } = useQueryParam();
+  const { addProject, selectProject, projects, selectedProject, isProjectLoading } =
+    useDataContext();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
   const projectOptions = useMemo(
@@ -25,6 +22,10 @@ const ProjectSelect: React.FC = () => {
       })),
     [projects]
   );
+
+  useEffect(() => {
+    if (isProjectLoading) setVal({ value: 0, label: '' });
+  }, [isProjectLoading]);
 
   const blockRef = useRef<boolean>(true);
   useEffect(() => {
@@ -38,6 +39,7 @@ const ProjectSelect: React.FC = () => {
     const project = await addProject(value);
     if (project && project.id) {
       const option = { value: project.id, label: value };
+      addProjectQueryParam(value)
       setVal(option);
     }
   };
@@ -46,6 +48,7 @@ const ProjectSelect: React.FC = () => {
     setVal(value);
     const selectedProject = projects.find((project) => project.id === value?.value);
     if (selectedProject) {
+      addProjectQueryParam(selectedProject.title)
       await selectProject(selectedProject);
     }
   };

@@ -53,9 +53,6 @@ textarea::placeholder {
   color: var(--text-secondary);
 }
 
-
-
-
 .page-title {
   font-size: 1.5rem;
   font-weight: bold;
