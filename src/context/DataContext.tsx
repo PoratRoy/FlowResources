@@ -81,7 +81,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
-  const { searchParam, addProjectQueryParam } = useQueryParam();
+  const { addProjectQueryParam } = useQueryParam();
 
   const selectProject = async (project: Project) => {
     setSelectedProject(project);
@@ -129,7 +129,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
           }
         }
 
-        const queryProject = searchParam()
+        // const queryProject = searchParam()
         blockRef.current = false;
       } catch (error) {
         console.error('Error loading projects:', error);
