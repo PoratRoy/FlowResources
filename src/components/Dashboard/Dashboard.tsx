@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import FlowToggle from '../UI/FlowToggle/FlowToggle';
 import NoProjects from '../empty/NoProjects/NoProjects';
 import { useDataContext } from '@/context/DataContext';
 import Loading from '../empty/Loading/Loading';
@@ -9,6 +8,7 @@ import SelectProject from '../empty/SelectProject/SelectProject';
 import query from '@/models/constants/queryParams.json';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import WebsiteDisplay from '../WebsiteDisplay/WebsiteDisplay';
+import FlowToggle from '../UI/toggle/FlowToggle/FlowToggle';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
@@ -52,7 +52,7 @@ const Dashboard: React.FC = () => {
   return (
     <main className="main-container">
       {currentCategoryId !== undefined ? <FlowToggle categoryId={currentCategoryId} /> : null}
-      {currentCategoryId !== undefined ? <WebsiteDisplay categoryId={currentCategoryId} display="list" /> : null}
+      {currentCategoryId !== undefined ? <WebsiteDisplay categoryId={currentCategoryId} /> : null}
     </main>
   );
 };

@@ -5,15 +5,17 @@ import NoWebsites from '../empty/NoWebsites/NoWebsites';
 import WebsiteGrid from '../WebsiteGrid/WebsiteGrid';
 import WebsiteList from '../WebsiteList/WebsiteList';
 import './WebsiteDisplay.css';
+import { useQueryParam } from '@/hooks/useQueryParam';
 
 type WebsiteDisplayProps = {
   categoryId: number;
-  display: 'grid' | 'list';
 };
 
-const WebsiteDisplay: React.FC<WebsiteDisplayProps> = ({ categoryId, display }) => {
+const WebsiteDisplay: React.FC<WebsiteDisplayProps> = ({ categoryId }) => {
   const { websites } = useDataContext();
+  const { searchParam } = useQueryParam();
   const [filteredWebsites, setFilteredWebsites] = useState<Website[]>([]);
+  const display = searchParam('display', 'grid');
 
   useEffect(() => {
     setFilteredWebsites(

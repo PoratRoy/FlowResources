@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useDataContext } from '@/context/DataContext';
-import AddCategoryBtn from '../btn/AddCategoryBtn/AddCategoryBtn';
+import AddCategoryBtn from '../../btn/AddCategoryBtn/AddCategoryBtn';
 import { useEffect } from 'react';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import './FlowToggle.css';

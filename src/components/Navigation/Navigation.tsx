@@ -5,6 +5,7 @@ import MoreActionsBtn from '../UI/btn/MoreActionsBtn/MoreActionsBtn';
 import { ActionsOptions } from '@/models/resources/options';
 import Search from '../Search/Search';
 import UserProfile from '../UserProfile/UserProfile';
+import DisplayToggle from '../UI/toggle/DisplayToggle/DisplayToggle';
 import './Navigation.css';
 
 export function Navigation() {
@@ -19,6 +20,7 @@ export function Navigation() {
           <AddWebsiteBtn />
         </div>
         <div className="navigation-actions">
+          <DisplayToggle />
           <Search />
           <MoreActionsBtn options={ActionsOptions} />
           <UserProfile/>

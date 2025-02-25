@@ -20,6 +20,8 @@ import {
   fetchGetAllProjects,
   fetchProjectDetails,
 } from '@/utils/services';
+import { useQueryParam } from '@/hooks/useQueryParam';
+import query from "../models/constants/queryParams.json";
 
 type DataContextType = {
   projects: Project[];
@@ -79,6 +81,8 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
+  const { searchParam, addProjectQueryParam } = useQueryParam();
+
   const selectProject = async (project: Project) => {
     setSelectedProject(project);
     await getProjectDetails(project.id);
@@ -104,6 +108,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         if (sessionProjects && sessionProjects.length > 0) {
           setProjects(sessionProjects);
           setSelectedProject(sessionProjects[0]);
+          addProjectQueryParam(sessionProjects[0].title);
           if (
             sessionWebsites &&
             sessionWebsites.length > 0 &&
@@ -123,6 +128,8 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
             setSessionProjects(projectsData);
           }
         }
+
+        const queryProject = searchParam()
         blockRef.current = false;
       } catch (error) {
         console.error('Error loading projects:', error);
