@@ -1,4 +1,5 @@
 export enum Popups {
+  addProject = 'addProject',
   addWebsite = 'addWebsite',
   addCategory = 'addCategory',
   deleteProject = 'deleteProject',

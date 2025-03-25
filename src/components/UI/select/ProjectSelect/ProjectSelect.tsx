@@ -1,7 +1,9 @@
 'use client';
 
 import { useDataContext } from '@/context/DataContext';
+import { usePopupContext } from '@/context/PopupContext';
 import { useQueryParam } from '@/hooks/useQueryParam';
+import { Popups } from '@/models/enum';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -11,7 +13,8 @@ import CreatableSelect from 'react-select/creatable';
 const ProjectSelect: React.FC = () => {
   const { addProjectQueryParam } = useQueryParam();
   const { addProject, selectProject, projects, selectedProject, isProjectLoading } =
-    useDataContext();
+  useDataContext();
+  const { openPopup } = usePopupContext();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
   const projectOptions = useMemo(
@@ -36,7 +39,7 @@ const ProjectSelect: React.FC = () => {
   }, [selectedProject]);
 
   const handleCreate = async (value: string) => {
-    const project = await addProject(value);
+    const project = await addProject(value, []);
     if (project && project.id) {
       const option = { value: project.id, label: value };
       addProjectQueryParam(value)
@@ -46,10 +49,14 @@ const ProjectSelect: React.FC = () => {
 
   const handleChange = async (value: SingleValue<SelectOption>) => {
     setVal(value);
-    const selectedProject = projects.find((project) => project.id === value?.value);
-    if (selectedProject) {
-      addProjectQueryParam(selectedProject.title)
-      await selectProject(selectedProject);
+    if(value?.value === 0){
+      openPopup(Popups.addProject);
+    } else {
+      const selectedProject = projects.find((project) => project.id === value?.value);
+      if (selectedProject) {
+        addProjectQueryParam(selectedProject.title)
+        await selectProject(selectedProject);
+      }
     }
   };
 
@@ -57,7 +64,7 @@ const ProjectSelect: React.FC = () => {
     <CreatableSelect
       instanceId={'projectId'}
       onCreateOption={handleCreate}
-      options={projectOptions}
+      options={[...projectOptions, { value: 0, label: 'Create new project' }]}
       value={val}
       onChange={handleChange}
       isSearchable={true}

@@ -21,11 +21,10 @@ import {
   fetchProjectDetails,
 } from '@/utils/services';
 import { useQueryParam } from '@/hooks/useQueryParam';
-import query from "../models/constants/queryParams.json";
 
 type DataContextType = {
   projects: Project[];
-  addProject: (title: string) => Promise<Project | null>;
+  addProject: (title: string, categories: string[]) => Promise<Project | null>;
   deleteProject: (projectKey: number) => Promise<number | null>;
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
@@ -44,7 +43,7 @@ type DataContextType = {
 
 const initialDataContext: DataContextType = {
   projects: [],
-  addProject: async (_: string) => null,
+  addProject: async (title: string, categories: string[]) => null,
   deleteProject: async (_: number) => null,
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
@@ -141,10 +140,10 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     if (blockRef.current) loadProjects();
   }, []);
 
-  const addProject = async (title: string) => {
+  const addProject = async (title: string, categories: string[]) => {
     try {
       setIsProjectLoading(true);
-      const newProject = await fetchCreateProject(title);
+      const newProject = await fetchCreateProject(title, categories);
       if (newProject) {
         setProjects((prevProjects) => {
           const projects = [...prevProjects, newProject];

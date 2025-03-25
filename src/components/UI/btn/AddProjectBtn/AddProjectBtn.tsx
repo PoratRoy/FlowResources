@@ -1,30 +1,24 @@
 'use client';
 
 import React from 'react';
-import './AddWebsiteBtn.css';
+import './AddProjectBtn.css';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { usePopupContext } from '@/context/PopupContext';
 import { Popups } from '@/models/enum';
-import { useDataContext } from '@/context/DataContext';
 
-const AddWebsiteBtn: React.FC = () => {
-  const { projects } = useDataContext();
+const AddProjectBtn: React.FC = () => {
   const { openPopup } = usePopupContext();
 
-  if(projects.length === 0) {
-    return null;
-  }
-
   const handleClick = () => {
-    openPopup(Popups.addWebsite);
+    openPopup(Popups.addProject);
   };
 
   return (
-    <button className="add-button-website" onClick={handleClick}>
+    <button className="add-button-project" onClick={handleClick}>
       <IoAddCircleOutline className="plus-icon" size={20} />
-      Add Website
+      Create Project
     </button>
   );
 };
 
-export default AddWebsiteBtn;
+export default AddProjectBtn;

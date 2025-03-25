@@ -40,3 +40,37 @@ export const ActionsOptions = [
     open: Popups.deleteProject,
   } as ActionOption,
 ];
+
+
+export const TemplatesOptions = [
+  {
+    id: 0,
+    title: 'Empty',
+    categories: [],
+  },
+  {
+    id: 1,
+    title: 'Coding',
+    categories: ['Common', 'Coding', 'Assets'],
+  },
+  {
+    id: 2,
+    title: 'Design',
+    categories: ['Common', 'UI', 'UX', 'Assets'],
+  },
+  {
+    id: 3,
+    title: 'Content',
+    categories: ['Common', 'Content'],
+  },
+  {
+    id: 4,
+    title: 'AI',
+    categories: ['Common', 'Image', 'Video', 'Audio', 'Text'],
+  },
+  {
+    id: 5,
+    title: 'DB',
+    categories: ['Common', 'Relational DB', 'NoSQL DB'],
+  },
+];

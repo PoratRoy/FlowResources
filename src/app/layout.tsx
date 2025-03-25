@@ -9,6 +9,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import './globals.css';
+import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
               <PopupAddWebsite />
               <PopupAddCategory />
+              <PopupAddProject />
               <PopupDeleteProject/>
               <PopupDeleteCategory/>
             </PopupProvider>

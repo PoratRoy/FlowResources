@@ -1,0 +1,72 @@
+authentication
+
+view friends dashboard as guest
+
+project template
+
+category selection like mobbin
+
+
+web design
+references 
+https://www.unsection.com/
+https://www.pinterest.com/
+https://www.awwwards.com/websites/
+
+coding assets
+https://photogradient.com/
+https://css-loaders.com/spinner/
+https://getcssscan.com/css-box-shadow-examples
+https://webgradients.com/
+https://fonts.google.com/
+https://coolors.co/
+https://colourcontrast.cc/
+https://www.vectary.com/
+
+principles
+https://www.youtube.com/watch?v=9zt__YPULm8&ab_channel=Sajid
+
+assets
+https://handyarrows.com/
+https://uiverse.io/
+
+figma helpers
+https://www.phase.com/
+
+mockups
+https://huemint.com/
+
+
+flowResources
+site preview
+https://www.linkpreview.net/
+
+
+ai
+common
+https://aistudio.google.com/prompts/new_chat
+
+ui design
+https://backflip.ai/
+https://uxpilot.ai/
+https://www.meshy.ai/
+
+text to speech
+https://notebooklm.google.com/
+
+images
+https://www.recraft.ai/
+
+search
+https://www.perplexity.ai/
+
+
+seo
+page insights
+https://pagespeed.web.dev/
+
+
+
+
+
+Next.js + NextAuth.js + MongoDB Atlas
