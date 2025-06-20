@@ -1,49 +1,59 @@
+"use server";
+
 import { connectDB } from '@/lib/mongoConnection';
 import { IWebsite, Website as WebsiteModel } from '@/models/schemas/website.model';
-import { ProjectCategory } from '@/models/schemas/projectCategory.model';
-import { Category as CategoryModel } from '@/models/schemas/category.model';
+import { Project as ProjectModel } from '@/models/schemas/project.model';
+import { ActionResponse } from '@/models/types/actions';
+import { Project } from '@/models/types/project';
+import { Website } from '@/models/types/website';
+import { Category } from '@/models/types/category';
 
-const fetchProjectDetails = async (projectId: string) => {
+const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Project>> => {
   try {
     await connectDB();
+    
+    // Fetch project with populated categories
+    const project = await ProjectModel.findById(projectId).populate('categories');
+    if (!project) {
+      console.error('Project not found');
+      return { status: 'error', error: 'Project not found' };
+    }
     
     // Fetch websites for the project
     const websites = await WebsiteModel.find({ project: projectId });
     if (!websites) {
       console.error('Error fetching project websites');
-      return null;
+      return { status: 'error', error: 'Error fetching project websites' };
     }
     
     // Format websites according to the expected type
-    const formattedWebsites = websites.map((website: IWebsite) => ({
+    const formattedWebsites: Website[] = websites.map((website: IWebsite) => ({
       id: website._id ? website._id.toString() : '',
       title: website.title,
       description: website.description,
       url: website.url,
       image: website.image,
-      category: typeof website.category === 'string' ? website.category : website.category.toString()
+      category: website.category ? (typeof website.category === 'string' ? website.category : website.category.toString()) : ''
     }));
 
-    // Fetch categories through project_categories
-    const projectCategories = await ProjectCategory.find({ project: projectId }).populate('category');
-    if (!projectCategories) {
-      console.error('Error fetching project categories');
-      return null;
-    }
-
-    // Map the response to Category type
-    const categories = projectCategories.map((pc: any) => ({
-      id: pc.category._id.toString(),
-      title: pc.category.title,
+    // Map the categories to the expected type
+    const categories: Category[] = project.categories.map((category: any) => ({
+      id: category._id ? category._id.toString() : '',
+      title: category.title,
     }));
 
     return {
-      websites: formattedWebsites || [],
-      categories,
+      status: 'success',
+      data: {
+        id: project._id ? project._id.toString() : '',
+        title: project.title,
+        websites: formattedWebsites,
+        categories: categories,
+      } as Project,
     };
   } catch (error) {
     console.error('Error fetching project details:', error);
-    return null;
+    return { status: 'error', error: 'Error fetching project details' };
   }
 };
 

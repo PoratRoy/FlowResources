@@ -1,15 +1,28 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import validator from 'validator';
+import { ICategory } from './category.model';
+import { IProject } from './project.model';
 
 export interface IWebsite extends Document {
   title: string;
   description: string;
   url: string;
   image: string;
-  category: mongoose.Types.ObjectId;
-  project: mongoose.Types.ObjectId;
+  category: mongoose.Types.ObjectId | ICategory;
+  project: mongoose.Types.ObjectId | IProject;
   createdAt: Date;
   updatedAt: Date;
+  isValidUrl(): boolean;
+  updateCategory(categoryId: mongoose.Types.ObjectId): Promise<IWebsite>;
+  toFormattedJSON(): { 
+    id: string;
+    title: string;
+    description: string;
+    url: string;
+    image: string;
+    category: string;
+    project: string;
+  };
 }
 
 const websiteSchema = new Schema<IWebsite>({
@@ -64,13 +77,32 @@ const websiteSchema = new Schema<IWebsite>({
 // Create compound index for faster queries
 websiteSchema.index({ project: 1, category: 1 });
 
-websiteSchema.methods.isValidUrl = function(): boolean {
+websiteSchema.methods.isValidUrl = function(this: IWebsite): boolean {
   return validator.isURL(this.url, { require_protocol: true });
 };
 
-websiteSchema.virtual('formattedCreatedAt').get(function() {
+websiteSchema.virtual('formattedCreatedAt').get(function(this: IWebsite) {
   return this.createdAt.toLocaleDateString();
 });
+
+// Method to update website category
+websiteSchema.methods.updateCategory = async function(this: IWebsite, categoryId: mongoose.Types.ObjectId): Promise<IWebsite> {
+  this.category = categoryId;
+  return this.save();
+};
+
+// Method to get formatted data for frontend
+websiteSchema.methods.toFormattedJSON = function(this: IWebsite) {
+  return {
+    id: this._id ? this._id.toString() : '',
+    title: this.title,
+    description: this.description,
+    url: this.url,
+    image: this.image,
+    category: this.category ? (typeof this.category === 'string' ? this.category : this.category.toString()) : '',
+    project: this.project ? (typeof this.project === 'string' ? this.project : this.project.toString()) : ''
+  };
+};
 
 export const Website = mongoose.models.Website as mongoose.Model<IWebsite> || 
   mongoose.model<IWebsite>('Website', websiteSchema);

@@ -20,13 +20,15 @@ const categorySchema = new Schema<ICategory>({
   toObject: { virtuals: true }
 });
 
+// Virtual for projects that include this category
 categorySchema.virtual('projects', {
-  ref: 'ProjectCategory',
+  ref: 'Project',
   localField: '_id',
-  foreignField: 'category',
+  foreignField: 'categories',
   justOne: false
 });
 
+// Virtual for websites associated with this category
 categorySchema.virtual('websites', {
   ref: 'Website',
   localField: '_id',
@@ -37,6 +39,25 @@ categorySchema.virtual('websites', {
 categorySchema.virtual('formattedCreatedAt').get(function() {
   return this.createdAt.toLocaleDateString();
 });
+
+// Method to handle cascading operations when a category is deleted
+categorySchema.methods.handleCascadeDelete = async function(this: ICategory): Promise<void> {
+  try {
+    // Find all projects that reference this category and update them
+    const Project = mongoose.model('Project');
+    await Project.updateMany(
+      { categories: this._id },
+      { $pull: { categories: this._id } }
+    );
+    
+    // Find all websites that reference this category and handle them
+    const Website = mongoose.model('Website');
+    await Website.deleteMany({ category: this._id });
+  } catch (error) {
+    console.error('Error in cascade delete:', error);
+    throw error;
+  }
+};
 
 export const Category = mongoose.models.Category as mongoose.Model<ICategory> || 
   mongoose.model<ICategory>('Category', categorySchema);

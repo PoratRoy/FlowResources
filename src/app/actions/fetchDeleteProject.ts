@@ -1,63 +1,56 @@
-import { connectDB } from '@/lib/mongoConnection';
-import { IProjectCategory, ProjectCategory } from '@/models/schemas/projectCategory.model';
-import { IWebsite, Website as WebsiteModal } from '@/models/schemas/website.model';
-import { Project as ProjectModal } from '@/models/schemas/project.model';
-import { DeleteResult } from 'mongoose';
+"use server";
 
-const fetchDeleteProject = async (projectId: string) => {
+import { connectDB } from '@/lib/mongoConnection';
+import { Website as WebsiteModel } from '@/models/schemas/website.model';
+import { Project as ProjectModel } from '@/models/schemas/project.model';
+import { Category as CategoryModel } from '@/models/schemas/category.model';
+import { ActionResponse } from '@/models/types/actions';
+import { Project } from '@/models/types/project';
+
+const fetchDeleteProject = async (projectId: string): Promise<ActionResponse<Project>> => {
   try {
     await connectDB();
 
-    // get all categories associated with the project
-    const categories = await ProjectCategory.find({ project: projectId }).populate(
-      'category',
-      'id title'
-    );
-    if (!categories) {
-      console.error('Error getting project categories:');
-      return null;
+    // Find the project to get its categories
+    const project = await ProjectModel.findById(projectId).populate('categories');
+    if (!project) {
+      console.error('Project not found');
+      return { status: 'error', error: 'Project not found' };
     }
 
-    // delete all categories associated with the project
-    const categoriesErrors = await Promise.all(
-      categories.map((category: IProjectCategory) =>
-        ProjectCategory.deleteOne({
-          project: projectId,
-          category: category.id,
-        })
-      )
-    );
-    if (categoriesErrors.some((error: DeleteResult) => error)) {
-      console.error('Error deleting project categories:', categoriesErrors);
-      return categoriesErrors.find((error: DeleteResult) => error);
+    // Delete all websites associated with this project
+    const websiteDeleteResult = await WebsiteModel.deleteMany({ project: projectId });
+    if (!websiteDeleteResult) {
+      console.error('Error deleting project websites');
+      return { status: 'error', error: 'Error deleting project websites' };
     }
 
-    // get all websites associated with the project
-    const websites = await WebsiteModal.find({ project: projectId });
-    if (!websites) {
-      console.error('Error getting project websites:');
-      return null;
+    // Get category IDs before deleting the project
+    const categoryIds = project.categories.map((cat: any) => 
+      cat._id ? cat._id.toString() : (typeof cat === 'string' ? cat : '')
+    ).filter(Boolean);
+
+    // Delete the project
+    const projectDeleteResult = await ProjectModel.deleteOne({ _id: projectId });
+    if (!projectDeleteResult || projectDeleteResult.deletedCount === 0) {
+      console.error('Error deleting project');
+      return { status: 'error', error: 'Error deleting project' };
     }
 
-    // delete all websites associated with the project
-    const websiteErrors = await Promise.all(
-      websites.map((website: IWebsite) => WebsiteModal.deleteOne({ _id: website._id }))
-    );
-    if (websiteErrors.some((error: DeleteResult) => error)) {
-      console.error('Error deleting project websites:', websiteErrors);
-      return websiteErrors.find((error: DeleteResult) => error);
+    // Check if any categories are now orphaned (not used by any other projects)
+    // and delete them if they are
+    for (const categoryId of categoryIds) {
+      const categoryInUse = await ProjectModel.findOne({ categories: categoryId });
+      if (!categoryInUse) {
+        // Category is not used by any other project, delete it
+        await CategoryModel.deleteOne({ _id: categoryId });
+      }
     }
 
-    // delete the project
-    const result = await ProjectModal.deleteOne({ _id: projectId });
-    if (result.deletedCount === 0) {
-      console.error('Error deleting project:', result);
-      return result;
-    }
-    return null;
+    return { status: 'success' };
   } catch (error) {
     console.error('Error deleting project:', error);
-    return error;
+    return { status: 'error', error: 'Error deleting project' };
   }
 };
 

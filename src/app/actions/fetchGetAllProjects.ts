@@ -1,24 +1,30 @@
-import { Project } from '@/models/types/project';
-import { IProject, Project as ProjectModal } from '@/models/schemas/project.model';
-import { connectDB } from '@/lib/mongoConnection';
+"use server";
 
-const fetchGetAllProjects = async (): Promise<Project[]> => {
+import { Project } from '@/models/types/project';
+import { IProject, Project as ProjectModel } from '@/models/schemas/project.model';
+import { connectDB } from '@/lib/mongoConnection';
+import { ActionResponse } from '@/models/types/actions';
+
+const fetchGetAllProjects = async (): Promise<ActionResponse<Project[]>> => {
   try {
     await connectDB();
-    const projects = await ProjectModal.find();
+    const projects = await ProjectModel.find();
 
     if (!projects) {
       console.error('Error getting projects:');
-      return [];
+      return { status: 'error', error: 'Error getting projects' };
     }
 
-    return projects.map((project: IProject) => ({
-      id: project._id ? project._id.toString() : '',
-      title: project.title,
-    })) as Project[];
+    return {
+      status: 'success',
+      data: projects.map((project: IProject) => ({
+        id: project._id ? project._id.toString() : '',
+        title: project.title,
+      })) as Project[],
+    };
   } catch (error) {
     console.error('Error getting projects:', error);
-    return [];
+    return { status: 'error', error: 'Error getting projects' };
   }
 };
 

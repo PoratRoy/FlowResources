@@ -1,19 +1,22 @@
-import { connectDB } from "@/lib/mongoConnection";
-import { Website as WebsiteModal } from "@/models/schemas/website.model";
-import { DeleteResult } from "mongoose";
+"use server";
 
-const fetchDeleteWebsite = async (websiteId: string) => {
+import { connectDB } from "@/lib/mongoConnection";
+import { Website as WebsiteModel } from "@/models/schemas/website.model";
+import { ActionResponse } from "@/models/types/actions";
+import { Website } from "@/models/types/website";
+
+const fetchDeleteWebsite = async (websiteId: string): Promise<ActionResponse<Website>> => {
   try {
     await connectDB();
-    const res: DeleteResult = await WebsiteModal.deleteOne({ _id: websiteId });
-    if (res.deletedCount === 0) {
-      console.error('Error deleting website:', res);
-      return res;
+    const result = await WebsiteModel.deleteOne({ _id: websiteId });
+    if (result.deletedCount === 0) {
+      console.error('Error deleting website:', result);
+      return { status: 'error', error: 'Website not found or could not be deleted' };
     }
-    return null;
+    return { status: 'success' };
   } catch (error) {
     console.error('Error deleting website:', error);
-    return error;
+    return { status: 'error', error: 'Error deleting website' };
   }
 };
 
