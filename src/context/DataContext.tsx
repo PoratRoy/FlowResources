@@ -30,7 +30,7 @@ type DataContextType = {
   selectedProject: Project | null;
   categories: Category[];
   addCategory: (title: string) => Promise<Category | null>;
-  deleteCategory: (categoryId: number) => Promise<number | null>;
+  deleteCategory: (categoryId: string) => Promise<number | null>;
   clearDeletedCategories: () => void;
   deletedCategories: number[];
   websites: Website[];

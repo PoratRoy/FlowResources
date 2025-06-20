@@ -1,8 +1,8 @@
 export type Website = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   url: string;
   image: string;
-  category: number;
+  category: string;
 }

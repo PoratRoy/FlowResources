@@ -5,7 +5,6 @@ import { PopupProvider } from '@/context/PopupContext';
 import PopupAddWebsite from '@/components/popups/PopupAddWebsite/PopupAddWebsite';
 import PopupAddCategory from '@/components/popups/PopupAddCategory/PopupAddCategory';
 import { DataContextProvider } from '@/context/DataContext';
-import { AuthProvider } from '@/context/AuthContext';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import './globals.css';
@@ -22,19 +21,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
-        <AuthProvider>
-          <DataContextProvider>
-            <PopupProvider>
-              <Navigation />
-              {children}
-              <PopupAddWebsite />
-              <PopupAddCategory />
-              <PopupAddProject />
-              <PopupDeleteProject/>
-              <PopupDeleteCategory/>
-            </PopupProvider>
-          </DataContextProvider>
-        </AuthProvider>
+        <DataContextProvider>
+          <PopupProvider>
+            <Navigation />
+            {children}
+            <PopupAddWebsite />
+            <PopupAddCategory />
+            <PopupAddProject />
+            <PopupDeleteProject />
+            <PopupDeleteCategory />
+          </PopupProvider>
+        </DataContextProvider>
       </body>
     </html>
   );

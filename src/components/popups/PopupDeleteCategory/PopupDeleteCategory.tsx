@@ -14,14 +14,14 @@ import { TOption } from '@/models/types/select';
 const PopupDeleteCategory: React.FC = () => {
   const { isOpen, closePopup } = usePopupContext();
   const { categories, deleteCategory, isCategoriesLoading } = useDataContext();
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const handleClose = () => {
     setSelectedCategories([]);
     closePopup();
   };
 
-  const handleSelect = (value: number) => {
+  const handleSelect = (value: string) => {
     setSelectedCategories((prev) => {
       if (prev.includes(value)) {
         return prev.filter((item) => item !== value);
