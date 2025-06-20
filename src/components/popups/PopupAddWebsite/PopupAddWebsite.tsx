@@ -100,7 +100,7 @@ const PopupAddWebsite: React.FC = () => {
   return (
     <section className="form-card">
       <form onSubmit={onSubmit} className="website-form">
-        <h2 className="website-form-title">Create</h2>
+        <h2>Add new website</h2>
         <CategorySelect
           category={category}
           setCategory={setCategory}

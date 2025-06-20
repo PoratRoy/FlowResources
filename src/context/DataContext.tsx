@@ -19,6 +19,7 @@ import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
 import fetchDeleteCategory from '@/app/actions/fetchDeleteCategory';
 import fetchCreateWebsite from '@/app/actions/fetchCreateWebsite';
 import fetchDeleteWebsite from '@/app/actions/fetchDeleteWebsite';
+import { mockCategories, mockProjects, mockWebsites } from '@/models/mock';
 
 type DataContextType = {
   projects: Project[];
@@ -69,13 +70,13 @@ export function useDataContext() {
 }
 
 export function DataContextProvider({ children }: { children: ReactNode }) {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState<Project[]>(mockProjects);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(mockProjects[0]);
   const [isProjectLoading, setIsProjectLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Category[]>(mockCategories);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
   const [deletedCategories, setDeletedCategories] = useState<string[]>([]);
-  const [websites, setWebsites] = useState<Website[]>([]);
+  const [websites, setWebsites] = useState<Website[]>(mockWebsites);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
   const { addProjectQueryParam } = useQueryParam();
@@ -94,6 +95,15 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       setCategories(project.categories);
       setWebsites(project.websites);
     }
+  };
+
+  const loadMockData = () => {
+    setIsProjectLoading(false);
+    setIsCategoriesLoading(false);
+    setIsWebsitesLoading(false);
+    setProjects(mockProjects);
+    setCategories(mockCategories);
+    setWebsites(mockWebsites);
   };
 
   const blockRef = useRef<boolean>(true);
@@ -135,8 +145,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         setIsProjectLoading(false);
       }
     };
-
-    if (blockRef.current) loadProjects();
+    console.log("enter", mockCategories)
+    // if (blockRef.current) loadProjects();
+    if (blockRef.current) loadMockData();
   }, []);
 
   const addProject = async (title: string, categories: string[]) => {

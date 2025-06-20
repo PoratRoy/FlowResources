@@ -1,13 +1,14 @@
 .search-container{
     position: relative;
     width: fit-content;
+    height: var(--input-height-small);
 }
 
 .search-input{
     min-width: 350px;
     width: 100%;
-    height: 100%;
     padding: 0.5rem;
+    height: 100%;
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
     background-color: var(--input-bg);

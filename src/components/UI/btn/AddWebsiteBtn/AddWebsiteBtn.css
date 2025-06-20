@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    height: var(--input-height);
+    height: var(--input-height-small);
     border-radius: var(--border-radius);
     background-color: var(--primary-color);
     color: white;

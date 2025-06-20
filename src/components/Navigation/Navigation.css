@@ -12,7 +12,8 @@
   min-width: fit-content;
   max-width: 90vw;
   margin: 0 auto; 
-  height: 4rem;
+  min-height: var(--input-height-small);
+  padding: 0.6em 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -22,7 +23,7 @@
 .navigation-links {
   display: flex;
   align-items: center;
-  gap: 3vw;
+  gap: 2vw;
   padding: 0.5rem 0;
 }
 
@@ -39,7 +40,7 @@
 .navigation-actions {
   margin-left: auto;
   display: flex;
-  gap: 1rem;
+  gap: 1vw;
   align-items: center;
 }
 

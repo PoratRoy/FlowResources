@@ -7,6 +7,8 @@ export const selectCategoryStyles: StylesConfig<SelectOption, false> = {
     backgroundColor: 'var(--input-bg)',
     borderColor: state.isFocused ? 'var(--primary-color)' : 'var(--border-color)',
     boxShadow: 'none',
+    borderRadius: 'var(--border-radius)',
+    height: 'var(--input-height)',
     '&:hover': {
       borderColor: 'var(--primary-color)',
     },
@@ -47,6 +49,8 @@ export const selectProjectStyles: StylesConfig<SelectOption, false> = {
     ...provided,
     backgroundColor: 'var(--input-bg)',
     borderColor: state.isFocused ? 'var(--primary-color)' : 'var(--border-color)',
+    borderRadius: 'var(--border-radius)',
+    height: 'var(--input-height-small)',
     boxShadow: 'none',
     '&:hover': {
       borderColor: 'var(--primary-color)',
