@@ -15,7 +15,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'website',
-    onClick: () => console.log('Reorder sites'),
+    openAction: 'reorderWebsite',
   } as ActionOption,
   {
     label: (
@@ -24,7 +24,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'website',
-    // open: {elm: <PopupDeleteWebsite />, size: 'L'},
+    openAction: 'deleteWebsite',
   } as ActionOption,
   {
     label: (
@@ -33,7 +33,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'category',
-    open: {elm: <PopupDeleteCategory />, size: 'M'},
+    openPopup: {elm: <PopupDeleteCategory />, size: 'M'},
   } as ActionOption,
   {
     label: (
@@ -42,7 +42,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'project',
-    open: {elm: <PopupDeleteProject />, size: 'M'},
+    openPopup: {elm: <PopupDeleteProject />, size: 'M'},
   } as ActionOption,
 ];
 

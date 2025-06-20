@@ -9,7 +9,10 @@ import PopupAddCategory from '@/components/popups/PopupAddCategory/PopupAddCateg
 const AddCategoryBtn: React.FC = () => {
   const { openPopup } = usePopup();
   return (
-    <div className="selection-add" onClick={() => openPopup('M', <PopupAddCategory />)}>
+    <div
+      className="selection-add"
+      onClick={() => openPopup('S', <PopupAddCategory />)}
+    >
       <IoMdAdd className="plus-icon" />
       Add Category
     </div>

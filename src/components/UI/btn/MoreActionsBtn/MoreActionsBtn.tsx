@@ -5,8 +5,9 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ActionOption } from '@/models/types/select';
 import { usePopup } from '@/context/PopupContext';
 import { useAccessibility } from '@/hooks/useAccessibility';
-import './MoreActionsBtn.css';
 import { useDataContext } from '@/context/DataContext';
+import { useActionContext } from '@/context/ActionContext';
+import './MoreActionsBtn.css';
 
 type MoreActionsBtnProps = {
   options: ActionOption[];
@@ -16,6 +17,7 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   const { projects, categories, websites } = useDataContext();
   const [isOpen, setIsOpen] = useState(false);
   const { openPopup } = usePopup();
+  const { openAction } = useActionContext();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const mapdata = {
@@ -39,8 +41,9 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   });
 
   const handleClick = (option: ActionOption) => {
-    if (option.open) openPopup(option.open.size, option.open.elm);
-    else if (option.onClick) option.onClick();
+    if (option.openPopup)
+      openPopup(option.openPopup.size, option.openPopup.elm);
+    else if (option.openAction) openAction(option.openAction);
     setIsOpen(false);
   };
 

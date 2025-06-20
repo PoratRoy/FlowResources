@@ -1,4 +1,5 @@
-import { PopupSize } from "./ui";
+import { ActionType } from './actions';
+import { PopupSize } from './ui';
 
 export type TOption = {
   value: string;
@@ -14,6 +15,6 @@ export type SelectOption = {
 export type ActionOption = {
   label: React.JSX.Element;
   relatedTo?: 'project' | 'category' | 'website';
-  open?: {elm: React.ReactNode, size: PopupSize};
-  onClick?: () => void;
+  openPopup?: { elm: React.ReactNode; size: PopupSize; };
+  openAction?: ActionType;
 };

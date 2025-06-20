@@ -5,9 +5,9 @@ import BannerImg from '../cardUI/BannerImg/BannerImg';
 import SiteIconImg from '../cardUI/SiteIconImg/SiteIconImg';
 import { useDataContext } from '@/context/DataContext';
 import CardContent from '../cardUI/CardContent/CardContent';
-import './WebsiteCard.css';
 import DeleteWebsiteBtn from '../UI/btn/DeleteWebsiteBtn/DeleteWebsiteBtn';
-import { usePopup } from '@/context/PopupContext';
+import { useActionContext } from '@/context/ActionContext';
+import './WebsiteCard.css';
 
 type WebsiteCardProps = {
   website: Website;
@@ -15,16 +15,20 @@ type WebsiteCardProps = {
 
 const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
   const { categories, deleteWebsite } = useDataContext();
-  const { closePopup, isOpen } = usePopup();
+  const { isActionOpen, closeAction } = useActionContext();
 
   const handleDelete = async () => {
     const deletedId = await deleteWebsite(website.id);
-    if (deletedId) closePopup();
+    if (deletedId) closeAction();
   };
 
   return (
     <section className="card-container">
-      <DeleteWebsiteBtn onDelete={handleDelete} isShown={isOpen} />
+      <DeleteWebsiteBtn
+        onDelete={handleDelete}
+        onClose={closeAction}
+        isShown={isActionOpen('deleteWebsite')}
+      />
       <section className="website-card">
         <div className="website-card-banner">
           <BannerImg website={website} />
