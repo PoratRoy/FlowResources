@@ -33,7 +33,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'category',
-    openPopup: {elm: <PopupDeleteCategory />, size: 'M'},
+    openPopup: { elm: <PopupDeleteCategory />, size: 'M', title: 'Delete Category' },
   } as ActionOption,
   {
     label: (
@@ -42,7 +42,7 @@ export const ActionsOptions = [
       </span>
     ),
     relatedTo: 'project',
-    openPopup: {elm: <PopupDeleteProject />, size: 'M'},
+    openPopup: { elm: <PopupDeleteProject />, size: 'M', title: 'Delete Project' },
   } as ActionOption,
 ];
 

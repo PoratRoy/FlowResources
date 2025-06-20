@@ -50,7 +50,7 @@ const ProjectSelect: React.FC = () => {
   const handleChange = async (value: SingleValue<SelectOption>) => {
     setVal(value);
     if (value?.value === '0') {
-      openPopup('M', <PopupAddProject />);
+      openPopup('M', <PopupAddProject />, 'Create New Project');
     } else {
       const selectedProject = projects.find((project) => project.id === value?.value);
       if (selectedProject) {

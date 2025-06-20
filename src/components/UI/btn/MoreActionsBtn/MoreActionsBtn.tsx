@@ -42,7 +42,7 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
 
   const handleClick = (option: ActionOption) => {
     if (option.openPopup)
-      openPopup(option.openPopup.size, option.openPopup.elm);
+      openPopup(option.openPopup.size, option.openPopup.elm, option.openPopup.title);
     else if (option.openAction) openAction(option.openAction);
     setIsOpen(false);
   };

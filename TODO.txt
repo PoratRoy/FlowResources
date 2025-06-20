@@ -2,9 +2,17 @@ authentication
 
 view friends dashboard as guest
 
-project template
+search
 
 category selection like mobbin
+
+more website options
+
+show more popup
+
+reorder websites
+
+
 
 
 web design

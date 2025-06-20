@@ -16,7 +16,7 @@ const AddWebsiteBtn: React.FC = () => {
   }
 
   const handleClick = () => {
-    openPopup('L', <PopupAddWebsite />);
+    openPopup('L', <PopupAddWebsite />, 'Add New Website');
   };
 
   return (

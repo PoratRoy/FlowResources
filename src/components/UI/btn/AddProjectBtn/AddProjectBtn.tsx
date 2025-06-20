@@ -10,7 +10,7 @@ const AddProjectBtn: React.FC = () => {
   const { openPopup } = usePopup();
 
   const handleClick = () => {
-    openPopup('S', <PopupAddProject />);
+    openPopup('S', <PopupAddProject />, 'Create New Project');
   };
 
   return (

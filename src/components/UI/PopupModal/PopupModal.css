@@ -19,8 +19,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
   max-height: 90vh;
-  overflow-y: auto;
   animation: slideIn 0.3s ease-out;
+  overflow: hidden;
 }
 
 .sizeS {
@@ -42,7 +42,6 @@
   min-height: 700px;
   height: 90%;
   max-height: 90vh;
-  overflow-y: auto;
 }
 
 .closeButton {
@@ -67,8 +66,28 @@
   background-color: #ffffff0d;
 }
 
-.modalContent {
+.modalHeader{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 2em 3em 1.5em 3em;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--card-bg-primary);
+  z-index: 10;
+}
+
+.modalContent-sizeS,
+.modalContent-sizeM {
   padding: 2rem;
+  margin-top: 4.5em;
+}
+
+.modalContent-sizeL {
+  padding: 2rem;
+  margin-top: 4.5em;
+  overflow-y: scroll;
+  height: 600px;
 }
 
 @keyframes fadeIn {

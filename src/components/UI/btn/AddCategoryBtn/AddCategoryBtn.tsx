@@ -11,7 +11,7 @@ const AddCategoryBtn: React.FC = () => {
   return (
     <div
       className="selection-add"
-      onClick={() => openPopup('S', <PopupAddCategory />)}
+      onClick={() => openPopup('S', <PopupAddCategory />, 'Add New Category')}
     >
       <IoMdAdd className="plus-icon" />
       Add Category

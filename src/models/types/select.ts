@@ -15,6 +15,6 @@ export type SelectOption = {
 export type ActionOption = {
   label: React.JSX.Element;
   relatedTo?: 'project' | 'category' | 'website';
-  openPopup?: { elm: React.ReactNode; size: PopupSize; };
+  openPopup?: { elm: React.ReactNode; size: PopupSize; title: string; };
   openAction?: ActionType;
 };
