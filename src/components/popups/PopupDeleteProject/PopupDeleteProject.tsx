@@ -1,18 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
-import { usePopupContext } from '@/context/PopupContext';
-import Popup from '../../UI/Popup/Popup';
-import './PopupDeleteProject.css';
-import { Popups } from '@/models/enum';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import { useDataContext } from '@/context/DataContext';
 import OptionsRadioBtn from '@/components/UI/OptionsRadioBtn/OptionsRadioBtn';
 import { Project } from '@/models/types/project';
 import { TOption } from '@/models/types/select';
+import { usePopup } from '@/context/PopupContext';
+import './PopupDeleteProject.css';
 
 const PopupDeleteProject: React.FC = () => {
-  const { isOpen, closePopup } = usePopupContext();
+  const { closePopup } = usePopup();
   const { projects, deleteProject } = useDataContext();
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
@@ -47,22 +45,18 @@ const PopupDeleteProject: React.FC = () => {
     if (worked.length === selectedProjects.length) handleClose();
   };
 
-  if (!isOpen(Popups.deleteProject)) return null;
-
   return (
-    <Popup isOpen={isOpen(Popups.deleteProject)} onClose={() => handleClose()} size="md">
-      <div className="form-card">
-        <form onSubmit={onSubmit} className="website-form">
-          <OptionsRadioBtn
-            options={convetToOptions(projects)}
-            selectedOptions={selectedProjects}
-            onSelect={handleSelect}
-          />
+    <section className="form-card">
+      <form onSubmit={onSubmit} className="website-form">
+        <OptionsRadioBtn
+          options={convetToOptions(projects)}
+          selectedOptions={selectedProjects}
+          onSelect={handleSelect}
+        />
 
-          <SubmitBtn isLoading={false} title="Delete Projects" />
-        </form>
-      </div>
-    </Popup>
+        <SubmitBtn isLoading={false} title="Delete Projects" />
+      </form>
+    </section>
   );
 };
 

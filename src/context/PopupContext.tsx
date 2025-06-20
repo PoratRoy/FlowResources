@@ -1,49 +1,61 @@
-"use client";
+'use client';
 
-import { Popups } from "@/models/enum";
-import { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import PopupModal from '@/components/UI/PopupModal/PopupModal';
+import { PopupSize } from '@/models/types/ui';
 
 interface PopupContextType {
-  isOpen: (which: Popups) => boolean;
-  openPopup: (which: Popups) => void;
+  openPopup: (size: PopupSize, content: React.ReactNode) => void;
   closePopup: () => void;
+  isOpen: boolean;
+  currentPopup: {
+    content: React.ReactNode;
+    size: PopupSize;
+  };
 }
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);
 
-export function usePopupContext() {
+export const usePopup = () => {
   const context = useContext(PopupContext);
   if (context === undefined) {
-    throw new Error("usePopupContext must be used within a PopupProvider");
+    throw new Error('usePopup must be used within a PopupProvider');
   }
   return context;
-}
+};
 
-export function PopupProvider({ children }: { children: ReactNode }) {
-  const [popup, setPopup] = useState<Popups | null>(null);
+export const PopupProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentPopup, setCurrentPopup] = useState<{
+    content: React.ReactNode;
+    size: PopupSize;
+  }>({
+    content: null,
+    size: 'M',
+  });
 
-  const openPopup = (which: Popups): void => {
-    setPopup(which);
+  const openPopup = (size: PopupSize, content: React.ReactNode) => {
+    setCurrentPopup({ content, size });
+    setIsOpen(true);
   };
 
-  const closePopup = (): void => {
-    setPopup(null);
+  const closePopup = () => {
+    setIsOpen(false);
   };
 
-  const isOpen = (which: Popups) => {
-    if(popup === null || popup != which) return false;
-    return true;
+  const value: PopupContextType = {
+    openPopup,
+    closePopup,
+    isOpen,
+    currentPopup,
   };
 
   return (
-    <PopupContext.Provider
-      value={{
-        isOpen,
-        openPopup,
-        closePopup,
-      }}
-    >
+    <PopupContext.Provider value={value}>
       {children}
+      <PopupModal isOpen={isOpen} onClose={closePopup} size={currentPopup.size}>
+        {currentPopup.content}
+      </PopupModal>
     </PopupContext.Provider>
   );
-}
+};

@@ -1,9 +1,9 @@
 'use client';
 
+import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject';
 import { useDataContext } from '@/context/DataContext';
-import { usePopupContext } from '@/context/PopupContext';
+import { usePopup } from '@/context/PopupContext';
 import { useQueryParam } from '@/hooks/useQueryParam';
-import { Popups } from '@/models/enum';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -14,7 +14,7 @@ const ProjectSelect: React.FC = () => {
   const { addProjectQueryParam } = useQueryParam();
   const { addProject, selectProject, projects, selectedProject, isProjectLoading } =
     useDataContext();
-  const { openPopup } = usePopupContext();
+  const { openPopup } = usePopup();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
   const projectOptions = useMemo(
@@ -50,7 +50,7 @@ const ProjectSelect: React.FC = () => {
   const handleChange = async (value: SingleValue<SelectOption>) => {
     setVal(value);
     if (value?.value === '0') {
-      openPopup(Popups.addProject);
+      openPopup('M', <PopupAddProject />);
     } else {
       const selectedProject = projects.find((project) => project.id === value?.value);
       if (selectedProject) {

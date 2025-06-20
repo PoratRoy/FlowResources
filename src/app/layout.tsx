@@ -2,13 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { PopupProvider } from '@/context/PopupContext';
-import PopupAddWebsite from '@/components/popups/PopupAddWebsite/PopupAddWebsite';
-import PopupAddCategory from '@/components/popups/PopupAddCategory/PopupAddCategory';
 import { DataContextProvider } from '@/context/DataContext';
-import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
-import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import './globals.css';
-import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,11 +20,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <PopupProvider>
             <Navigation />
             {children}
-            <PopupAddWebsite />
-            <PopupAddCategory />
-            <PopupAddProject />
-            <PopupDeleteProject />
-            <PopupDeleteCategory />
           </PopupProvider>
         </DataContextProvider>
       </body>

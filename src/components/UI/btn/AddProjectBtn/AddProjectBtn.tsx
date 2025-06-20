@@ -3,14 +3,14 @@
 import React from 'react';
 import './AddProjectBtn.css';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { usePopupContext } from '@/context/PopupContext';
-import { Popups } from '@/models/enum';
+import { usePopup } from '@/context/PopupContext';
+import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject';
 
 const AddProjectBtn: React.FC = () => {
-  const { openPopup } = usePopupContext();
+  const { openPopup } = usePopup();
 
   const handleClick = () => {
-    openPopup(Popups.addProject);
+    openPopup('S', <PopupAddProject />);
   };
 
   return (

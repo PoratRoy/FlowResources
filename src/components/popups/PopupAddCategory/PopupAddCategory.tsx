@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { usePopupContext } from '@/context/PopupContext';
-import Popup from '../../UI/Popup/Popup';
 import Input from '../../UI/Input/Input';
 import './PopupAddCategory.css';
-import { Popups } from '@/models/enum';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import { useDataContext } from '@/context/DataContext';
+import { usePopup } from '@/context/PopupContext';
 
 const PopupAddCategory: React.FC = () => {
   const { addCategory, isCategoriesLoading } = useDataContext();
-  const { isOpen, closePopup } = usePopupContext();
+  const { closePopup } = usePopup();
   const [category, setCategory] = useState<string>('');
 
   const handleClose = () => {
@@ -29,28 +27,24 @@ const PopupAddCategory: React.FC = () => {
     }
   }
 
-  if (!isOpen(Popups.addCategory)) return null;
-
   return (
-    <Popup isOpen={isOpen(Popups.addCategory)} onClose={() => handleClose()} size="sm">
-      <div className="form-card">
-        <form onSubmit={onSubmit} className="website-form">
-          <Input
-            type="text"
-            placeholder="Category name"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            label="Category name"
-            id="category"
-            error={null}
-            isLoading={false}
-            isRequired
-          />
+    <section className="form-card">
+      <form onSubmit={onSubmit} className="website-form">
+        <Input
+          type="text"
+          placeholder="Category name"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          label="Category name"
+          id="category"
+          error={null}
+          isLoading={false}
+          isRequired
+        />
 
-          <SubmitBtn isLoading={isCategoriesLoading} title="Add Category" />
-        </form>
-      </div>
-    </Popup>
+        <SubmitBtn isLoading={isCategoriesLoading} title="Add Category" />
+      </form>
+    </section>
   );
 };
 

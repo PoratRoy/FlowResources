@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import React from 'react';
 import { ActionOption } from '../types/select';
 import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
-import { Popups } from '../enum';
+import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
+import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 
 export const ActionsOptions = [
   {
@@ -21,7 +22,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Website
       </span>
     ),
-    open: Popups.deleteWebsite,
+    // open: {elm: <PopupDeleteWebsite />, size: 'L'},
   } as ActionOption,
   {
     label: (
@@ -29,7 +30,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Category
       </span>
     ),
-    open: Popups.deleteCategory,
+    open: {elm: <PopupDeleteCategory />, size: 'M'},
   } as ActionOption,
   {
     label: (
@@ -37,10 +38,9 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Project
       </span>
     ),
-    open: Popups.deleteProject,
+    open: {elm: <PopupDeleteProject />, size: 'M'},
   } as ActionOption,
 ];
-
 
 export const TemplatesOptions = [
   {

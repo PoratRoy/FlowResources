@@ -1,29 +1,29 @@
-.popup-overlay {
+.modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 51;
-  animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.2s ease-out;
 }
 
-.popup-container {
-  position: fixed;
-  left: 50%;
+.modalContainer {
   background-color: var(--card-bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 52;
-  opacity: 0;
-  transform: translate(-50%, -48%) scale(0.96);
-  animation: slideIn 0.1s ease-out forwards;
-  border: 1px solid var(--border-color);
-  display: none;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
 }
 
-.popup-container.sm {
+.sizeS {
   top: 35%;
   width: 550px;
   min-height: 300px;
@@ -31,7 +31,7 @@
   max-height: 80vh;
 }
 
-.popup-container.md {
+.sizeM {
   top: 40%;
   width: 550px;
   min-height: 500px;
@@ -39,7 +39,7 @@
   max-height: 80vh;
 }
 
-.popup-container.lg {
+.sizeL {
   top: 50%;
   width: 700px;
   min-height: 700px;
@@ -48,45 +48,59 @@
   overflow-y: scroll;
 }
 
-
-.popup-open {
-  display: block;
-}
-
-@keyframes slideIn {
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-.popup-close {
+.closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
+  font-size: 24px;
   cursor: pointer;
-  color: #666;
-  padding: 4px;
+  color: var(--foreground);
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   transition: background-color 0.2s;
-  z-index: 53;
 }
 
-.popup-close:hover {
+.closeButton:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+.modalContent {
+  padding: 2rem;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .sizeS, .sizeM, .sizeL {
+    width: 95%;
+    max-width: 95%;
+  }
+  
+  .modalContent {
+    padding: 1.5rem;
   }
 }

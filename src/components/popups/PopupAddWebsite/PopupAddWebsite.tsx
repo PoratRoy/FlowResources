@@ -1,25 +1,23 @@
 'use client';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { usePopupContext } from '@/context/PopupContext';
 import { Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
 import { isValidURL } from '@/models/validation/url';
-import Popup from '../../UI/Popup/Popup';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../../UI/Input/Input';
-import { Popups } from '@/models/enum';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import CategorySelect from '../../UI/select/CategorySelect/CategorySelect';
 import TextArea from '../../UI/TextArea/TextArea';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import query from '../../../models/constants/queryParams.json';
+import { usePopup } from '@/context/PopupContext';
 import './PopupAddWebsite.css';
 
 const PopupAddWebsite: React.FC = () => {
-  const {pushCategoryQueryParam, searchParam} = useQueryParam();
-  const { isOpen, closePopup } = usePopupContext();
+  const { pushCategoryQueryParam, searchParam } = useQueryParam();
   const { isWebsitesLoading, addWebsite, categories } = useDataContext();
+  const { closePopup } = usePopup();
 
   const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,12 +30,12 @@ const PopupAddWebsite: React.FC = () => {
 
   const currentCategory = searchParam(query.category);
 
-  useEffect(()=> {
-    if(currentCategory){
+  useEffect(() => {
+    if (currentCategory) {
       const categoryId = categories.find((category) => category.title === currentCategory)?.id;
       setCategory(categoryId?.toString() || '');
     }
-  },[currentCategory])
+  }, [currentCategory]);
 
   const handleClose = (to?: string) => {
     if (to) pushCategoryQueryParam(to);
@@ -99,59 +97,51 @@ const PopupAddWebsite: React.FC = () => {
     }
   }
 
-  if (!isOpen(Popups.addWebsite)) return null;
-
   return (
-    <Popup isOpen={isOpen(Popups.addWebsite)} onClose={() => handleClose()} size="lg">
-      <div className="form-card">
-        <form onSubmit={onSubmit} className="website-form">
-          <h2 className="website-form-title">Create</h2>
-
-          <CategorySelect category={category} setCategory={setCategory} defaultCategory={currentCategory} />
-
-          <Input
-            type="url"
-            placeholder="https://example.com/"
-            value={url}
-            onChange={handleUrlChange}
-            label="Website URL"
-            id="url"
-            error={error}
-            isLoading={isFetchingThumbnail}
-            isRequired
-          />
-
-          <Input
-            type="text"
-            placeholder="Website Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            label="Title"
-            id="title"
-            error={null}
-            isLoading={false}
-            isRequired
-          />
-
-          <TextArea
-            placeholder="Write a brief description of the website..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            label="Description"
-            id="description"
-            error={null}
-            isLoading={false}
-            isRequired
-          />
-
-          TODO: add Free tag
-          TODO: add score
-          TODO: add websuite type
-
-          <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
-        </form>
-      </div>
-    </Popup>
+    <section className="form-card">
+      <form onSubmit={onSubmit} className="website-form">
+        <h2 className="website-form-title">Create</h2>
+        <CategorySelect
+          category={category}
+          setCategory={setCategory}
+          defaultCategory={currentCategory}
+        />
+        <Input
+          type="url"
+          placeholder="https://example.com/"
+          value={url}
+          onChange={handleUrlChange}
+          label="Website URL"
+          id="url"
+          error={error}
+          isLoading={isFetchingThumbnail}
+          isRequired
+        />
+        <Input
+          type="text"
+          placeholder="Website Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          label="Title"
+          id="title"
+          error={null}
+          isLoading={false}
+          isRequired
+        />
+        <TextArea
+          placeholder="Write a brief description of the website..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          label="Description"
+          id="description"
+          error={null}
+          isLoading={false}
+          isRequired
+        />
+        TODO: add Free tag TODO: add score TODO: add websuite type
+        <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
+      </form>
+    </section>
   );
 };
 

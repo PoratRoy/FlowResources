@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ActionOption } from '@/models/types/select';
-import { usePopupContext } from '@/context/PopupContext';
+import { usePopup } from '@/context/PopupContext';
 import './MoreActionsBtn.css';
 
 type MoreActionsBtnProps = {
@@ -12,7 +12,7 @@ type MoreActionsBtnProps = {
 
 const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { openPopup } = usePopupContext();
+  const { openPopup } = usePopup();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
@@ -20,7 +20,7 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   };
 
   const handleClick = (option: ActionOption) => {
-    if (option.open) openPopup(option.open);
+    if (option.open) openPopup(option.open.size, option.open.elm);
     else if (option.onClick) option.onClick();
     setIsOpen(false);
   };

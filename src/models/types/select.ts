@@ -1,4 +1,4 @@
-import { Popups } from "../enum";
+import { PopupSize } from "./ui";
 
 export type TOption = {
   value: string;
@@ -13,6 +13,6 @@ export type SelectOption = {
 
 export type ActionOption = {
   label: React.JSX.Element;
-  open?: Popups;
+  open?: {elm: React.ReactNode, size: PopupSize};
   onClick?: () => void;
 };

@@ -1,22 +1,22 @@
 'use client';
 
 import React from 'react';
-import './AddWebsiteBtn.css';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { usePopupContext } from '@/context/PopupContext';
-import { Popups } from '@/models/enum';
 import { useDataContext } from '@/context/DataContext';
+import { usePopup } from '@/context/PopupContext';
+import PopupAddWebsite from '@/components/popups/PopupAddWebsite/PopupAddWebsite';
+import './AddWebsiteBtn.css';
 
 const AddWebsiteBtn: React.FC = () => {
   const { projects } = useDataContext();
-  const { openPopup } = usePopupContext();
+  const { openPopup } = usePopup();
 
   if(projects.length === 0) {
     return null;
   }
 
   const handleClick = () => {
-    openPopup(Popups.addWebsite);
+    openPopup('L', <PopupAddWebsite />);
   };
 
   return (

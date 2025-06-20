@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+"use client"
+
+import React from 'react';
 import './DeleteWebsiteBtn.css';
 import { IoMdClose } from "react-icons/io";
 
