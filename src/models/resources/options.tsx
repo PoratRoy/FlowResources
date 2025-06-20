@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { ActionOption, SelectOption } from '../types/select';
+import { ActionOption } from '../types/select';
 import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
 import { Popups } from '../enum';

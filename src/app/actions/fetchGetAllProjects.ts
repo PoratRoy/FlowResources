@@ -1,9 +1,10 @@
-"use server";
+'use server';
 
 import { Project } from '@/models/types/project';
 import { IProject, Project as ProjectModel } from '@/models/schemas/project.model';
 import { connectDB } from '@/lib/mongoConnection';
 import { ActionResponse } from '@/models/types/actions';
+import msgs from '@/models/resources/messages';
 
 const fetchGetAllProjects = async (): Promise<ActionResponse<Project[]>> => {
   try {
@@ -11,8 +12,8 @@ const fetchGetAllProjects = async (): Promise<ActionResponse<Project[]>> => {
     const projects = await ProjectModel.find();
 
     if (!projects) {
-      console.error('Error getting projects:');
-      return { status: 'error', error: 'Error getting projects' };
+      console.error(msgs.project.getError);
+      return { status: 'error', error: msgs.project.getError };
     }
 
     return {
@@ -23,8 +24,8 @@ const fetchGetAllProjects = async (): Promise<ActionResponse<Project[]>> => {
       })) as Project[],
     };
   } catch (error) {
-    console.error('Error getting projects:', error);
-    return { status: 'error', error: 'Error getting projects' };
+    console.error(`${msgs.project.getError}:`, error as Error);
+    return { status: 'error', error: msgs.project.getError };
   }
 };
 

@@ -1,5 +1,6 @@
-"use server";
+'use server';
 
+import msgs from '@/models/resources/messages';
 import { connectDB } from '@/lib/mongoConnection';
 import { IWebsite, Website as WebsiteModel } from '@/models/schemas/website.model';
 import { Project as ProjectModel } from '@/models/schemas/project.model';
@@ -11,21 +12,21 @@ import { Category } from '@/models/types/category';
 const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Project>> => {
   try {
     await connectDB();
-    
+
     // Fetch project with populated categories
     const project = await ProjectModel.findById(projectId).populate('categories');
     if (!project) {
-      console.error('Project not found');
-      return { status: 'error', error: 'Project not found' };
+      console.error(msgs.project.notFound);
+      return { status: 'error', error: msgs.project.notFound };
     }
-    
+
     // Fetch websites for the project
     const websites = await WebsiteModel.find({ project: projectId });
     if (!websites) {
-      console.error('Error fetching project websites');
-      return { status: 'error', error: 'Error fetching project websites' };
+      console.error(msgs.website.getError);
+      return { status: 'error', error: msgs.website.getError };
     }
-    
+
     // Format websites according to the expected type
     const formattedWebsites: Website[] = websites.map((website: IWebsite) => ({
       id: website._id ? website._id.toString() : '',
@@ -33,7 +34,11 @@ const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Pr
       description: website.description,
       url: website.url,
       image: website.image,
-      category: website.category ? (typeof website.category === 'string' ? website.category : website.category.toString()) : ''
+      category: website.category
+        ? typeof website.category === 'string'
+          ? website.category
+          : website.category.toString()
+        : '',
     }));
 
     // Map the categories to the expected type
@@ -52,8 +57,8 @@ const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Pr
       } as Project,
     };
   } catch (error) {
-    console.error('Error fetching project details:', error);
-    return { status: 'error', error: 'Error fetching project details' };
+    console.error(msgs.project.getError);
+    return { status: 'error', error: msgs.project.getError };
   }
 };
 

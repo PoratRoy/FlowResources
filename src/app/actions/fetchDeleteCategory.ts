@@ -1,6 +1,7 @@
 'use server';
 
 import { connectDB } from '@/lib/mongoConnection';
+import msgs from '@/models/resources/messages';
 import { Category as CategoryModel } from '@/models/schemas/category.model';
 import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { Website as WebsiteModel } from '@/models/schemas/website.model';
@@ -18,8 +19,8 @@ const fetchDeleteCategory = async (
     const success = await removeCategoryFromProject(projectId, categoryId);
 
     if (!success) {
-      console.error('Error removing category from project');
-      return { status: 'error', error: 'Error removing category from project' };
+      console.error(msgs.project.removeCategory);
+      return { status: 'error', error: msgs.project.removeCategory };
     }
 
     // Check if the category is used in any other projects
@@ -34,8 +35,8 @@ const fetchDeleteCategory = async (
       const deleteCategoryResult = await CategoryModel.deleteOne({ _id: categoryId });
 
       if (!deleteCategoryResult || deleteCategoryResult.deletedCount === 0) {
-        console.error('Error deleting category');
-        return { status: 'error', error: 'Error deleting category' };
+        console.error(msgs.category.deleteError);
+        return { status: 'error', error: msgs.category.deleteError };
       }
     } else {
       await WebsiteModel.deleteMany({
@@ -46,8 +47,8 @@ const fetchDeleteCategory = async (
 
     return { status: 'success' };
   } catch (error) {
-    console.error('Error deleting category:', error);
-    return { status: 'error', error: 'Error deleting category' };
+    console.error(`${msgs.category.deleteError}:`, error);
+    return { status: 'error', error: msgs.category.deleteError };
   }
 };
 

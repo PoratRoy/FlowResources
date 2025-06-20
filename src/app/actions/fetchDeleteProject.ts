@@ -6,6 +6,7 @@ import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { Category as CategoryModel } from '@/models/schemas/category.model';
 import { ActionResponse } from '@/models/types/actions';
 import { Project } from '@/models/types/project';
+import msgs from '@/models/resources/messages';
 
 const fetchDeleteProject = async (projectId: string): Promise<ActionResponse<Project>> => {
   try {
@@ -14,15 +15,15 @@ const fetchDeleteProject = async (projectId: string): Promise<ActionResponse<Pro
     // Find the project to get its categories
     const project = await ProjectModel.findById(projectId).populate('categories');
     if (!project) {
-      console.error('Project not found');
-      return { status: 'error', error: 'Project not found' };
+      console.error(msgs.project.notFound);
+      return { status: 'error', error: msgs.project.notFound };
     }
 
     // Delete all websites associated with this project
     const websiteDeleteResult = await WebsiteModel.deleteMany({ project: projectId });
     if (!websiteDeleteResult) {
-      console.error('Error deleting project websites');
-      return { status: 'error', error: 'Error deleting project websites' };
+      console.error(msgs.website.deleteError);
+      return { status: 'error', error: msgs.website.deleteError };
     }
 
     // Get category IDs before deleting the project
@@ -33,8 +34,8 @@ const fetchDeleteProject = async (projectId: string): Promise<ActionResponse<Pro
     // Delete the project
     const projectDeleteResult = await ProjectModel.deleteOne({ _id: projectId });
     if (!projectDeleteResult || projectDeleteResult.deletedCount === 0) {
-      console.error('Error deleting project');
-      return { status: 'error', error: 'Error deleting project' };
+      console.error(msgs.project.deleteError);
+      return { status: 'error', error: msgs.project.deleteError };
     }
 
     // Check if any categories are now orphaned (not used by any other projects)
@@ -49,8 +50,8 @@ const fetchDeleteProject = async (projectId: string): Promise<ActionResponse<Pro
 
     return { status: 'success' };
   } catch (error) {
-    console.error('Error deleting project:', error);
-    return { status: 'error', error: 'Error deleting project' };
+    console.error(msgs.project.deleteError);
+    return { status: 'error', error: msgs.project.deleteError };
   }
 };
 

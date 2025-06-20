@@ -5,14 +5,18 @@ import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { Project } from '@/models/types/project';
 import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
 import { ActionResponse } from '@/models/types/actions';
+import msgs from '@/models/resources/messages';
 
-const fetchCreateProject = async (title: string, categories: string[]): Promise<ActionResponse<Project>> => {
+const fetchCreateProject = async (
+  title: string,
+  categories: string[]
+): Promise<ActionResponse<Project>> => {
   try {
     await connectDB();
     const project = await ProjectModel.create({ title });
     if (!project) {
-      console.error('Error creating project');
-      return { status: 'error', error: 'Error creating project' };
+      console.error(msgs.project.createError);
+      return { status: 'error', error: msgs.project.createError };
     }
 
     // initialize default categories
@@ -26,8 +30,8 @@ const fetchCreateProject = async (title: string, categories: string[]): Promise<
       } as Project,
     };
   } catch (error) {
-    console.error('Error creating project:', error as Error);
-    return { status: 'error', error: 'Error creating project' };
+    console.error(`${msgs.project.createError}:`, error as Error);
+    return { status: 'error', error: msgs.project.createError };
   }
 };
 

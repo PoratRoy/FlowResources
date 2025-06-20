@@ -6,6 +6,7 @@ import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { Category as CategoryModel } from '@/models/schemas/category.model';
 import { IWebsite, Website as WebsiteModel } from '@/models/schemas/website.model';
 import { ActionResponse } from '@/models/types/actions';
+import msgs from '@/models/resources/messages';
 
 const fetchCreateWebsite = async (
   websiteData: Omit<Website, 'id'>,
@@ -17,15 +18,15 @@ const fetchCreateWebsite = async (
     // Check if project exists
     const project = await ProjectModel.findById(projectId);
     if (!project) {
-      console.error('Project not found');
-      return { status: 'error', error: 'Project not found' };
+      console.error(msgs.project.notFound);
+      return { status: 'error', error: msgs.project.notFound };
     }
 
     // Check if category exists
     const category = await CategoryModel.findById(categoryId);
     if (!category) {
-      console.error('Category not found');
-      return { status: 'error', error: 'Category not found' };
+      console.error(msgs.category.notFound);
+      return { status: 'error', error: msgs.category.notFound };
     }
 
     // Check if the category is associated with the project
@@ -34,8 +35,8 @@ const fetchCreateWebsite = async (
     );
 
     if (!categoryInProject) {
-      console.error('Category is not associated with this project');
-      return { status: 'error', error: 'Category is not associated with this project' };
+      console.error(msgs.project.findCategoryError);
+      return { status: 'error', error: msgs.project.findCategoryError };
     }
 
     // Create the website with the project and category references
@@ -46,8 +47,8 @@ const fetchCreateWebsite = async (
     })) as IWebsite;
 
     if (!website) {
-      console.error('Error creating website');
-      return { status: 'error', error: 'Error creating website' };
+      console.error(msgs.website.createError);
+      return { status: 'error', error: msgs.website.createError };
     }
 
     const formattedWebsite = website.toFormattedJSON
@@ -66,8 +67,8 @@ const fetchCreateWebsite = async (
       data: formattedWebsite as Website,
     };
   } catch (error) {
-    console.error('Error creating website:', error);
-    return { status: 'error', error: 'Error creating website' };
+    console.error(`${msgs.website.createError}:`, error);
+    return { status: 'error', error: msgs.website.createError };
   }
 };
 

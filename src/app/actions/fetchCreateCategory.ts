@@ -6,6 +6,7 @@ import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { Category } from '@/models/types/category';
 import { ActionResponse } from '@/models/types/actions';
 import mongoose from 'mongoose';
+import msgs from '@/models/resources/messages';
 
 const fetchCreateCategory = async (
   title: string,
@@ -17,18 +18,18 @@ const fetchCreateCategory = async (
     const category = await CategoryModel.create({ title });
 
     if (!category) {
-      console.error('Error creating category');
-      return { status: 'error', error: 'Error creating category' };
+      console.error(msgs.category.createError);
+      return { status: 'error', error: msgs.category.createError };
     }
 
     // Add the category to the project using our helper function
     const success = await addCategoryToProject(projectId, category.id);
 
     if (!success) {
-      console.error('Error adding category to project');
+      console.error(msgs.project.addCategory);
       // Delete the category if we couldn't add it to the project
       await CategoryModel.deleteOne({ _id: category.id });
-      return { status: 'error', error: 'Error adding category to project' };
+      return { status: 'error', error: msgs.project.addCategory };
     }
 
     return {
@@ -39,8 +40,8 @@ const fetchCreateCategory = async (
       } as Category,
     };
   } catch (error) {
-    console.error('Error creating category:', error as Error);
-    return { status: 'error', error: 'Error creating category' };
+    console.error(`${msgs.category.createError}:`, error as Error);
+    return { status: 'error', error: msgs.category.createError };
   }
 };
 
