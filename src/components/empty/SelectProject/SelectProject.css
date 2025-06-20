@@ -1,9 +1,13 @@
-.select-project{
+.select-project {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
     color: var(--text-secondary);
+}
+
+.select-project h2 {
+    font-weight: 400;
+    letter-spacing: 1px;
 }

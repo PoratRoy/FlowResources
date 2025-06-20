@@ -71,6 +71,10 @@ const ProjectSelect: React.FC = () => {
       styles={selectProjectStyles}
       placeholder={'Create new project'}
       isLoading={isProjectLoading}
+      components={{
+        // Suppress hydration warnings for aria attributes
+        Input: (props) => <div suppressHydrationWarning>{props.children}</div>
+      }}
     />
   );
 };

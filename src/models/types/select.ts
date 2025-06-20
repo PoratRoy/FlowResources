@@ -13,6 +13,7 @@ export type SelectOption = {
 
 export type ActionOption = {
   label: React.JSX.Element;
+  relatedTo?: 'project' | 'category' | 'website';
   open?: {elm: React.ReactNode, size: PopupSize};
   onClick?: () => void;
 };

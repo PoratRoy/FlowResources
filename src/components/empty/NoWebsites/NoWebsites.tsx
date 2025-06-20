@@ -12,7 +12,7 @@ const NoWebsites: React.FC<NoWebsitesProps> = ({ text }) => {
 
   return (
     <section className="no-websites">
-      <div>{text}</div>
+      <h2>{text}</h2>
       <AddWebsiteBtn />
     </section>
   );

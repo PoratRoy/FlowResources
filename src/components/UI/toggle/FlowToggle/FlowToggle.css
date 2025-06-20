@@ -14,11 +14,10 @@
 
 .selection-link {
   padding: 0.5rem 1rem;
-  font-size: 16px;
   font-weight: 500;
   text-decoration: none;
   color: var(--text-secondary);
-  border-radius: 0.375rem;
+  border-radius: var(--border-radius);
   transition: all 0.2s;
 }
 

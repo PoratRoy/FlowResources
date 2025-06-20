@@ -14,6 +14,7 @@ export const ActionsOptions = [
         <IoReorderFour size={20} /> Reorder Websites
       </span>
     ),
+    relatedTo: 'website',
     onClick: () => console.log('Reorder sites'),
   } as ActionOption,
   {
@@ -22,6 +23,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Website
       </span>
     ),
+    relatedTo: 'website',
     // open: {elm: <PopupDeleteWebsite />, size: 'L'},
   } as ActionOption,
   {
@@ -30,6 +32,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Category
       </span>
     ),
+    relatedTo: 'category',
     open: {elm: <PopupDeleteCategory />, size: 'M'},
   } as ActionOption,
   {
@@ -38,6 +41,7 @@ export const ActionsOptions = [
         <MdDeleteForever size={20} /> Remove Project
       </span>
     ),
+    relatedTo: 'project',
     open: {elm: <PopupDeleteProject />, size: 'M'},
   } as ActionOption,
 ];

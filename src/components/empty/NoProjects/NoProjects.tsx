@@ -9,7 +9,7 @@ type NoProjectsProps = {};
 const NoProjects = ({}: NoProjectsProps) => {
   return (
     <section className="no-projects">
-      Create a project to get started
+      <h2>Create a project to get started</h2>
       <AddProjectBtn />
     </section>
   );
