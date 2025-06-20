@@ -19,6 +19,7 @@ export const useQueryParam = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const project = urlParams.get(query.project);
     const display = urlParams.get(query.display);
+
     let url = `/?`;
     if (project) {
       url += `${query.project}=${project}&`;

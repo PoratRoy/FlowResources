@@ -20,7 +20,7 @@ export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Remove Website
+        <MdDeleteForever size={20} /> Delete Website
       </span>
     ),
     relatedTo: 'website',
@@ -29,7 +29,7 @@ export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Remove Category
+        <MdDeleteForever size={20} /> Delete Category
       </span>
     ),
     relatedTo: 'category',
@@ -38,7 +38,7 @@ export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Remove Project
+        <MdDeleteForever size={20} /> Delete Project
       </span>
     ),
     relatedTo: 'project',

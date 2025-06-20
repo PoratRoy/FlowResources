@@ -48,6 +48,7 @@
   margin-top: 4px;
   animation: menuAppear 0.15s ease-out;
   transform-origin: top right;
+  cursor: pointer;
 }
 
 .menu-item {

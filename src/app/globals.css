@@ -8,8 +8,11 @@
   --input-bg: #0f172a;
   --primary-color: #3b82f6;
   --primary-color-dark: #2563eb;
+
   --text-color: #f8fafc;
+  --text-color-hover: #dce2e8;
   --text-secondary: #94a3b8;
+  --text-secondary-hover: #b2bfd2;
   --text-color-dark: #1e293b;
   --text-placeholder: #797e8680;
   --border-color: #334155;

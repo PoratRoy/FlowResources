@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useDataContext } from '@/context/DataContext';
 import AddCategoryBtn from '../../btn/AddCategoryBtn/AddCategoryBtn';
 import { useEffect } from 'react';
@@ -13,7 +12,7 @@ type FlowToggleProps = {
 }
 
 const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' }) => {
-  const { addCategoryQueryParam, pushCategoryQueryParam } = useQueryParam();
+  const { pushCategoryQueryParam } = useQueryParam();
   //TODO: handle if id is not in the list of categories
   const { categories, deletedCategories, clearDeletedCategories } = useDataContext();
 
@@ -24,24 +23,30 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
     }
   }, [categoryId, deletedCategories]);
 
+  const handleCategoryClick = (category: string) => {
+    pushCategoryQueryParam(category);
+  };
+
   return (
     <div className="selection" style={{ maxWidth: width }}>
       <div className="selection-links">
-        <Link
+        <button
           key="0"
-          href={addCategoryQueryParam('All')}
-          className={`selection-link ${categoryId === 'All' ? 'active' : ''}`}//TODO 
+          onClick={() => handleCategoryClick('All')}
+          className={`selection-link ${categoryId === 'All' ? 'active' : ''}`}
+          type="button"
         >
           All
-        </Link>
+        </button>
         {categories.map((option) => (
-          <Link
+          <button
             key={option.id}
-            href={addCategoryQueryParam(option.title)}
+            onClick={() => handleCategoryClick(option.title)}
             className={`selection-link ${categoryId == option.id ? 'active' : ''}`}
+            type="button"
           >
             {option.title}
-          </Link>
+          </button>
         ))}
         <div className="divider"></div>
         <AddCategoryBtn />

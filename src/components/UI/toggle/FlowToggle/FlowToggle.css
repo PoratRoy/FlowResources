@@ -19,6 +19,11 @@
   color: var(--text-secondary);
   border-radius: var(--border-radius);
   transition: all 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .selection-link:hover {

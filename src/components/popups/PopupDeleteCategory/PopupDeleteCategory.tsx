@@ -48,6 +48,7 @@ const PopupDeleteCategory: React.FC = () => {
   return (
     <section className="form-card">
       <form onSubmit={onSubmit} className="website-form">
+        <h2>Delete categories</h2>
         <OptionsRadioBtn
           options={convetToOptions(categories)}
           selectedOptions={selectedCategories}

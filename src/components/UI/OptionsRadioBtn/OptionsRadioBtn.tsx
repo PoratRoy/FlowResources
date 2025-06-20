@@ -18,11 +18,8 @@ const OptionsRadioBtn: React.FC<OptionsRadioBtnProps> = ({
       {options.map((option) => (
         <div
           key={option.value}
-          className="option-item"
+          className={`option-item ${selectedOptions.includes(option.value) ? 'selected' : ''}`}
           onClick={() => onSelect(option.value)}
-          style={{
-            backgroundColor: selectedOptions.includes(option.value) ? 'red' : 'transparent',
-          }}
         >
           <label className="option-label">
             <span className="option-text">{option.label}</span>

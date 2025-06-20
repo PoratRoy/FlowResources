@@ -48,6 +48,7 @@ const PopupDeleteProject: React.FC = () => {
   return (
     <section className="form-card">
       <form onSubmit={onSubmit} className="website-form">
+        <h2>Delete Projects</h2>
         <OptionsRadioBtn
           options={convetToOptions(projects)}
           selectedOptions={selectedProjects}
