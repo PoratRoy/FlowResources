@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter, useSearchParams } from 'next/navigation';
 import query from '../models/constants/queryParams.json';
 

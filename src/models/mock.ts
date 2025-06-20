@@ -16,7 +16,7 @@ export const mockWebsites: Website[] = [
   {
     id: '1',
     title: 'GitHub',
-    description: 'GitHub is where over 100 million developers shape the future of software, together.',
+    description: 'GitHub is where over 100 million developers shape the future of software, together. how can I add lorem 20 becuase its not woring for me',
     url: 'https://github.com',
     image: 'https://github.githubassets.com/assets/github-logo-55c5b9a1fe3c.png',
     category: '1'

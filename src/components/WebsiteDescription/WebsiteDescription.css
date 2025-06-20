@@ -1,0 +1,37 @@
+.website-row-description-container {
+    position: relative;
+}
+
+.website-row-description {
+    font-size: 0.9rem;
+    color: #4a5568;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.row {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.column {
+    white-space: normal;
+}
+
+.website-row-tooltip {
+    position: absolute;
+    top: -10px;
+    left: 0;
+    transform: translateY(-100%);
+    background-color: #2d3748;
+    color: white;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    max-width: 300px;
+    z-index: 200;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    line-height: 1.4;
+    pointer-events: none;
+}

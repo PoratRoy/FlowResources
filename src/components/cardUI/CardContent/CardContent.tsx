@@ -1,9 +1,10 @@
-import React, { CSSProperties, useState } from 'react';
+import React from 'react';
 import './CardContent.css';
 import CardCategory from '../CardCategory/CardCategory';
-import { detectLanguage } from '@/utils/language';
+import { detectLanguage, diractionStyle } from '@/utils/language';
 import { Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
+import WebsiteDescription from '@/components/WebsiteDescription/WebsiteDescription';
 
 type CardContentProps = {
   categories: Category[];
@@ -11,33 +12,15 @@ type CardContentProps = {
 };
 
 const CardContent: React.FC<CardContentProps> = ({ categories, website }) => {
-  const [showMore, setShowMore] = useState<boolean>(false);
-
-  const toggleShowMore = () => {
-    setShowMore(!showMore);
-  };
-  
-  const diractionStyle = (): CSSProperties => {
-    return detectLanguage(website.title) === 'english'
-      ? { direction: 'ltr' }
-      : { direction: 'rtl' };
-  };
-
   return (
     <article
       className="website-card-content"
-      // style={showMore ? { overflowY: 'scroll' } : {}}
-      style={diractionStyle()}
+      style={diractionStyle(website)}
       dir={detectLanguage(website.title)}
     >
       <CardCategory categories={categories} website={website} />
       <h3 className="website-card-title">{website.title}</h3>
-      <p className="website-card-description">{website.description}</p>
-      {/* {showMore ? null : (
-            <div className="show-more-button" onClick={toggleShowMore}>
-            show more
-            </div>
-        )} */}
+      <WebsiteDescription website={website} flex="column" />
     </article>
   );
 };
