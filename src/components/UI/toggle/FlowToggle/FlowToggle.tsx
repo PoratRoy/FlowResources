@@ -8,7 +8,7 @@ import { useQueryParam } from '@/hooks/useQueryParam';
 import './FlowToggle.css';
 
 type FlowToggleProps = {
-  categoryId: number;
+  categoryId: string;
   width?: string;
 }
 
@@ -30,7 +30,7 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
         <Link
           key="0"
           href={addCategoryQueryParam('All')}
-          className={`selection-link ${categoryId === 0 ? 'active' : ''}`}
+          className={`selection-link ${categoryId === 'All' ? 'active' : ''}`}//TODO 
         >
           All
         </Link>

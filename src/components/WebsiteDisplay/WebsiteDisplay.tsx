@@ -8,7 +8,7 @@ import './WebsiteDisplay.css';
 import { useQueryParam } from '@/hooks/useQueryParam';
 
 type WebsiteDisplayProps = {
-  categoryId: number;
+  categoryId: string;
 };
 
 const WebsiteDisplay: React.FC<WebsiteDisplayProps> = ({ categoryId }) => {
@@ -19,7 +19,7 @@ const WebsiteDisplay: React.FC<WebsiteDisplayProps> = ({ categoryId }) => {
 
   useEffect(() => {
     setFilteredWebsites(
-      categoryId == 0
+      categoryId == 'All' // TODO
         ? websites
         : websites.filter((website: Website) => website.category == categoryId)
     );

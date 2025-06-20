@@ -4,8 +4,8 @@ import { TOption } from '@/models/types/select';
 
 interface OptionsRadioBtnProps {
   options: TOption[];
-  selectedOptions: number[];
-  onSelect: (value: number) => void;
+  selectedOptions: string[];
+  onSelect: (value: string) => void;
 }
 
 const OptionsRadioBtn: React.FC<OptionsRadioBtnProps> = ({

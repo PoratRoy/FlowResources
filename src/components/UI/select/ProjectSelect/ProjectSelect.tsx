@@ -13,7 +13,7 @@ import CreatableSelect from 'react-select/creatable';
 const ProjectSelect: React.FC = () => {
   const { addProjectQueryParam } = useQueryParam();
   const { addProject, selectProject, projects, selectedProject, isProjectLoading } =
-  useDataContext();
+    useDataContext();
   const { openPopup } = usePopupContext();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
 
@@ -27,7 +27,7 @@ const ProjectSelect: React.FC = () => {
   );
 
   useEffect(() => {
-    if (isProjectLoading) setVal({ value: 0, label: '' });
+    if (isProjectLoading) setVal({ value: '0', label: 'Create new project' });
   }, [isProjectLoading]);
 
   const blockRef = useRef<boolean>(true);
@@ -42,19 +42,19 @@ const ProjectSelect: React.FC = () => {
     const project = await addProject(value, []);
     if (project && project.id) {
       const option = { value: project.id, label: value };
-      addProjectQueryParam(value)
+      addProjectQueryParam(value);
       setVal(option);
     }
   };
 
   const handleChange = async (value: SingleValue<SelectOption>) => {
     setVal(value);
-    if(value?.value === 0){
+    if (value?.value === '0') {
       openPopup(Popups.addProject);
     } else {
       const selectedProject = projects.find((project) => project.id === value?.value);
       if (selectedProject) {
-        addProjectQueryParam(selectedProject.title)
+        addProjectQueryParam(selectedProject.title);
         await selectProject(selectedProject);
       }
     }
@@ -64,7 +64,7 @@ const ProjectSelect: React.FC = () => {
     <CreatableSelect
       instanceId={'projectId'}
       onCreateOption={handleCreate}
-      options={[...projectOptions, { value: 0, label: 'Create new project' }]}
+      options={[...projectOptions, { value: '0', label: 'Create new project' }]}
       value={val}
       onChange={handleChange}
       isSearchable={true}

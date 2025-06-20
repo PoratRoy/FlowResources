@@ -9,18 +9,19 @@ import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import { useDataContext } from '@/context/DataContext';
 import OptionsRadioBtn from '@/components/UI/OptionsRadioBtn/OptionsRadioBtn';
 import { Project } from '@/models/types/project';
+import { TOption } from '@/models/types/select';
 
 const PopupDeleteProject: React.FC = () => {
   const { isOpen, closePopup } = usePopupContext();
   const { projects, deleteProject } = useDataContext();
-  const [selectedProjects, setSelectedProjects] = useState<number[]>([]);
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
 
   const handleClose = () => {
     setSelectedProjects([]);
     closePopup();
   };
 
-  const handleSelect = (value: number) => {
+  const handleSelect = (value: string) => {
     setSelectedProjects((prev) => {
       if (prev.includes(value)) {
         return prev.filter((item) => item !== value);
@@ -31,7 +32,7 @@ const PopupDeleteProject: React.FC = () => {
   };
 
   const convetToOptions = (projects: Project[]) =>
-    projects.map((project) => ({ value: project.id, label: project.title }));
+    projects.map((project) => ({ value: project.id, label: project.title } as TOption));
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

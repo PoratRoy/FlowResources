@@ -14,14 +14,14 @@ import './Dashboard.css';
 const Dashboard: React.FC = () => {
   const { projects, selectedProject, isProjectLoading, categories } = useDataContext();
   const {searchParam} = useQueryParam();
-  const [currentCategoryId, setCurrentCategoryId] = useState<number | undefined>();
+  const [currentCategoryId, setCurrentCategoryId] = useState<string | undefined>();
 
   const currentCategory = searchParam(query.category);
 
   useEffect(() => {
     if (currentCategory) {
       const categoryId = categories.find((category) => category.title === currentCategory)?.id;
-      setCurrentCategoryId(categoryId || 0);
+      setCurrentCategoryId(categoryId);
     }
   }, [currentCategory]);
 

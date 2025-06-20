@@ -10,32 +10,30 @@ import {
   setSessionProjects,
   setSessionWebsites,
 } from '@/utils/storage';
-import {
-  fetchCreateCategory,
-  fetchCreateProject,
-  fetchCreateWebsite,
-  fetchDeleteCategory,
-  fetchDeleteProject,
-  fetchDeleteWebsite,
-  fetchGetAllProjects,
-  fetchProjectDetails,
-} from '@/utils/services';
 import { useQueryParam } from '@/hooks/useQueryParam';
+import fetchProjectDetails from '@/app/actions/fetchProjectDetails';
+import fetchGetAllProjects from '@/app/actions/fetchGetAllProjects';
+import fetchCreateProject from '@/app/actions/fetchCreateProject';
+import fetchDeleteProject from '@/app/actions/fetchDeleteProject';
+import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
+import fetchDeleteCategory from '@/app/actions/fetchDeleteCategory';
+import fetchCreateWebsite from '@/app/actions/fetchCreateWebsite';
+import fetchDeleteWebsite from '@/app/actions/fetchDeleteWebsite';
 
 type DataContextType = {
   projects: Project[];
   addProject: (title: string, categories: string[]) => Promise<Project | null>;
-  deleteProject: (projectKey: number) => Promise<number | null>;
+  deleteProject: (projectKey: string) => Promise<string | null>;
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
   categories: Category[];
   addCategory: (title: string) => Promise<Category | null>;
-  deleteCategory: (categoryId: string) => Promise<number | null>;
+  deleteCategory: (categoryId: string) => Promise<string | null>;
   clearDeletedCategories: () => void;
-  deletedCategories: number[];
+  deletedCategories: string[];
   websites: Website[];
   addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<boolean>;
-  deleteWebsite: (websiteId: number) => Promise<number | null>;
+  deleteWebsite: (websiteId: string) => Promise<string | null>;
   isProjectLoading: boolean;
   isWebsitesLoading: boolean;
   isCategoriesLoading: boolean;
@@ -44,17 +42,17 @@ type DataContextType = {
 const initialDataContext: DataContextType = {
   projects: [],
   addProject: async (title: string, categories: string[]) => null,
-  deleteProject: async (_: number) => null,
+  deleteProject: async (_: string) => null,
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
   categories: [],
   addCategory: async (_: string) => null,
-  deleteCategory: async (_: number) => null,
+  deleteCategory: async (_: string) => null,
   clearDeletedCategories: () => {},
   deletedCategories: [],
   websites: [],
   addWebsite: async (_: Omit<Website, 'id'>) => false,
-  deleteWebsite: async (_: number) => null,
+  deleteWebsite: async (_: string) => null,
   isProjectLoading: false,
   isWebsitesLoading: false,
   isCategoriesLoading: false,
@@ -76,7 +74,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
-  const [deletedCategories, setDeletedCategories] = useState<number[]>([]);
+  const [deletedCategories, setDeletedCategories] = useState<string[]>([]);
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
@@ -87,14 +85,14 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     await getProjectDetails(project.id);
   };
 
-  const getProjectDetails = async (projectId: number) => {
+  const getProjectDetails = async (projectId: string) => {
     const result = await fetchProjectDetails(projectId);
-    if (result) {
-      const { websites, categories } = result;
-      setSessionCategories(categories);
-      setSessionWebsites(websites);
-      setCategories(categories);
-      setWebsites(websites);
+    if (result.status === 'success' && result.data) {
+      const project = result.data;
+      setSessionCategories(project.categories);
+      setSessionWebsites(project.websites);
+      setCategories(project.categories);
+      setWebsites(project.websites);
     }
   };
 
@@ -120,11 +118,12 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
             await getProjectDetails(sessionProjects[0]?.id);
           }
         } else {
-          const projectsData = await fetchGetAllProjects();
-          if (projectsData.length > 0) {
-            setProjects(projectsData);
-            await selectProject(projectsData[0]);
-            setSessionProjects(projectsData);
+          const result = await fetchGetAllProjects();
+          if (result.status === 'success' && result.data) {
+            const projects = result.data;
+            setProjects(projects);
+            await selectProject(projects[0]);
+            setSessionProjects(projects);
           }
         }
 
@@ -143,9 +142,10 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const addProject = async (title: string, categories: string[]) => {
     try {
       setIsProjectLoading(true);
-      const newProject = await fetchCreateProject(title, categories);
-      if (newProject) {
-        setProjects((prevProjects) => {
+      const result = await fetchCreateProject(title, categories);
+      if (result.status === 'success' && result.data) {
+        const newProject = result.data;
+        setProjects((prevProjects: Project[]) => {
           const projects = [...prevProjects, newProject];
           setSessionProjects(projects);
           return projects;
@@ -161,15 +161,15 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const deleteProject = async (projectId: number) => {
+  const deleteProject = async (projectId: string) => {
     setIsProjectLoading(true);
     try {
-      const error = await fetchDeleteProject(projectId);
-      if (error) {
-        console.error('Error deleting project:', error);
+      const result = await fetchDeleteProject(projectId);
+      if (result.status === 'error') {
+        console.error('Error deleting project:', result.error);
         return null;
       }
-      setProjects((prevProjects) => {
+      setProjects((prevProjects: Project[]) => {
         const projects = prevProjects.filter((project) => project.id !== projectId);
         setSessionProjects(projects);
         return projects;
@@ -187,8 +187,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     try {
       setIsCategoriesLoading(true);
       if (selectedProject) {
-        const newCategory = await fetchCreateCategory(title, selectedProject.id);
-        if (newCategory) {
+        const result = await fetchCreateCategory(title, selectedProject.id);
+        if (result.status === 'success' && result.data) {
+          const newCategory = result.data;
           setCategories((prevCategories) => {
             const categories = [...prevCategories, newCategory];
             setSessionCategories(categories);
@@ -205,13 +206,13 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const deleteCategory = async (categoryId: number): Promise<number | null> => {
+  const deleteCategory = async (categoryId: string): Promise<string | null> => {
     setIsCategoriesLoading(true);
     try {
       if (selectedProject && selectedProject.id) {
-        const error = await fetchDeleteCategory(categoryId, selectedProject.id);
-        if (error) {
-          console.error('Error deleting category:', error);
+        const result = await fetchDeleteCategory(categoryId, selectedProject.id);
+        if (result.status === 'error') {
+          console.error('Error deleting category:', result.error);
           return null;
         }
         setDeletedCategories((prevDeletedCategories) => [...prevDeletedCategories, categoryId]);
@@ -246,8 +247,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
     try {
       setIsWebsitesLoading(true);
-      const createdWebsite = await fetchCreateWebsite(newWebsite, selectedProject.id);
-      if (createdWebsite) {
+      const result = await fetchCreateWebsite(newWebsite, selectedProject.id);
+      if (result.status === 'success' && result.data) {
+        const createdWebsite = result.data;
         setWebsites((prevWebsites) => {
           const websites = [...prevWebsites, createdWebsite];
           setSessionWebsites(websites);
@@ -263,12 +265,12 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return false;
   };
 
-  const deleteWebsite = async (websiteId: number): Promise<number | null> => {
+  const deleteWebsite = async (websiteId: string): Promise<string | null> => {
     setIsWebsitesLoading(true);
     try {
-      const error = await fetchDeleteWebsite(websiteId);
-      if (error) {
-        console.error('Error deleting website:', error);
+      const result = await fetchDeleteWebsite(websiteId);
+      if (result.status === 'error') {
+        console.error('Error deleting website:', result.error);
         return null;
       }
       setWebsites((prevWebsites) => {

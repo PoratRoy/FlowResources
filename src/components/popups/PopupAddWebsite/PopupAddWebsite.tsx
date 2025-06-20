@@ -87,7 +87,7 @@ const PopupAddWebsite: React.FC = () => {
       url,
       title,
       description,
-      category: Number(category) || 1,
+      category: category,
       image: thumbnail,
     };
 
