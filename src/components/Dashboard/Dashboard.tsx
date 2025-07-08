@@ -10,6 +10,8 @@ import { useQueryParam } from '@/hooks/useQueryParam';
 import WebsiteDisplay from '../WebsiteDisplay/WebsiteDisplay';
 import FlowToggle from '../UI/toggle/FlowToggle/FlowToggle';
 import './Dashboard.css';
+import { Category } from '@/models/types/category';
+import { AllCategoryID } from '@/models/constants';
 
 const Dashboard: React.FC = () => {
   const { projects, selectedProject, isProjectLoading, categories } = useDataContext();
@@ -20,13 +22,13 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     if (currentCategory) {
-      if (currentCategory === 'All') setCurrentCategoryId('0');
-      else {
-        const categoryId = categories.find((category) => category.title === currentCategory)?.id;
+      if (currentCategory === AllCategoryID) setCurrentCategoryId(AllCategoryID);
+      else if(categories.length > 0) {
+        const categoryId = categories.find((category: Category) => category.id === currentCategory)?.id;
         setCurrentCategoryId(categoryId);
       }
     }
-  }, [currentCategory]);
+  }, [currentCategory, categories]);
 
   if (isProjectLoading) {
     return (

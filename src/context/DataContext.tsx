@@ -19,7 +19,6 @@ import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
 import fetchDeleteCategory from '@/app/actions/fetchDeleteCategory';
 import fetchCreateWebsite from '@/app/actions/fetchCreateWebsite';
 import fetchDeleteWebsite from '@/app/actions/fetchDeleteWebsite';
-import { mockCategories, mockProjects, mockWebsites } from '@/models/mock';
 
 type DataContextType = {
   projects: Project[];
@@ -70,13 +69,13 @@ export function useDataContext() {
 }
 
 export function DataContextProvider({ children }: { children: ReactNode }) {
-  const [projects, setProjects] = useState<Project[]>(mockProjects);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(mockProjects[0]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isProjectLoading, setIsProjectLoading] = useState(true);
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
   const [deletedCategories, setDeletedCategories] = useState<string[]>([]);
-  const [websites, setWebsites] = useState<Website[]>(mockWebsites);
+  const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
   const { addProjectQueryParam } = useQueryParam();
@@ -84,6 +83,17 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const selectProject = async (project: Project) => {
     setSelectedProject(project);
     await getProjectDetails(project.id);
+  };
+
+  const loadProjectData = async (projects: Project[]) => {
+    setProjectData(projects);
+    const { sessionCategories, sessionWebsites } = getSessionData();
+    if (sessionCategories.length > 0 && sessionWebsites.length > 0) {
+      setCategories(sessionCategories);
+      setWebsites(sessionWebsites);
+    } else {
+      await getProjectDetails(projects[0].id);
+    }
   };
 
   const getProjectDetails = async (projectId: string) => {
@@ -97,47 +107,37 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const loadMockData = () => {
-    setIsProjectLoading(false);
-    setIsCategoriesLoading(false);
-    setIsWebsitesLoading(false);
-    setProjects(mockProjects);
-    setCategories(mockCategories);
-    setWebsites(mockWebsites);
+  const setProjectData = (projects: Project[]) => {
+    setProjects(projects);
+    setSelectedProject(projects[0]);
+    addProjectQueryParam(projects[0].title);
+    setSessionProjects(projects);
   };
+
+  // const loadMockData = () => {
+  //   setIsProjectLoading(false);
+  //   setIsCategoriesLoading(false);
+  //   setIsWebsitesLoading(false);
+  //   setProjects(mockProjects);
+  //   setCategories(mockCategories);
+  //   setWebsites(mockWebsites);
+  // };
 
   const blockRef = useRef<boolean>(true);
   useEffect(() => {
     const loadProjects = async () => {
       setIsProjectLoading(true);
       try {
-        const { sessionProjects, sessionCategories, sessionWebsites } = getSessionData();
-        if (sessionProjects && sessionProjects.length > 0) {
-          setProjects(sessionProjects);
-          setSelectedProject(sessionProjects[0]);
-          addProjectQueryParam(sessionProjects[0].title);
-          if (
-            sessionWebsites &&
-            sessionWebsites.length > 0 &&
-            sessionCategories &&
-            sessionCategories.length > 0
-          ) {
-            setCategories(sessionCategories);
-            setWebsites(sessionWebsites);
-          } else {
-            await getProjectDetails(sessionProjects[0]?.id);
-          }
+        const { sessionProjects } = getSessionData();
+        if (sessionProjects?.length > 0) {
+          await loadProjectData(sessionProjects);
         } else {
           const result = await fetchGetAllProjects();
           if (result.status === 'success' && result.data) {
             const projects = result.data;
-            setProjects(projects);
-            await selectProject(projects[0]);
-            setSessionProjects(projects);
+            await loadProjectData(projects);
           }
         }
-
-        // const queryProject = searchParam()
         blockRef.current = false;
       } catch (error) {
         console.error('Error loading projects:', error);
@@ -145,8 +145,8 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         setIsProjectLoading(false);
       }
     };
-    // if (blockRef.current) loadProjects();
-    if (blockRef.current) loadMockData();
+    if (blockRef.current) loadProjects();
+    // if (blockRef.current) loadMockData();
   }, []);
 
   const addProject = async (title: string, categories: string[]) => {
@@ -278,7 +278,9 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const deleteWebsite = async (websiteId: string): Promise<string | null> => {
     setIsWebsitesLoading(true);
     try {
+      console.log("2", websiteId)
       const result = await fetchDeleteWebsite(websiteId);
+      console.log("3", result)
       if (result.status === 'error') {
         console.error('Error deleting website:', result.error);
         return null;

@@ -2,12 +2,13 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import query from '../models/constants/queryParams.json';
+import { AllCategoryID } from '@/models/constants';
 
 export const useQueryParam = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const searchParam = (param: string, defaultValue: string = 'All') => {
+  const searchParam = (param: string, defaultValue: string = AllCategoryID) => {
     return searchParams.get(param) || defaultValue;
   };
 

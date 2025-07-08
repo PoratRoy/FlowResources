@@ -32,7 +32,7 @@ const PopupAddWebsite: React.FC = () => {
 
   useEffect(() => {
     if (currentCategory) {
-      const categoryId = categories.find((category) => category.title === currentCategory)?.id;
+      const categoryId = categories.find((category) => category.id === currentCategory)?.id;
       setCategory(categoryId?.toString() || '');
     }
   }, [currentCategory]);

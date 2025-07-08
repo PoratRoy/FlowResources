@@ -1,18 +1,34 @@
+TODO
+- remove website
+- after adding new category, need to redirect to the new category
+- after create new project, the project select should show the new project name 
+- query params not working good on projects
+
+more website options
+- rating
+- free / paid
+- website type
+
+"show more" popup
+
+handle errors with toast
+
+mobile version
+
+category selection like mobbin selection
+
+search
+
+stard category
+
+reorder websites
+
 authentication
 
 view friends dashboard as guest
 
-search
 
-category selection like mobbin
 
-more website options
-
-show more popup
-
-reorder websites
-
-mobile version
 
 
 web design

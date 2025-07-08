@@ -5,6 +5,7 @@ import AddCategoryBtn from '../../btn/AddCategoryBtn/AddCategoryBtn';
 import { useEffect } from 'react';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import './FlowToggle.css';
+import { AllCategoryID } from '@/models/constants';
 
 type FlowToggleProps = {
   categoryId: string;
@@ -19,7 +20,7 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
   useEffect(() => {
     if (deletedCategories.length > 0 && deletedCategories.includes(categoryId)) {
       clearDeletedCategories();
-      pushCategoryQueryParam('All');
+      pushCategoryQueryParam(AllCategoryID);
     }
   }, [categoryId, deletedCategories]);
 
@@ -32,8 +33,8 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
       <div className="selection-links">
         <button
           key="0"
-          onClick={() => handleCategoryClick('All')}
-          className={`selection-link ${categoryId === 'All' ? 'active' : ''}`}
+          onClick={() => handleCategoryClick(AllCategoryID)}
+          className={`selection-link ${categoryId === AllCategoryID ? 'active' : ''}`}
           type="button"
         >
           All
@@ -41,7 +42,7 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
         {categories.map((option) => (
           <button
             key={option.id}
-            onClick={() => handleCategoryClick(option.title)}
+            onClick={() => handleCategoryClick(option.id)}
             className={`selection-link ${categoryId == option.id ? 'active' : ''}`}
             type="button"
           >

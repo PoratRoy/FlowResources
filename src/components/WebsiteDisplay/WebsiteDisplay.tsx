@@ -6,6 +6,7 @@ import WebsiteGrid from '../WebsiteGrid/WebsiteGrid';
 import WebsiteList from '../WebsiteList/WebsiteList';
 import './WebsiteDisplay.css';
 import { useQueryParam } from '@/hooks/useQueryParam';
+import { AllCategoryID } from '@/models/constants';
 
 type WebsiteDisplayProps = {
   categoryId: string;
@@ -19,7 +20,7 @@ const WebsiteDisplay: React.FC<WebsiteDisplayProps> = ({ categoryId }) => {
 
   useEffect(() => {
     setFilteredWebsites(
-      categoryId == 'All' // TODO
+      categoryId == AllCategoryID
         ? websites
         : websites.filter((website: Website) => website.category == categoryId)
     );

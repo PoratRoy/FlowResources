@@ -13,9 +13,12 @@ type CategorySelectProps = {
   defaultCategory?: string;
 };
 
-const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory, defaultCategory }) => {
+const CategorySelect: React.FC<CategorySelectProps> = ({
+  category,
+  setCategory,
+  defaultCategory,
+}) => {
   const { categories } = useDataContext();
-
 
   const Categories = useMemo(
     () =>
@@ -38,7 +41,7 @@ const CategorySelect: React.FC<CategorySelectProps> = ({ category, setCategory, 
           category
             ? {
                 value: category,
-                label: categories.find((c) => c.id.toString() == category)?.title,
+                label: categories.find((c) => c.id == category)?.title,
               }
             : null
         }
