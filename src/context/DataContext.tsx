@@ -145,7 +145,6 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         setIsProjectLoading(false);
       }
     };
-    console.log("enter", mockCategories)
     // if (blockRef.current) loadProjects();
     if (blockRef.current) loadMockData();
   }, []);

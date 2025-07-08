@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import query from '../models/constants/queryParams.json';
@@ -9,10 +9,18 @@ export const useQueryParam = () => {
 
   const searchParam = (param: string, defaultValue: string = 'All') => {
     return searchParams.get(param) || defaultValue;
-  } 
+  };
 
   const addProjectQueryParam = (project: string) => {
-    router.push(`/?${query.project}=` + project + `&${query.display}=${query.grid}`);
+    const params = new URLSearchParams(window.location.search);
+
+    params.set(query.project, project);
+    if (!params.has(query.display)) {
+      params.set(query.display, query.grid);
+    }
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, '', newUrl);
   };
 
   const addCategoryQueryParam = (category: string) => {
@@ -49,13 +57,13 @@ export const useQueryParam = () => {
 
   const pushCategoryQueryParam = (category: string) => {
     router.push(addCategoryQueryParam(category));
-  }
+  };
 
   return {
     searchParam,
     addProjectQueryParam,
     addCategoryQueryParam,
     pushCategoryQueryParam,
-    addDisplayQueryParam
+    addDisplayQueryParam,
   };
 };
