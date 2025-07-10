@@ -57,7 +57,7 @@ const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Pr
       } as Project,
     };
   } catch (error) {
-    console.error(msgs.project.getError);
+    console.error(error);
     return { status: 'error', error: msgs.project.getError };
   }
 };

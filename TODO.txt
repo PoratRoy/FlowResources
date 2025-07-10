@@ -1,5 +1,6 @@
 TODO
-- remove website
+- v change mongo database from 'test' into 'flow-resources'
+- v remove website
 - after adding new category, need to redirect to the new category
 - after create new project, the project select should show the new project name 
 - query params not working good on projects
@@ -12,6 +13,10 @@ more website options
 "show more" popup
 
 handle errors with toast
+
+improve session storage
+
+delete category only from the currect project
 
 mobile version
 

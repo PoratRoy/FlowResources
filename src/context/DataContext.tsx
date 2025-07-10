@@ -78,7 +78,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
-  const { addProjectQueryParam } = useQueryParam();
+  const { addProjectQueryParam, pushCategoryQueryParam } = useQueryParam();
 
   const selectProject = async (project: Project) => {
     setSelectedProject(project);
@@ -88,7 +88,12 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const loadProjectData = async (projects: Project[]) => {
     setProjectData(projects);
     const { sessionCategories, sessionWebsites } = getSessionData();
-    if (sessionCategories.length > 0 && sessionWebsites.length > 0) {
+    if (
+      sessionCategories &&
+      sessionCategories.length !== 0 &&
+      sessionWebsites &&
+      sessionWebsites.length !== 0
+    ) {
       setCategories(sessionCategories);
       setWebsites(sessionWebsites);
     } else {
@@ -200,6 +205,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         const result = await fetchCreateCategory(title, selectedProject.id);
         if (result.status === 'success' && result.data) {
           const newCategory = result.data;
+          pushCategoryQueryParam(newCategory.id);
           setCategories((prevCategories) => {
             const categories = [...prevCategories, newCategory];
             setSessionCategories(categories);
@@ -278,9 +284,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const deleteWebsite = async (websiteId: string): Promise<string | null> => {
     setIsWebsitesLoading(true);
     try {
-      console.log("2", websiteId)
       const result = await fetchDeleteWebsite(websiteId);
-      console.log("3", result)
       if (result.status === 'error') {
         console.error('Error deleting website:', result.error);
         return null;

@@ -19,9 +19,14 @@ export const useQueryParam = () => {
     if (!params.has(query.display)) {
       params.set(query.display, query.grid);
     }
-
+    
+    // Remove category parameter if it exists
+    if (params.has(query.category)) {
+      params.delete(query.category);
+    }
     const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.pushState({}, '', newUrl);
+    // window.history.pushState({}, '', newUrl);
+    router.push(newUrl);
   };
 
   const addCategoryQueryParam = (category: string) => {

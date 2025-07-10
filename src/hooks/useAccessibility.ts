@@ -18,18 +18,23 @@ interface UseAccessibilityProps {
 export const useAccessibility = ({ isOpen, navRef, onClose }: UseAccessibilityProps) => {
   // Handle click outside to close
   useEffect(() => {
+    // Use mouseup instead of mousedown to ensure click events on buttons complete first
     const handleClickOutside = (event: MouseEvent) => {
+      // Skip if the event has been marked as handled by a delete button
+      if ((event as any).__handled) return;
+
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      // Use capture phase to ensure this runs before regular event handlers
+      document.addEventListener('mouseup', handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('mouseup', handleClickOutside);
     };
   }, [isOpen, onClose, navRef]);
 
