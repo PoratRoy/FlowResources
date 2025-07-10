@@ -30,24 +30,24 @@ const CategorySelect: React.FC<CategorySelectProps> = ({
   );
 
   return (
-    <FormInputLayout label="Category" id="category">
-      <Select
-        id="category"
-        name="category"
-        required
-        options={Categories}
-        styles={selectCategoryStyles}
-        value={
-          category
-            ? {
-                value: category,
-                label: categories.find((c) => c.id == category)?.title,
-              }
-            : null
-        }
-        onChange={(option: any) => setCategory(option.value)}
-      />
-    </FormInputLayout>
+      <FormInputLayout label="Category" id="category">
+        <Select
+          id="category"
+          name="category"
+          required
+          options={Categories}
+          styles={selectCategoryStyles}
+          value={
+            category
+              ? {
+                  value: category,
+                  label: categories.find((c) => c.id == category)?.title,
+                }
+              : null
+          }
+          onChange={(option: any) => setCategory(option.value)}
+        />
+      </FormInputLayout>
   );
 };
 

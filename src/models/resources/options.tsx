@@ -80,3 +80,16 @@ export const TemplatesOptions = [
 ];
 
 export const CreateProjectOption: SelectOption = { value: '0', label: 'Create new project' };
+
+export const WebsiteTypes: SelectOption[] = [
+  { value: 'education', label: 'Education' },
+  { value: 'finance', label: 'Finance' },
+  { value: 'entertainment', label: 'Entertainment' },
+  { value: 'ecommerce', label: 'E-Commerce' },
+  { value: 'technology', label: 'Technology' },
+  { value: 'health', label: 'Health & Wellness' },
+  { value: 'travel', label: 'Travel & Tourism' },
+  { value: 'food', label: 'Food & Cooking' },
+  { value: 'gaming', label: 'Gaming' },
+  { value: 'social', label: 'Social Media' }
+];

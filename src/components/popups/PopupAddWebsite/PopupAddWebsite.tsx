@@ -14,6 +14,9 @@ import query from '../../../models/constants/queryParams.json';
 import { usePopup } from '@/context/PopupContext';
 import './PopupAddWebsite.css';
 import { AllCategoryID } from '@/models/constants';
+import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
+import RatingToggle from '@/components/UI/toggle/RatingToggle/RatingToggle';
+import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
 
 const PopupAddWebsite: React.FC = () => {
   const { pushCategoryQueryParam, searchParam } = useQueryParam();
@@ -28,6 +31,9 @@ const PopupAddWebsite: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
+  const [pricing, setPricing] = useState<string>('free');
+  const [rating, setRating] = useState<number>(0);
+  const [websiteType, setWebsiteType] = useState<string>('technology');
 
   const currentCategory = searchParam(query.category, AllCategoryID);
 
@@ -45,6 +51,9 @@ const PopupAddWebsite: React.FC = () => {
     setDescription('');
     setCategory('');
     setThumbnail('');
+    setPricing('free');
+    setRating(0);
+    setWebsiteType('technology');
     closePopup();
   };
 
@@ -88,6 +97,9 @@ const PopupAddWebsite: React.FC = () => {
       description,
       category: category,
       image: thumbnail,
+      pricing,
+      rating,
+      websiteType,
     };
 
     try {
@@ -99,8 +111,8 @@ const PopupAddWebsite: React.FC = () => {
   }
 
   return (
-    <section className="form-card">
-      <form onSubmit={onSubmit} className="website-form">
+    <section className="form-add-site-card">
+      <form onSubmit={onSubmit} className="add-site-form">
         <CategorySelect
           category={category}
           setCategory={setCategory}
@@ -113,7 +125,6 @@ const PopupAddWebsite: React.FC = () => {
           onChange={handleUrlChange}
           label="Website URL"
           id="url"
-          error={error}
           isLoading={isFetchingThumbnail}
           isRequired
         />
@@ -124,7 +135,6 @@ const PopupAddWebsite: React.FC = () => {
           onChange={(e) => setTitle(e.target.value)}
           label="Title"
           id="title"
-          error={null}
           isLoading={false}
           isRequired
         />
@@ -134,22 +144,27 @@ const PopupAddWebsite: React.FC = () => {
           onChange={(e) => setDescription(e.target.value)}
           label="Description"
           id="description"
-          error={null}
           isLoading={false}
           isRequired
         />
-        TODO: add Free tag TODO: add score TODO: add websuite type
-        <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
+        <TypeSelect 
+          websiteType={websiteType}
+          setWebsiteType={setWebsiteType}
+        />
+        
+        <div className="toggle-controls-container">
+          <PricingToggle pricing={pricing} setPricing={setPricing} />
+          <RatingToggle rating={rating} setRating={setRating} />
+        </div>
+
+        <br />
+        <br />
+        <section className="form-add-site-btn">
+          <SubmitBtn isLoading={isWebsitesLoading} title="Add Website" />
+        </section>
       </form>
     </section>
   );
 };
 
 export default PopupAddWebsite;
-
-//TODO: handle blur
-//TODO: add option for
-//- free
-//- score (1-5)
-//- type of website (app, docs, util etc)
-//TODO: delete

@@ -9,7 +9,8 @@ type InputProps = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
   id: string;
-  error: string | null;
+  isOptional?: boolean;
+  error?: string | null;
   isLoading?: boolean;
   isRequired?: boolean;
 };
@@ -21,12 +22,19 @@ const Input = ({
   onChange,
   label,
   id,
+  isOptional = false,
   error,
   isLoading = false,
   isRequired = false,
 }: InputProps) => {
   return (
-    <FormInputLayout label={label} id={id} error={error} isLoading={isLoading}>
+    <FormInputLayout
+      label={label}
+      id={id}
+      error={error}
+      isLoading={isLoading}
+      isOptional={isOptional}
+    >
       <input
         id={id}
         name={id}

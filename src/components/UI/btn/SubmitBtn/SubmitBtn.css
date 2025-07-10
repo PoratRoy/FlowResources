@@ -8,6 +8,7 @@
     cursor: pointer;
     transition: background-color 0.2s;
     font-size: 1em;
+    width: 100%;
 }
 
 .submit-button:hover:not(:disabled) {

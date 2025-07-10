@@ -6,6 +6,7 @@ type FormInputLayoutProps = {
   label: string;
   id: string;
   children: React.ReactNode;
+  isOptional?: boolean;
   error?: string | null;
   isLoading?: boolean;
 };
@@ -14,6 +15,7 @@ const FormInputLayout = ({
   label,
   id,
   children,
+  isOptional = false,
   error = null,
   isLoading = false,
 }: FormInputLayoutProps) => {
@@ -21,7 +23,8 @@ const FormInputLayout = ({
     <div className="form-group">
       <label htmlFor={id} className="form-label">
         {label}
-        {isLoading && <Loading size='sm' />}
+        {isOptional && <span className="optional">(optional)</span>}
+        {isLoading && <Loading size="sm" />}
       </label>
       {children}
       {error ? <div className="error-message">{error}</div> : null}

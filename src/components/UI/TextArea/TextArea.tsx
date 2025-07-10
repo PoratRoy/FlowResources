@@ -8,7 +8,7 @@ type TextAreaProps = {
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   label: string;
   id: string;
-  error: string | null;
+  error?: string | null;
   isLoading?: boolean;
   isRequired?: boolean;
 };

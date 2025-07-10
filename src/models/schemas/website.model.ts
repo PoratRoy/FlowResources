@@ -8,6 +8,9 @@ export interface IWebsite extends Document {
   description: string;
   url: string;
   image: string;
+  pricing: string;
+  rating: number;
+  websiteType: string;
   category: mongoose.Types.ObjectId | ICategory;
   project: mongoose.Types.ObjectId | IProject;
   createdAt: Date;
@@ -20,6 +23,9 @@ export interface IWebsite extends Document {
     description: string;
     url: string;
     image: string;
+    pricing: string;
+    rating: number;
+    websiteType: string;
     category: string;
     project: string;
   };
@@ -55,6 +61,24 @@ const websiteSchema = new Schema<IWebsite>({
       validator: (value: string) => validator.isURL(value),
       message: 'Please provide a valid image URL'
     }
+  },
+  pricing: {
+    type: String,
+    enum: ['free', 'paid'],
+    default: 'free',
+    required: [true, 'Pricing is required']
+  },
+  rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+    default: 0,
+    required: [true, 'Rating is required']
+  },
+  websiteType: {
+    type: String,
+    default: 'technology',
+    required: [true, 'Website type is required']
   },
   category: { 
     type: Schema.Types.ObjectId, 
@@ -99,6 +123,9 @@ websiteSchema.methods.toFormattedJSON = function(this: IWebsite) {
     description: this.description,
     url: this.url,
     image: this.image,
+    pricing: this.pricing,
+    rating: this.rating,
+    websiteType: this.websiteType,
     category: this.category ? (typeof this.category === 'string' ? this.category : this.category.toString()) : '',
     project: this.project ? (typeof this.project === 'string' ? this.project : this.project.toString()) : ''
   };
