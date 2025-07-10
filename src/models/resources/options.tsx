@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ActionOption } from '../types/select';
+import { ActionOption, SelectOption } from '../types/select';
 import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
@@ -78,3 +78,5 @@ export const TemplatesOptions = [
     categories: ['Common', 'Relational DB', 'NoSQL DB'],
   },
 ];
+
+export const CreateProjectOption: SelectOption = { value: '0', label: 'Create new project' };

@@ -19,20 +19,21 @@ import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
 import fetchDeleteCategory from '@/app/actions/fetchDeleteCategory';
 import fetchCreateWebsite from '@/app/actions/fetchCreateWebsite';
 import fetchDeleteWebsite from '@/app/actions/fetchDeleteWebsite';
+import query from '@/models/constants/queryParams.json';
 
 type DataContextType = {
   projects: Project[];
-  addProject: (title: string, categories: string[]) => Promise<Project | null>;
+  addProject: (title: string, categories: string[]) => Promise<Project | undefined>;
   deleteProject: (projectKey: string) => Promise<string | null>;
   selectProject: (project: Project) => Promise<void>;
   selectedProject: Project | null;
   categories: Category[];
-  addCategory: (title: string) => Promise<Category | null>;
+  addCategory: (title: string) => Promise<Category | undefined>;
   deleteCategory: (categoryId: string) => Promise<string | null>;
   clearDeletedCategories: () => void;
   deletedCategories: string[];
   websites: Website[];
-  addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<boolean>;
+  addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<Website | undefined>;
   deleteWebsite: (websiteId: string) => Promise<string | null>;
   isProjectLoading: boolean;
   isWebsitesLoading: boolean;
@@ -41,17 +42,17 @@ type DataContextType = {
 
 const initialDataContext: DataContextType = {
   projects: [],
-  addProject: async (title: string, categories: string[]) => null,
+  addProject: async (title: string, categories: string[]) => undefined,
   deleteProject: async (_: string) => null,
   selectProject: (_: Project) => Promise.resolve(),
   selectedProject: null,
   categories: [],
-  addCategory: async (_: string) => null,
+  addCategory: async (_: string) => undefined,
   deleteCategory: async (_: string) => null,
   clearDeletedCategories: () => {},
   deletedCategories: [],
   websites: [],
-  addWebsite: async (_: Omit<Website, 'id'>) => false,
+  addWebsite: async (_: Omit<Website, 'id'>) => undefined,
   deleteWebsite: async (_: string) => null,
   isProjectLoading: false,
   isWebsitesLoading: false,
@@ -78,15 +79,15 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const [websites, setWebsites] = useState<Website[]>([]);
   const [isWebsitesLoading, setIsWebsitesLoading] = useState(false);
 
-  const { addProjectQueryParam, pushCategoryQueryParam } = useQueryParam();
+  const { addProjectQueryParam, pushCategoryQueryParam, searchParam } = useQueryParam();
 
   const selectProject = async (project: Project) => {
     setSelectedProject(project);
     await getProjectDetails(project.id);
   };
 
-  const loadProjectData = async (projects: Project[]) => {
-    setProjectData(projects);
+  const loadProjectData = async (projects: Project[], selectedProject: Project) => {
+    setProjectsData(projects);
     const { sessionCategories, sessionWebsites } = getSessionData();
     if (
       sessionCategories &&
@@ -97,7 +98,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
       setCategories(sessionCategories);
       setWebsites(sessionWebsites);
     } else {
-      await getProjectDetails(projects[0].id);
+      await getProjectDetails(selectedProject.id);
     }
   };
 
@@ -112,10 +113,8 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const setProjectData = (projects: Project[]) => {
+  const setProjectsData = (projects: Project[]) => {
     setProjects(projects);
-    setSelectedProject(projects[0]);
-    addProjectQueryParam(projects[0].title);
     setSessionProjects(projects);
   };
 
@@ -131,17 +130,29 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
   const blockRef = useRef<boolean>(true);
   useEffect(() => {
     const loadProjects = async () => {
+      const currentQueryProject = searchParam(query.project);
       setIsProjectLoading(true);
+      let projectsData: Project[] = [];
       try {
         const { sessionProjects } = getSessionData();
         if (sessionProjects?.length > 0) {
-          await loadProjectData(sessionProjects);
+          projectsData = sessionProjects;
         } else {
           const result = await fetchGetAllProjects();
           if (result.status === 'success' && result.data) {
-            const projects = result.data;
-            await loadProjectData(projects);
+            projectsData = result.data;
           }
+        }
+        if (currentQueryProject) {
+          const project = projectsData.find((project) => project.title === currentQueryProject);
+          if (project) {
+            setSelectedProject(project);
+            await loadProjectData(projectsData, project);
+          }
+        } else {
+          await loadProjectData(projectsData, projectsData[0]);
+          addProjectQueryParam(projectsData[0].title);
+          setSelectedProject(projectsData[0]);
         }
         blockRef.current = false;
       } catch (error) {
@@ -173,7 +184,6 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsProjectLoading(false);
     }
-    return null;
   };
 
   const deleteProject = async (projectId: string) => {
@@ -198,7 +208,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
-  const addCategory = async (title: string): Promise<Category | null> => {
+  const addCategory = async (title: string): Promise<Category | undefined> => {
     try {
       setIsCategoriesLoading(true);
       if (selectedProject) {
@@ -219,7 +229,6 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsCategoriesLoading(false);
     }
-    return null;
   };
 
   const deleteCategory = async (categoryId: string): Promise<string | null> => {
@@ -256,10 +265,10 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     setDeletedCategories([]);
   };
 
-  const addWebsite = async (newWebsite: Omit<Website, 'id'>): Promise<boolean> => {
+  const addWebsite = async (newWebsite: Omit<Website, 'id'>): Promise<Website | undefined> => {
     if (!selectedProject) {
       console.error('No project selected');
-      return false;
+      return;
     }
     try {
       setIsWebsitesLoading(true);
@@ -271,14 +280,14 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
           setSessionWebsites(websites);
           return websites;
         });
-        return true;
+        return createdWebsite;
       }
     } catch (error) {
       console.error('Error adding website:', error);
     } finally {
       setIsWebsitesLoading(false);
     }
-    return false;
+    return;
   };
 
   const deleteWebsite = async (websiteId: string): Promise<string | null> => {

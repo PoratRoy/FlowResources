@@ -14,6 +14,7 @@ const projectSchema = new Schema<IProject>({
     required: [true, 'Project title is required'],
     trim: true,
     maxlength: [100, 'Title cannot exceed 100 characters'],
+    unique: true,
     index: true
   },
   categories: [{ 

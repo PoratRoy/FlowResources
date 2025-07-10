@@ -4,21 +4,18 @@ import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject
 import { useDataContext } from '@/context/DataContext';
 import { usePopup } from '@/context/PopupContext';
 import { useQueryParam } from '@/hooks/useQueryParam';
+import { CreateProjectOption } from '@/models/resources/options';
 import { SelectOption } from '@/models/types/select';
 import { selectProjectStyles } from '@/style/select';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SingleValue } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import query from '@/models/constants/queryParams.json';
 
 const ProjectSelect: React.FC = () => {
-  const { addProjectQueryParam, searchParam } = useQueryParam();
-  const { addProject, selectProject, projects, selectedProject, isProjectLoading } =
-    useDataContext();
+  const { addProjectQueryParam } = useQueryParam();
+  const { selectProject, projects, selectedProject, isProjectLoading } = useDataContext();
   const { openPopup } = usePopup();
   const [val, setVal] = useState<SingleValue<SelectOption> | undefined>();
-
-  const currentQueryProject = searchParam(query.project);
 
   const projectOptions = useMemo(
     () =>
@@ -29,44 +26,20 @@ const ProjectSelect: React.FC = () => {
     [projects]
   );
 
-  /**
-   * get select value on after done loading projects:
-   * if project form query params
-   * else if project from context selected
-   * else if first project from projects
-   * else create new project
-   */
-  const blockRef = useRef<boolean>(true);
   useEffect(() => {
-    if (blockRef.current && !isProjectLoading) {
-      if (currentQueryProject) {
-        const project = projects.find((project) => project.title === currentQueryProject);
-        if (project) {
-          setVal({ value: project.id, label: project.title });
-        }
-      } else if (selectedProject) {
-        setVal({ value: selectedProject.id, label: selectedProject.title });
-      } else if (projects.length > 0) {
-        setVal({ value: projects[0].id, label: projects[0].title });
-      } else {
-        setVal({ value: '0', label: 'Create new project' });
-      }
-      blockRef.current = false;
+    if (isProjectLoading) return;
+    if (selectedProject) {
+      setVal({ value: selectedProject.id, label: selectedProject.title });
+    } else if (projects.length > 0) {
+      setVal({ value: projects[0].id, label: projects[0].title });
+    } else {
+      setVal(CreateProjectOption);
     }
-  }, [selectedProject, currentQueryProject, projects, isProjectLoading]);
-
-  const handleCreate = async (value: string) => {
-    const project = await addProject(value, []);
-    if (project && project.id) {
-      const option = { value: project.id, label: value };
-      addProjectQueryParam(value);
-      setVal(option);
-    }
-  };
+  }, [selectedProject, projects, isProjectLoading]);
 
   const handleChange = async (value: SingleValue<SelectOption>) => {
     setVal(value);
-    if (value?.value === '0') {
+    if (value?.value === CreateProjectOption.value) {
       openPopup('M', <PopupAddProject />, 'Create New Project');
     } else {
       const selectedProject = projects.find((project) => project.id === value?.value);
@@ -80,13 +53,12 @@ const ProjectSelect: React.FC = () => {
   return (
     <CreatableSelect
       instanceId={'projectId'}
-      onCreateOption={handleCreate}
-      options={[...projectOptions, { value: '0', label: 'Create new project' }]}
+      options={[...projectOptions, CreateProjectOption]}
       value={val}
       onChange={handleChange}
       isSearchable={true}
       styles={selectProjectStyles}
-      placeholder={'Create new project'}
+      placeholder={CreateProjectOption.label}
       isLoading={isProjectLoading}
       components={{
         // Suppress hydration warnings for aria attributes

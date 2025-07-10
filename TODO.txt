@@ -1,9 +1,9 @@
 TODO
 - v change mongo database from 'test' into 'flow-resources'
 - v remove website
-- after adding new category, need to redirect to the new category
-- after create new project, the project select should show the new project name 
-- query params not working good on projects
+- v after adding new category, need to redirect to the new category
+- v after create new project, the project select should show the new project name 
+- v query params not working good on projects
 
 more website options
 - rating

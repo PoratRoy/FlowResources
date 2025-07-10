@@ -18,7 +18,7 @@ const Dashboard: React.FC = () => {
   const { searchParam } = useQueryParam();
   const [currentCategoryId, setCurrentCategoryId] = useState<string | undefined>();
 
-  const currentCategory = searchParam(query.category);
+  const currentCategory = searchParam(query.category, AllCategoryID);
 
   useEffect(() => {
     if (currentCategory) {

@@ -13,6 +13,7 @@ import { useQueryParam } from '@/hooks/useQueryParam';
 import query from '../../../models/constants/queryParams.json';
 import { usePopup } from '@/context/PopupContext';
 import './PopupAddWebsite.css';
+import { AllCategoryID } from '@/models/constants';
 
 const PopupAddWebsite: React.FC = () => {
   const { pushCategoryQueryParam, searchParam } = useQueryParam();
@@ -28,7 +29,7 @@ const PopupAddWebsite: React.FC = () => {
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
 
-  const currentCategory = searchParam(query.category);
+  const currentCategory = searchParam(query.category, AllCategoryID);
 
   useEffect(() => {
     if (currentCategory) {

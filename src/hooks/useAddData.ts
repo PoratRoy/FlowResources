@@ -1,13 +1,15 @@
 import { ActionResponse } from '@/models/types/actions';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-type FetchType<T> = (object: any, addition: string | string[]) => Promise<ActionResponse<T>>;
+type FetchType<T> = (object: any, addition: any) => Promise<ActionResponse<T>>;
 
 type SessionType<T> = (websites: T[]) => void;
 
+export type ObjectType = 'project' | 'category' | 'website';
+
 const useAddData = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const addWebsite = async <T extends { id: string }>(
+  const addAction = async <T extends { id: string }>(
     setObject: Dispatch<SetStateAction<T[]>>,
     fetchAction: FetchType<T>,
     setSession: SessionType<T>,
@@ -36,7 +38,7 @@ const useAddData = () => {
   };
 
   return {
-    addWebsite,
+    addAction,
     isLoading,
   };
 };
