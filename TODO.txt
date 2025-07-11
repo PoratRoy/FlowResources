@@ -10,9 +10,18 @@ more website options
 - v free / paid
 - v website type
 
-"show more" popup
+- "show more" popup
 
-handle errors with toast
+- after delete project he is still selected and in the query
+
+- v handle errors with toast
+
+- handle errors 
+- handle loading
+
+- delete popups has scroll issue
+
+on delete popup the index 1 action is the close button and not the input
 
 improve session storage
 

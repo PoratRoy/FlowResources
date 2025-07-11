@@ -3,8 +3,9 @@ import { Inter } from 'next/font/google';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { PopupProvider } from '@/context/PopupContext';
 import { DataContextProvider } from '@/context/DataContext';
-import './globals.css';
+import { Toaster } from "react-hot-toast";
 import { ActionProvider } from '@/context/ActionContext';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <PopupProvider>
               <Navigation />
               {children}
+              <Toaster />
             </PopupProvider>
           </DataContextProvider>
         </ActionProvider>

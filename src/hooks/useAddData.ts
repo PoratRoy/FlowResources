@@ -1,17 +1,11 @@
-import { ActionResponse } from '@/models/types/actions';
+import { FetchAddType, SessionType } from '@/models/types/actions';
 import { Dispatch, SetStateAction, useState } from 'react';
-
-type FetchType<T> = (object: any, addition: any) => Promise<ActionResponse<T>>;
-
-type SessionType<T> = (websites: T[]) => void;
-
-export type ObjectType = 'project' | 'category' | 'website';
 
 const useAddData = () => {
   const [isLoading, setIsLoading] = useState(false);
   const addAction = async <T extends { id: string }>(
     setObject: Dispatch<SetStateAction<T[]>>,
-    fetchAction: FetchType<T>,
+    fetchAction: FetchAddType<T>,
     setSession: SessionType<T>,
     object: Object | string,
     ids: string | string[],
