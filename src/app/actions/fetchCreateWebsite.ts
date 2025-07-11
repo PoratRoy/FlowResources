@@ -60,6 +60,9 @@ const fetchCreateWebsite = async (
           url: website.url,
           image: website.image,
           category: categoryId,
+          websiteType: website.websiteType,
+          pricing: website.pricing,
+          rating: website.rating,
         };
 
     return {

@@ -33,7 +33,7 @@ const PopupAddWebsite: React.FC = () => {
   const [thumbnail, setThumbnail] = useState<string>('');
   const [pricing, setPricing] = useState<string>('free');
   const [rating, setRating] = useState<number>(0);
-  const [websiteType, setWebsiteType] = useState<string>('technology');
+  const [websiteType, setWebsiteType] = useState<string>('');
 
   const currentCategory = searchParam(query.category, AllCategoryID);
 
@@ -53,7 +53,7 @@ const PopupAddWebsite: React.FC = () => {
     setThumbnail('');
     setPricing('free');
     setRating(0);
-    setWebsiteType('technology');
+    setWebsiteType('');
     closePopup();
   };
 
@@ -145,7 +145,6 @@ const PopupAddWebsite: React.FC = () => {
           label="Description"
           id="description"
           isLoading={false}
-          isRequired
         />
         <TypeSelect 
           websiteType={websiteType}

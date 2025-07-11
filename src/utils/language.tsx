@@ -1,4 +1,3 @@
-import { Website } from "@/models/types/website";
 import { CSSProperties } from "react";
 
 export const detectLanguage = (text: string): 'hebrow' | 'english' => {
@@ -13,6 +12,6 @@ export const detectLanguage = (text: string): 'hebrow' | 'english' => {
   }
 };
 
-export const diractionStyle = (website: Website): CSSProperties => {
-  return detectLanguage(website.title) === 'english' ? { direction: 'ltr' } : { direction: 'rtl' };
+export const diractionStyle = (text: string): CSSProperties => {
+  return detectLanguage(text) === 'english' ? { direction: 'ltr' } : { direction: 'rtl' };
 };

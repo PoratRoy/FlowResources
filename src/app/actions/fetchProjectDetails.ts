@@ -39,6 +39,9 @@ const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Pr
           ? website.category
           : website.category.toString()
         : '',
+      websiteType: website.websiteType,
+      pricing: website.pricing,
+      rating: website.rating,
     }));
 
     // Map the categories to the expected type

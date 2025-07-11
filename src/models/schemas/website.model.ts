@@ -40,9 +40,8 @@ const websiteSchema = new Schema<IWebsite>({
   },
   description: { 
     type: String, 
-    required: [true, 'Website description is required'],
     trim: true,
-    maxlength: [500, 'Description cannot exceed 500 characters']
+    maxlength: [600, 'Description cannot exceed 600 characters']
   },
   url: { 
     type: String, 
@@ -77,8 +76,6 @@ const websiteSchema = new Schema<IWebsite>({
   },
   websiteType: {
     type: String,
-    default: 'technology',
-    required: [true, 'Website type is required']
   },
   category: { 
     type: Schema.Types.ObjectId, 

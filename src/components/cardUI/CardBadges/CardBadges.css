@@ -1,0 +1,38 @@
+.website-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.website-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.website-badge.category {
+  background-color: #4a556880;
+  color: #ffffff;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.website-badge.pricing.free {
+  background-color: #e3f8e3;
+  color: #2c7a2c;
+}
+
+.website-badge.pricing.paid {
+  background-color: #f8e3e3;
+  color: #7a2c2c;
+}
+
+.website-badge.type {
+  background-color: #e3ecf8;
+  color: #2c4a7a;
+}

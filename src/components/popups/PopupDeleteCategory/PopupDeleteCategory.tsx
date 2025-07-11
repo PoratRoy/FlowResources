@@ -46,13 +46,15 @@ const PopupDeleteCategory: React.FC = () => {
   };
 
   return (
-    <section className="form-card">
-      <form onSubmit={onSubmit} className="website-form">
-        <OptionsRadioBtn
-          options={convetToOptions(categories)}
-          selectedOptions={selectedCategories}
-          onSelect={handleSelect}
-        />
+    <section className="delete-category-card">
+      <form onSubmit={onSubmit} className="form-delete-category">
+        <section className="delete-categories-section">
+          <OptionsRadioBtn
+            options={convetToOptions(categories)}
+            selectedOptions={selectedCategories}
+            onSelect={handleSelect}
+          />
+        </section>
 
         <SubmitBtn isLoading={isCategoriesLoading} title="Delete Categories" />
       </form>

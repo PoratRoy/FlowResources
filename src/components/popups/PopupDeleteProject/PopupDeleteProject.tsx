@@ -3,58 +3,89 @@
 import React, { useState } from 'react';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import { useDataContext } from '@/context/DataContext';
-import OptionsRadioBtn from '@/components/UI/OptionsRadioBtn/OptionsRadioBtn';
-import { Project } from '@/models/types/project';
-import { TOption } from '@/models/types/select';
 import { usePopup } from '@/context/PopupContext';
+import Input from '@/components/UI/Input/Input';
 import './PopupDeleteProject.css';
 
 const PopupDeleteProject: React.FC = () => {
   const { closePopup } = usePopup();
-  const { projects, deleteProject } = useDataContext();
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const { selectedProject, deleteProject, isProjectLoading } = useDataContext();
+  const [confirmationText, setConfirmationText] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleClose = () => {
-    setSelectedProjects([]);
+    setConfirmationText('');
+    setError(null);
     closePopup();
   };
 
-  const handleSelect = (value: string) => {
-    setSelectedProjects((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((item) => item !== value);
-      } else {
-        return [...prev, value];
-      }
-    });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirmationText(event.target.value);
+    setError(null);
   };
-
-  const convetToOptions = (projects: Project[]) =>
-    projects.map((project) => ({ value: project.id, label: project.title } as TOption));
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (selectedProjects.length === 0) return;
-    let worked = [];
-    for (const projectId of selectedProjects) {
-      const deleted = await deleteProject(projectId);
-      if (deleted) {
-        worked.push(projectId);
-      }
+
+    if (!selectedProject) {
+      setError('No project is currently selected');
+      return;
     }
-    if (worked.length === selectedProjects.length) handleClose();
+
+    if (confirmationText !== selectedProject.title) {
+      setError(
+        'Project name does not match. Please enter the exact project name to confirm deletion.'
+      );
+      return;
+    }
+
+    const deleted = await deleteProject(selectedProject.id);
+    if (deleted) {
+      handleClose();
+    } else {
+      setError('Failed to delete project. Please try again.');
+    }
   };
 
+  if (!selectedProject) {
+    return (
+      <section className="delete-project-card">
+        <div className="form-delete-project">
+          <p>No project is currently selected.</p>
+          <button onClick={handleClose} className="btn-cancel">
+            Close
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="form-card">
-      <form onSubmit={onSubmit} className="website-form">
-        <OptionsRadioBtn
-          options={convetToOptions(projects)}
-          selectedOptions={selectedProjects}
-          onSelect={handleSelect}
+    <section className="delete-project-card">
+      <form onSubmit={onSubmit} className="form-delete-project">
+        <div className="delete-confirmation">
+          <p className="delete-confirmation-text p1">
+            Are you sure you want to delete project "<strong>{selectedProject.title}</strong>" ?
+          </p>
+          <p className="delete-confirmation-text p2">
+            This action cannot be undone. All categories and websites in this project will also be
+            deleted.
+          </p>
+        </div>
+
+        <Input
+          type="text"
+          placeholder="Enter project name"
+          value={confirmationText}
+          onChange={handleInputChange}
+          label="To confirm, please type the project name below"
+          id="project-confirmation"
+          isRequired={true}
+          error={error}
+          isLoading={isProjectLoading}
         />
 
-        <SubmitBtn isLoading={false} title="Delete Projects" />
+        <SubmitBtn isLoading={isProjectLoading} title="Delete Project" />
       </form>
     </section>
   );

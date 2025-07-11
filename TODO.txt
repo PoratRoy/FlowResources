@@ -19,11 +19,15 @@ more website options
 - handle errors 
 - handle loading
 
-- delete popups has scroll issue
+- update card
 
-on delete popup the index 1 action is the close button and not the input
+- if you have category on the query param but you dont find it. put All
 
-improve session storage
+- v delete popups has scroll issue
+
+- v on delete popup the index 1 action is the close button and not the input
+
+- improve session storage
 
 delete category only from the currect project
 

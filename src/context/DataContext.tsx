@@ -24,12 +24,12 @@ import query from '@/models/constants/queryParams.json';
 type DataContextType = {
   projects: Project[];
   addProject: (title: string, categories: string[]) => Promise<Project | undefined>;
-  deleteProject: (projectKey: string) => Promise<string | null>;
+  deleteProject: (projectKey: string) => Promise<string | undefined>;
   selectProject: (project: Project) => Promise<void>;
-  selectedProject: Project | null;
+  selectedProject: Project | undefined;
   categories: Category[];
   addCategory: (title: string) => Promise<Category | undefined>;
-  deleteCategory: (categoryId: string) => Promise<string | null>;
+  deleteCategory: (categoryId: string) => Promise<string | undefined>;
   clearDeletedCategories: () => void;
   deletedCategories: string[];
   websites: Website[];
@@ -43,12 +43,12 @@ type DataContextType = {
 const initialDataContext: DataContextType = {
   projects: [],
   addProject: async (title: string, categories: string[]) => undefined,
-  deleteProject: async (_: string) => null,
+  deleteProject: async (_: string) => undefined,
   selectProject: (_: Project) => Promise.resolve(),
-  selectedProject: null,
+  selectedProject: undefined,
   categories: [],
   addCategory: async (_: string) => undefined,
-  deleteCategory: async (_: string) => null,
+  deleteCategory: async (_: string) => undefined,
   clearDeletedCategories: () => {},
   deletedCategories: [],
   websites: [],
@@ -71,7 +71,7 @@ export function useDataContext() {
 
 export function DataContextProvider({ children }: { children: ReactNode }) {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>();
   const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
   const [isCategoriesLoading, setIsCategoriesLoading] = useState(false);
@@ -186,26 +186,31 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const deleteProject = async (projectId: string) => {
-    setIsProjectLoading(true);
-    try {
-      const result = await fetchDeleteProject(projectId);
-      if (result.status === 'error') {
-        console.error('Error deleting project:', result.error);
-        return null;
+  const deleteProject = async (projectId: string): Promise<string | undefined> => {
+    console.log('1 ', selectedProject);
+    if (selectedProject && selectedProject.id) {
+      setIsProjectLoading(true);
+      try {
+        const result = await fetchDeleteProject(projectId);
+        console.log('2 ', result);
+        if (result.status === 'success') {
+          console.log('3 ', projects);
+
+          setProjects((prevProjects: Project[]) => {
+            const projects = prevProjects.filter((project) => project.id !== projectId);
+            setSessionProjects(projects);
+            setSelectedProject(projects[0] || undefined);
+            addProjectQueryParam(projects[0]?.title || '');
+            return projects;
+          });
+          return projectId;
+        }
+      } catch (error) {
+        console.error('Error deleting project:', error);
+      } finally {
+        setIsProjectLoading(false);
       }
-      setProjects((prevProjects: Project[]) => {
-        const projects = prevProjects.filter((project) => project.id !== projectId);
-        setSessionProjects(projects);
-        return projects;
-      });
-      return projectId;
-    } catch (error) {
-      console.error('Error deleting project:', error);
-    } finally {
-      setIsProjectLoading(false);
     }
-    return null;
   };
 
   const addCategory = async (title: string): Promise<Category | undefined> => {
@@ -231,34 +236,34 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const deleteCategory = async (categoryId: string): Promise<string | null> => {
-    setIsCategoriesLoading(true);
-    try {
-      if (selectedProject && selectedProject.id) {
+  const deleteCategory = async (categoryId: string): Promise<string | undefined> => {
+    console.log('categoryId', categoryId);
+    console.log('selectedProject', selectedProject);
+    if (selectedProject && selectedProject.id) {
+      setIsCategoriesLoading(true);
+      try {
         const result = await fetchDeleteCategory(categoryId, selectedProject.id);
-        if (result.status === 'error') {
-          console.error('Error deleting category:', result.error);
-          return null;
+        console.log('result', result);
+        if (result.status === 'success') {
+          setDeletedCategories((prevDeletedCategories) => [...prevDeletedCategories, categoryId]);
+          setCategories((prevCategories) => {
+            const categories = prevCategories.filter((category) => category.id !== categoryId);
+            setSessionCategories(categories);
+            return categories;
+          });
+          setWebsites((prevWebsites) => {
+            const websites = prevWebsites.filter((website) => website.category != categoryId);
+            setSessionWebsites(websites);
+            return websites;
+          });
+          return categoryId;
         }
-        setDeletedCategories((prevDeletedCategories) => [...prevDeletedCategories, categoryId]);
-        setCategories((prevCategories) => {
-          const categories = prevCategories.filter((category) => category.id !== categoryId);
-          setSessionCategories(categories);
-          return categories;
-        });
-        setWebsites((prevWebsites) => {
-          const websites = prevWebsites.filter((website) => website.category != categoryId);
-          setSessionWebsites(websites);
-          return websites;
-        });
-        return categoryId;
+      } catch (error) {
+        console.error('Error deleting category:', error);
+      } finally {
+        setIsCategoriesLoading(false);
       }
-    } catch (error) {
-      console.error('Error deleting category:', error);
-    } finally {
-      setIsCategoriesLoading(false);
     }
-    return null;
   };
 
   const clearDeletedCategories = () => {

@@ -38,7 +38,7 @@ const WebsiteRow: React.FC<WebsiteRowProps> = ({ website }) => {
         </div>
         <div
           className="website-row-content"
-          style={diractionStyle(website)}
+          style={diractionStyle(website.title)}
           dir={detectLanguage(website.title)}
         >
           <div className="website-row-header">

@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
     );
   }
 
-  if (selectedProject === null) {
+  if (selectedProject === undefined) {
     return (
       <main className="main-container empty">
         <SelectProject />
