@@ -62,7 +62,7 @@ const fetchCreateWebsite = async (
           category: categoryId,
           websiteType: website.websiteType,
           pricing: website.pricing,
-          rating: website.rating,
+          usage: website.usage,
         };
 
     return {

@@ -12,12 +12,11 @@ import TextArea from '../../UI/TextArea/TextArea';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import query from '../../../models/constants/queryParams.json';
 import { usePopup } from '@/context/PopupContext';
-import './PopupAddWebsite.css';
 import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
 import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
-import RatingToggle from '@/components/UI/toggle/RatingToggle/RatingToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
+import './PopupAddWebsite.css';
 
 const PopupAddWebsite: React.FC = () => {
   const { pushCategoryQueryParam, searchParam } = useQueryParam();
@@ -34,7 +33,6 @@ const PopupAddWebsite: React.FC = () => {
   const [thumbnail, setThumbnail] = useState<string>('');
   const [pricing, setPricing] = useState<Pricing>('free');
   const [usage, setUsage] = useState<Usage | undefined>(undefined);
-  const [rating, setRating] = useState<number>(0);
   const [websiteType, setWebsiteType] = useState<string>('');
 
   const currentCategory = searchParam(query.category, AllCategoryID);
@@ -54,7 +52,6 @@ const PopupAddWebsite: React.FC = () => {
     setCategory('');
     setThumbnail('');
     setPricing('free');
-    setRating(0);
     setWebsiteType('');
     closePopup();
   };
@@ -101,7 +98,6 @@ const PopupAddWebsite: React.FC = () => {
       image: thumbnail,
       pricing,
       usage,
-      rating,
       websiteType,
     };
 
@@ -154,9 +150,6 @@ const PopupAddWebsite: React.FC = () => {
         <PricingToggle pricing={pricing} setPricing={setPricing} />
 
         <TypeSelect websiteType={websiteType} setWebsiteType={setWebsiteType} />
-
-
-        <RatingToggle rating={rating} setRating={setRating} />
 
         <br />
         <br />

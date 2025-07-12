@@ -6,7 +6,7 @@ import { IWebsite, Website as WebsiteModel } from '@/models/schemas/website.mode
 import { Project as ProjectModel } from '@/models/schemas/project.model';
 import { ActionResponse } from '@/models/types/actions';
 import { Project } from '@/models/types/project';
-import { Website } from '@/models/types/website';
+import { Pricing, Usage, Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
 
 const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Project>> => {
@@ -40,8 +40,8 @@ const fetchProjectDetails = async (projectId: string): Promise<ActionResponse<Pr
           : website.category.toString()
         : '',
       websiteType: website.websiteType,
-      pricing: website.pricing,
-      rating: website.rating,
+      pricing: website.pricing as Pricing,
+      usage: website.usage as Usage,
     }));
 
     // Map the categories to the expected type

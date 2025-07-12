@@ -10,7 +10,6 @@ export interface IWebsite extends Document {
   url: string;
   image: string;
   pricing: string;
-  rating: number;
   websiteType: string;
   usage?: string;
   category: mongoose.Types.ObjectId | ICategory;
@@ -26,7 +25,6 @@ export interface IWebsite extends Document {
     url: string;
     image: string;
     pricing: string;
-    rating: number;
     websiteType: string;
     usage?: string;
     category: string;
@@ -76,13 +74,6 @@ const websiteSchema = new Schema<IWebsite>(
       enum: usageBadgesArray,
       default: usageBadgesArray[0],
       required: false,
-    },
-    rating: {
-      type: Number,
-      min: 0,
-      max: 5,
-      default: 0,
-      required: [true, 'Rating is required'],
     },
     websiteType: {
       type: String,
@@ -136,7 +127,6 @@ websiteSchema.methods.toFormattedJSON = function (this: IWebsite) {
     url: this.url,
     image: this.image,
     pricing: this.pricing,
-    rating: this.rating,
     websiteType: this.websiteType,
     usage: this.usage,
     category: this.category

@@ -5,7 +5,6 @@ export type Website = {
   url: string;
   image: string;
   pricing: Pricing;
-  rating: number;
   websiteType: string;
   category: string;
   usage?: Usage;

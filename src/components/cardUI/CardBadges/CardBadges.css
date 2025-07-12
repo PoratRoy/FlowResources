@@ -3,6 +3,10 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  width: fit-content;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .website-badge {
@@ -11,25 +15,41 @@
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   text-transform: uppercase;
+  width: fit-content;
 }
 
 .website-badge.category {
   background-color: #4a556880;
   color: #ffffff;
-  max-width: 120px;
+  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.website-badge.pricing.free {
+.website-badge.pricing.free,
+.website-badge.pricing.credits,
+.website-badge.pricing.trial {
   background-color: #e3f8e3;
   color: #2c7a2c;
 }
 
-.website-badge.pricing.paid {
+.website-badge.pricing.cost,
+.website-badge.pricing.paying {
   background-color: #f8e3e3;
   color: #7a2c2c;
+}
+
+.website-badge.usage.often,
+.website-badge.usage.recommend {
+  background-color: #e3f8e3;
+  color: #2c7a2c;
+}
+
+.website-badge.usage.new,
+.website-badge.usage.not_in_use {
+  background-color: #e3ecf8;
+  color: #2c4a7a;
 }
 
 .website-badge.type {

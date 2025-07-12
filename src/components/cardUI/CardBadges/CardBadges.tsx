@@ -12,12 +12,17 @@ type CardBadgesProps = {
 
 const CardBadges: React.FC<CardBadgesProps> = ({ categories, website }) => {
   const categoryTitle = categories.find((cat) => cat.id == website.category)?.title || '';
-  
+
   return (
     <div className="website-card-badges">
       {categoryTitle && (
         <span className="website-badge category" style={diractionStyle(categoryTitle)}>
           {categoryTitle}
+        </span>
+      )}
+      {website.usage && website.usage !== 'new' && (
+        <span className={`website-badge usage ${website.usage}`}>
+          {website.usage}
         </span>
       )}
       {website.pricing && (

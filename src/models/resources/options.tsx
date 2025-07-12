@@ -83,21 +83,19 @@ export const TemplatesOptions = [
 export const CreateProjectOption: SelectOption = { value: '0', label: 'Create new project' };
 
 export const WebsiteTypes: SelectOption[] = [
-  { value: 'education', label: 'Education' },
-  { value: 'finance', label: 'Finance' },
-  { value: 'entertainment', label: 'Entertainment' },
-  { value: 'ecommerce', label: 'E-Commerce' },
-  { value: 'technology', label: 'Technology' },
-  { value: 'health', label: 'Health & Wellness' },
-  { value: 'travel', label: 'Travel & Tourism' },
-  { value: 'food', label: 'Food & Cooking' },
-  { value: 'gaming', label: 'Gaming' },
-  { value: 'social', label: 'Social Media' },
+  { value: 'youtube', label: 'Youtube' },
+  { value: 'facebook', label: 'Facebook' },
   { value: 'assets', label: 'Assets' },
   { value: 'uiux', label: 'UI/UX' },
   { value: 'video', label: 'Video' },
+  { value: 'audio', label: 'Audio' },
+  { value: 'image', label: 'Image' },
+  { value: 'text', label: 'Text' },
+  { value: 'social', label: 'Social Media' },
   { value: 'documentation', label: 'Documentation' },
+  { value: 'database', label: 'Database' },
   { value: 'coding', label: 'Coding' },
+  { value: 'gaming', label: 'Gaming' },
   { value: 'other', label: 'Other' },
 ];
 

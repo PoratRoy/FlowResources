@@ -8,7 +8,6 @@ import Link from 'next/link';
 import BannerImg from '@/components/cardUI/BannerImg/BannerImg';
 import SiteIconImg from '@/components/cardUI/SiteIconImg/SiteIconImg';
 import CardBadges from '@/components/cardUI/CardBadges/CardBadges';
-import RateStars from '@/components/UI/RateStars/RateStars';
 import { detectLanguage, diractionStyle } from '@/utils/language';
 import './ViewWebsitePopup.css';
 
@@ -36,7 +35,6 @@ const ViewWebsitePopup: React.FC<ViewWebsitePopupProps> = ({ website, categories
       >
         <CardBadges categories={categories} website={website} />
         <div className="view-website-header">
-          {/* <RateStars rating={website.rating} /> */}
           <h3 className="view-website-title">{website.title}</h3>
         </div>
 
