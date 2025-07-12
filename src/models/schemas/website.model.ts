@@ -54,10 +54,11 @@ const websiteSchema = new Schema<IWebsite>({
   },
   image: { 
     type: String, 
-    required: [true, 'Website image URL is required'],
     trim: true,
     validate: {
-      validator: (value: string) => validator.isURL(value),
+      validator: (value: string) => {
+        return value === '' || validator.isURL(value);
+      },
       message: 'Please provide a valid image URL'
     }
   },

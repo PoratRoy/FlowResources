@@ -1,26 +1,21 @@
-.card-container{
-  position: relative;
-  display: inline-block;
-}
-
-.website-card {
+.view-website-popup {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
   background-color: var(--card-bg-secondary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  width: 370px;
-  height: 520px;
+  width: 100%;
+  height: 100%;
   z-index: 1;
 }
 
-.website-card-banner {
+.view-website-banner {
   position: relative;
   height: 150px;
   background: linear-gradient(135deg, #4e6ef7 0%, #2e4dd4 100%);
 }
 
-.website-card-logo-wrapper {
+.view-website-logo-wrapper {
   position: absolute;
   bottom: 0;
   left: 2rem;
@@ -32,12 +27,66 @@
   z-index: 10;
 }
 
-.website-card-logo {
+.view-website-logo {
   position: relative;
   width: 80px;
   height: 80px;
   border-radius: 50%;
   overflow: hidden;
+}
+
+.view-website-content {
+  position: relative;
+  padding: 4rem 2rem 2rem;
+  height: 100%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.view-website-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.view-website-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.view-website-description {
+  margin-bottom: 2rem;
+}
+
+.view-website-description h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4a5568;
+}
+
+.view-website-description p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4a5568;
+  white-space: pre-line;
+}
+
+.view-website-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 2rem;
+  border-top: 1px solid #e2e8f0;
+  background-color: #f7fafc;
+  height: var(--footer-height);
 }
 
 .visit-site-button {
@@ -63,19 +112,4 @@
 .visit-site-icon {
   width: 1.25rem;
   height: 1.25rem;
-}
-
-.website-card-footer{
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 2rem;
-  border-top: 1px solid #e2e8f0;
-  background-color: #f7fafc;
-  height: var(--footer-height);
 }

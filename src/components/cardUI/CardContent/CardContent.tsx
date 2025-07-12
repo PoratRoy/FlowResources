@@ -5,6 +5,8 @@ import { Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
 import CardBadges from '../CardBadges/CardBadges';
 import RateStars from '@/components/UI/RateStars/RateStars';
+import { usePopupCard } from '@/context/PopupCardContext';
+import ViewWebsitePopup from '@/components/popups/ViewWebsitePopup/ViewWebsitePopup';
 
 type CardContentProps = {
   categories: Category[];
@@ -12,6 +14,15 @@ type CardContentProps = {
 };
 
 const CardContent: React.FC<CardContentProps> = ({ categories, website }) => {
+  const { openPopupCard } = usePopupCard();
+  
+  const handleViewMore = () => {
+    openPopupCard(
+      'L',
+      <ViewWebsitePopup website={website} categories={categories} />
+    );
+  };
+  
   return (
     <article
       className="website-card-content"
@@ -21,7 +32,7 @@ const CardContent: React.FC<CardContentProps> = ({ categories, website }) => {
       <RateStars rating={website.rating} />
       <h3 className="website-card-title">{website.title}</h3>
       <CardBadges categories={categories} website={website} />
-      <button className="website-card-view-more">view more</button>
+      <button className="website-card-view-more" onClick={handleViewMore}>view more</button>
       {/* <WebsiteDescription website={website} flex="column" /> */}
     </article>
   );

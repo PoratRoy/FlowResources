@@ -1,37 +1,58 @@
 TODO
-- v change mongo database from 'test' into 'flow-resources'
-- v remove website
-- v after adding new category, need to redirect to the new category
-- v after create new project, the project select should show the new project name 
-- v query params not working good on projects
+v - change mongo database from 'test' into 'flow-resources'
+v - remove website
+v - after adding new category, need to redirect to the new category
+v - after create new project, the project select should show the new project name 
+v - query params not working good on projects
 
 more website options
-- v rating
-- v free / paid
-- v website type
+v - rating
+v - free / paid
+v - website type
+- free / free tier / need to pay / paying
+- more website type options
+- use a lot badges
+- reccomendation badges
+- not useful / useful badges
+- no need rating
 
 - "show more" popup
 
+- update card, the url is disabled to change, you can add banner or icon url
+
+
 - after delete project he is still selected and in the query
 
-- v handle errors with toast
+v - handle errors with toast
 
 - handle errors 
 - handle loading
 
-- update card
+- click on the category if already in -> open add website
 
 - if you have category on the query param but you dont find it. put All
 
-- v delete popups has scroll issue
+v - delete popups has scroll issue
 
-- v on delete popup the index 1 action is the close button and not the input
+v - on delete popup the index 1 action is the close button and not the input
 
 - improve session storage
 
-delete category only from the currect project
+- design template, add References 
 
-mobile version
+- improve project template options
+
+- move website into another category
+
+- alert if I already add this site
+
+- update the websites list
+
+- delete category only from the currect project
+
+- mobile version
+
+- position on the 'add website' button is not the best
 
 category selection like mobbin selection
 
@@ -47,56 +68,57 @@ view friends dashboard as guest
 
 
 
+https://css-loaders.com/spinner/
+https://getcssscan.com/css-box-shadow-examples
+https://fonts.google.com/
+https://21st.dev/home
 
 
-web design
+v - web design
 references 
 https://www.unsection.com/
 https://www.pinterest.com/
 https://www.awwwards.com/websites/
 
-coding assets
+v - coding assets
 https://photogradient.com/
-https://css-loaders.com/spinner/
-https://getcssscan.com/css-box-shadow-examples
 https://webgradients.com/
-https://fonts.google.com/
 https://coolors.co/
 https://colourcontrast.cc/
 https://www.vectary.com/
 
-principles
+v - principles
 https://www.youtube.com/watch?v=9zt__YPULm8&ab_channel=Sajid
 
-assets
+v - assets
 https://handyarrows.com/
 https://uiverse.io/
 
 figma helpers
 https://www.phase.com/
 
-mockups
+v - mockups
 https://huemint.com/
 
 
-flowResources
+v - flowResources
 site preview
 https://www.linkpreview.net/
 
 
-ai
+v - ai
 common
 https://aistudio.google.com/prompts/new_chat
 
-ui design
+v - ui design
 https://backflip.ai/
 https://uxpilot.ai/
 https://www.meshy.ai/
 
-text to speech
+v - text to speech
 https://notebooklm.google.com/
 
-images
+v - images
 https://www.recraft.ai/
 
 search
