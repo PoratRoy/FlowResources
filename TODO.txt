@@ -9,7 +9,7 @@ more website options
 v - rating
 v - free / paid
 v - website type
-- free / free tier / need to pay / paying
+v - free / free tier / need to pay / paying
 - more website type options
 - use a lot badges
 - reccomendation badges

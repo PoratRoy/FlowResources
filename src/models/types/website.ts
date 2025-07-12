@@ -4,8 +4,13 @@ export type Website = {
   description: string;
   url: string;
   image: string;
-  pricing: string;
+  pricing: Pricing;
   rating: number;
   websiteType: string;
   category: string;
-}
+  usage?: Usage;
+};
+
+export type Pricing = 'free' | 'trial' | 'credits' | 'cost' | 'paying';
+
+export type Usage = 'new' | 'often' | 'recommend' | 'not_in_use';

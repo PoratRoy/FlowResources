@@ -3,6 +3,7 @@ import './CardBadges.css';
 import { Category } from '@/models/types/category';
 import { Website } from '@/models/types/website';
 import { diractionStyle } from '@/utils/language';
+import { getPriceBadges } from '@/utils/badges';
 
 type CardBadgesProps = {
   categories: Category[];
@@ -21,7 +22,7 @@ const CardBadges: React.FC<CardBadgesProps> = ({ categories, website }) => {
       )}
       {website.pricing && (
         <span className={`website-badge pricing ${website.pricing}`}>
-          {website.pricing === 'free' ? 'Free' : 'Paid'}
+          {getPriceBadges(website.pricing)}
         </span>
       )}
       {website.websiteType && (

@@ -6,6 +6,7 @@ import { IoReorderFour } from 'react-icons/io5';
 import { MdDeleteForever } from 'react-icons/md';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
+import { pricingBadgesTitle, usageBadgesTitle } from '../constants/badeges';
 
 export const ActionsOptions = [
   {
@@ -91,5 +92,25 @@ export const WebsiteTypes: SelectOption[] = [
   { value: 'travel', label: 'Travel & Tourism' },
   { value: 'food', label: 'Food & Cooking' },
   { value: 'gaming', label: 'Gaming' },
-  { value: 'social', label: 'Social Media' }
+  { value: 'social', label: 'Social Media' },
+  { value: 'assets', label: 'Assets' },
+  { value: 'uiux', label: 'UI/UX' },
+  { value: 'video', label: 'Video' },
+  { value: 'documentation', label: 'Documentation' },
+  { value: 'coding', label: 'Coding' },
+  { value: 'other', label: 'Other' },
 ];
+
+export const PricingOptions: SelectOption[] = Object.entries(pricingBadgesTitle).map(
+  ([key, value]) => ({
+    value: key,
+    label: value,
+  })
+);
+
+export const UsageOptions: SelectOption[] = Object.entries(usageBadgesTitle).map(
+  ([key, value]) => ({
+    value: key,
+    label: value,
+  })
+);

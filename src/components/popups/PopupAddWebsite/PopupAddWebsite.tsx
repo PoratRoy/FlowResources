@@ -1,7 +1,7 @@
 'use client';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Website } from '@/models/types/website';
+import { Pricing, Usage, Website } from '@/models/types/website';
 import { LinkPreviewResponse } from '@/models/types/thumbnail';
 import { isValidURL } from '@/models/validation/url';
 import { useDataContext } from '@/context/DataContext';
@@ -15,6 +15,7 @@ import { usePopup } from '@/context/PopupContext';
 import './PopupAddWebsite.css';
 import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
+import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import RatingToggle from '@/components/UI/toggle/RatingToggle/RatingToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
 
@@ -31,7 +32,8 @@ const PopupAddWebsite: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
-  const [pricing, setPricing] = useState<string>('free');
+  const [pricing, setPricing] = useState<Pricing>('free');
+  const [usage, setUsage] = useState<Usage | undefined>(undefined);
   const [rating, setRating] = useState<number>(0);
   const [websiteType, setWebsiteType] = useState<string>('');
 
@@ -98,6 +100,7 @@ const PopupAddWebsite: React.FC = () => {
       category: category,
       image: thumbnail,
       pricing,
+      usage,
       rating,
       websiteType,
     };
@@ -146,15 +149,14 @@ const PopupAddWebsite: React.FC = () => {
           id="description"
           isLoading={false}
         />
-        <TypeSelect 
-          websiteType={websiteType}
-          setWebsiteType={setWebsiteType}
-        />
-        
-        <div className="toggle-controls-container">
-          <PricingToggle pricing={pricing} setPricing={setPricing} />
-          <RatingToggle rating={rating} setRating={setRating} />
-        </div>
+        <UsageToggle usage={usage} setUsage={setUsage} />
+
+        <PricingToggle pricing={pricing} setPricing={setPricing} />
+
+        <TypeSelect websiteType={websiteType} setWebsiteType={setWebsiteType} />
+
+
+        <RatingToggle rating={rating} setRating={setRating} />
 
         <br />
         <br />
