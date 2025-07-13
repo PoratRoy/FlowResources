@@ -19,7 +19,10 @@ export const mockWebsites: Website[] = [
     description: 'GitHub is where over 100 million developers shape the future of software, together. how can I add lorem 20 becuase its not woring for me',
     url: 'https://github.com',
     image: 'https://github.githubassets.com/assets/github-logo-55c5b9a1fe3c.png',
-    category: '1'
+    category: '1',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '2',
@@ -27,7 +30,10 @@ export const mockWebsites: Website[] = [
     description: 'Figma connects everyone in the design process so teams can deliver better products, faster.',
     url: 'https://www.figma.com',
     image: 'https://cdn.sanity.io/images/599r6htc/localized/46a76c802176eb17b04e12108de7e7e0f3736dc6-1024x1024.png?w=670&h=670&q=75&fit=max&auto=format',
-    category: '2'
+    category: '2',
+    pricing: 'free',
+    websiteType: 'design',
+    usage: 'new',
   },
   {
     id: '3',
@@ -35,7 +41,10 @@ export const mockWebsites: Website[] = [
     description: 'Resources for developers, by developers.',
     url: 'https://developer.mozilla.org',
     image: 'https://developer.mozilla.org/mdn-social-share.cd6c4a5a.png',
-    category: '1'
+    category: '1',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '4',
@@ -43,7 +52,10 @@ export const mockWebsites: Website[] = [
     description: 'Get a deeper understanding of your customers.',
     url: 'https://analytics.google.com',
     image: 'https://www.gstatic.com/analytics-suite/header/suite/v2/ic_analytics.svg',
-    category: '3'
+    category: '3',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '5',
@@ -51,7 +63,10 @@ export const mockWebsites: Website[] = [
     description: 'One workspace. Every team.',
     url: 'https://www.notion.so',
     image: 'https://www.notion.so/cdn-cgi/image/format=auto,width=640,quality=100/front-static/shared/icons/notion-app-icon-3d.png',
-    category: '4'
+    category: '4',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '6',
@@ -59,7 +74,10 @@ export const mockWebsites: Website[] = [
     description: 'Learn without limits.',
     url: 'https://www.coursera.org',
     image: 'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera.s3.amazonaws.com/media/coursera-rebrand-logo-square.png?auto=format%2Ccompress&dpr=1',
-    category: '5'
+    category: '5',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '7',
@@ -67,7 +85,10 @@ export const mockWebsites: Website[] = [
     description: 'Where developers learn, share, & build careers.',
     url: 'https://stackoverflow.com',
     image: 'https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded',
-    category: '1'
+    category: '1',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   },
   {
     id: '8',
@@ -75,7 +96,10 @@ export const mockWebsites: Website[] = [
     description: 'Showcase & discover creative work.',
     url: 'https://www.behance.net',
     image: 'https://a5.behance.net/21e581b7a8a5b5a5fcf5/img/site/apple-touch-icon.png?cb=264615658',
-    category: '2'
+    category: '2',
+    pricing: 'free',
+    websiteType: 'development',
+    usage: 'new',
   }
 ];
 
