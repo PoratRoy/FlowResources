@@ -16,7 +16,11 @@ import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
 import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
+import RefBannerImg from '@/components/cardUI/RefBannerImg/RefBannerImg';
+import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
+import { getFaviconUrl } from '@/utils/images';
 import './PopupAddWebsite.css';
+import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
 
 const PopupAddWebsite: React.FC = () => {
   const { pushCategoryQueryParam, searchParam } = useQueryParam();
@@ -31,6 +35,8 @@ const PopupAddWebsite: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
+  const [icon, setIcon] = useState<string>('');
+  const [color, setColor] = useState<string>('#357ef3');
   const [pricing, setPricing] = useState<Pricing>('free');
   const [usage, setUsage] = useState<Usage | undefined>(undefined);
   const [websiteType, setWebsiteType] = useState<string>('');
@@ -51,6 +57,8 @@ const PopupAddWebsite: React.FC = () => {
     setDescription('');
     setCategory('');
     setThumbnail('');
+    setIcon('');
+    setColor('#357ef3');
     setPricing('free');
     setWebsiteType('');
     closePopup();
@@ -81,6 +89,7 @@ const PopupAddWebsite: React.FC = () => {
         setTitle(data.title);
         setDescription(data.description);
         setThumbnail(data.image);
+        setIcon(getFaviconUrl(url, 32));
       }
     } catch (error) {
       setError('Failed to fetch link preview');
@@ -96,6 +105,8 @@ const PopupAddWebsite: React.FC = () => {
       description,
       category: category,
       image: thumbnail,
+      icon,
+      color,
       pricing,
       usage,
       websiteType,
@@ -137,6 +148,34 @@ const PopupAddWebsite: React.FC = () => {
           isLoading={false}
           isRequired
         />
+
+        {url && isValidURL(url) && !isFetchingThumbnail && (
+          <>
+            <div className="image-input-with-preview">
+              <Input
+                type="url"
+                placeholder="https://example.com/icon.png"
+                value={icon || (url ? getFaviconUrl(url, 32) : '')}
+                onChange={(e) => setIcon(e.target.value)}
+                label="Icon URL"
+                id="icon"
+                isLoading={false}
+              />
+              <div className="image-preview">
+                <RefSiteImg
+                  website={{ icon: icon || (url ? getFaviconUrl(url, 32) : ''), url, title }}
+                />
+              </div>
+            </div>
+            <CardBannerSelect 
+              color={color} 
+              setColor={setColor}
+              bannerUrl={thumbnail}
+              title={title}
+            />
+          </>
+        )}
+
         <TextArea
           placeholder="Write a brief description of the website..."
           value={description}

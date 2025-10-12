@@ -8,16 +8,21 @@ type SiteIconImgProps = {
 };
 
 const SiteIconImg: React.FC<SiteIconImgProps> = ({ website }) => {
+  const [imageError, setImageError] = React.useState(false);
+  const iconUrl = website.icon || getFaviconUrl(website.url, 256);
+  
   return (
     <div className="site-icon-image-container">
-      <img
-        src={getFaviconUrl(website.url, 256)}
-        alt={website.title}
-        className="site-icon-image"
-        onError={() => {
-          return <div className="no-image"/>;
-        }}
-      />
+      {iconUrl && !imageError ? (
+        <img
+          src={iconUrl}
+          alt={website.title}
+          className="site-icon-image"
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <div className="no-image" />
+      )}
     </div>
   );
 };

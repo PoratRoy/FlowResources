@@ -38,6 +38,9 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
       />
       <section className="website-card">
         <div className="website-card-banner">
+          <button onClick={handleEdit} className="edit-site-btn">
+            <FiEdit className="edit-site-icon" />
+          </button>
           <BannerImg website={website} />
           <div className="website-card-logo-wrapper">
             <div className="website-card-logo">
@@ -48,10 +51,6 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
         <CardContent categories={categories} website={website} />
         <div className="website-card-footer">
           <div className="website-card-actions">
-            <button onClick={handleEdit} className="edit-site-button">
-              <FiEdit className="edit-site-icon" />
-              Edit
-            </button>
             <Link
               href={website.url.toString()}
               target="_blank"

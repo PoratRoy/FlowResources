@@ -9,6 +9,8 @@ export interface IWebsite extends Document {
   description: string;
   url: string;
   image: string;
+  icon?: string;
+  color?: string;
   pricing: string;
   websiteType: string;
   usage?: string;
@@ -24,6 +26,8 @@ export interface IWebsite extends Document {
     description: string;
     url: string;
     image: string;
+    icon?: string;
+    color?: string;
     pricing: string;
     websiteType: string;
     usage?: string;
@@ -63,6 +67,23 @@ const websiteSchema = new Schema<IWebsite>(
         },
         message: 'Please provide a valid image URL',
       },
+    },
+    icon: {
+      type: String,
+      trim: true,
+      required: false,
+      validate: {
+        validator: (value: string) => {
+          return !value || value === '' || validator.isURL(value);
+        },
+        message: 'Please provide a valid icon URL',
+      },
+    },
+    color: {
+      type: String,
+      trim: true,
+      required: false,
+      default: '#357ef3',
     },
     pricing: {
       type: String,
@@ -126,6 +147,8 @@ websiteSchema.methods.toFormattedJSON = function (this: IWebsite) {
     description: this.description,
     url: this.url,
     image: this.image,
+    icon: this.icon,
+    color: this.color,
     pricing: this.pricing,
     websiteType: this.websiteType,
     usage: this.usage,

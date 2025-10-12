@@ -7,19 +7,23 @@ type BannerImgProps = {
 };
 
 const BannerImg: React.FC<BannerImgProps> = ({ website }) => {
+  const [imageError, setImageError] = React.useState(false);
+  const color = website.color || '#357ef3';
+
   return (
     <div className="logo-banner-image-container">
-      {website.image ? (
+      {website.image && !imageError ? (
         <img
           src={website.image}
           alt={website.title}
           className="logo-banner-image"
-          onError={() => {
-            return <div className="no-image"/>;
-          }}
+          onError={() => setImageError(true)}
         />
       ) : (
-        <div className="no-image"/>
+        <div 
+          className="banner-color-fallback"
+          style={{ backgroundColor: color }}
+        />
       )}
     </div>
   );

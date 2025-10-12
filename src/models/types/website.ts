@@ -4,6 +4,8 @@ export type Website = {
   description: string;
   url: string;
   image: string;
+  icon?: string;
+  color?: string;
   pricing: Pricing;
   websiteType: string;
   category: string;

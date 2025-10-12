@@ -16,6 +16,10 @@ import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
 import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
+import RefBannerImg from '@/components/cardUI/RefBannerImg/RefBannerImg';
+import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
+import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
+import { getFaviconUrl } from '@/utils/images';
 import './PopupUpdateWebsite.css';
 
 interface PopupUpdateWebsiteProps {
@@ -27,14 +31,13 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
   const { isWebsitesLoading, updateWebsite, categories } = useDataContext();
   const { closePopup } = usePopup();
 
-  const [isFetchingThumbnail, setIsFetchingThumbnail] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
   const [url] = useState<string>(initialWebsite.url);
   const [title, setTitle] = useState<string>(initialWebsite.title);
   const [description, setDescription] = useState<string>(initialWebsite.description || '');
   const [category, setCategory] = useState<string>(initialWebsite.category);
   const [thumbnail, setThumbnail] = useState<string>(initialWebsite.image || '');
+  const [icon, setIcon] = useState<string>(initialWebsite.icon || '');
+  const [color, setColor] = useState<string>(initialWebsite.color || '#357ef3');
   const [pricing, setPricing] = useState<Pricing>(initialWebsite.pricing as Pricing || 'free');
   const [usage, setUsage] = useState<Usage | undefined>(initialWebsite.usage as Usage | undefined);
   const [websiteType, setWebsiteType] = useState<string>(initialWebsite.websiteType || '');
@@ -42,11 +45,12 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
   const currentCategory = searchParam(query.category, AllCategoryID);
 
   useEffect(() => {
-    if (currentCategory) {
+    // Only set category from query params if no category is set from the website data
+    if (currentCategory && !initialWebsite.category) {
       const categoryId = categories.find((category) => category.id === currentCategory)?.id;
       setCategory(categoryId?.toString() || '');
     }
-  }, [currentCategory]);
+  }, [currentCategory, initialWebsite.category]);
 
   const handleClose = (to?: string) => {
     if (to) pushCategoryQueryParam(to);
@@ -62,6 +66,8 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
       description,
       category: category,
       image: thumbnail,
+      icon,
+      color,
       pricing,
       usage,
       websiteType,
@@ -81,7 +87,7 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
         <CategorySelect
           category={category}
           setCategory={setCategory}
-          defaultCategory={currentCategory}
+          defaultCategory={initialWebsite.category || currentCategory}
         />
         <Input
           type="url"
@@ -104,6 +110,29 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
           isLoading={false}
           isRequired
         />
+
+        <div className="image-input-with-preview">
+          <Input
+            type="url"
+            placeholder="https://example.com/icon.png"
+            value={icon || (url ? getFaviconUrl(url, 32) : '')}
+            onChange={(e) => setIcon(e.target.value)}
+            label="Icon URL"
+            id="icon"
+            isLoading={false}
+          />
+          <div className="image-preview">
+            <RefSiteImg website={{ icon: icon || (url ? getFaviconUrl(url, 32) : ''), url, title }} />
+          </div>
+        </div>
+
+        <CardBannerSelect 
+          color={color} 
+          setColor={setColor}
+          bannerUrl={thumbnail}
+          title={title}
+        />
+
         <TextArea
           placeholder="Write a brief description of the website..."
           value={description}
