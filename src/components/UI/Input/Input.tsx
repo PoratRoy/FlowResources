@@ -13,6 +13,7 @@ type InputProps = {
   error?: string | null;
   isLoading?: boolean;
   isRequired?: boolean;
+  disabled?: boolean;
 };
 
 const Input = ({
@@ -26,6 +27,7 @@ const Input = ({
   error,
   isLoading = false,
   isRequired = false,
+  disabled = false,
 }: InputProps) => {
   return (
     <FormInputLayout
@@ -44,6 +46,7 @@ const Input = ({
         className="form-input"
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </FormInputLayout>
   );

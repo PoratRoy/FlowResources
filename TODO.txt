@@ -10,16 +10,17 @@ v - rating
 v - free / paid
 v - website type
 v - free / free tier / need to pay / paying
-- more website type options
-- use a lot badges
-- reccomendation badges
-- not useful / useful badges
-- no need rating
+v - more website type options
+v - use a lot badges
+v - reccomendation badges
+v - not useful / useful badges
+v - no need rating
 
-- "show more" popup
+v - "show more" popup
 
 - update card, the url is disabled to change, you can add banner or icon url
 
+- on delete website cant scroll down
 
 - after delete project he is still selected and in the query
 

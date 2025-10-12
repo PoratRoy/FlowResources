@@ -19,6 +19,7 @@ import fetchCreateCategory from '@/app/actions/fetchCreateCategory';
 import fetchDeleteCategory from '@/app/actions/fetchDeleteCategory';
 import fetchCreateWebsite from '@/app/actions/fetchCreateWebsite';
 import fetchDeleteWebsite from '@/app/actions/fetchDeleteWebsite';
+import fetchUpdateWebsite from '@/app/actions/fetchUpdateWebsite';
 import query from '@/models/constants/queryParams.json';
 
 type DataContextType = {
@@ -34,6 +35,7 @@ type DataContextType = {
   deletedCategories: string[];
   websites: Website[];
   addWebsite: (newWebsite: Omit<Website, 'id'>) => Promise<Website | undefined>;
+  updateWebsite: (websiteId: string, websiteData: Partial<Omit<Website, 'id' | 'url'>>) => Promise<Website | undefined>;
   deleteWebsite: (websiteId: string) => Promise<string | null>;
   isProjectLoading: boolean;
   isWebsitesLoading: boolean;
@@ -53,6 +55,7 @@ const initialDataContext: DataContextType = {
   deletedCategories: [],
   websites: [],
   addWebsite: async (_: Omit<Website, 'id'>) => undefined,
+  updateWebsite: async (_: string, __: Partial<Omit<Website, 'id' | 'url'>>) => undefined,
   deleteWebsite: async (_: string) => null,
   isProjectLoading: false,
   isWebsitesLoading: false,
@@ -317,6 +320,32 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
     return null;
   };
 
+  const updateWebsite = async (
+    websiteId: string,
+    websiteData: Partial<Omit<Website, 'id' | 'url'>>
+  ): Promise<Website | undefined> => {
+    try {
+      setIsWebsitesLoading(true);
+      const result = await fetchUpdateWebsite(websiteId, websiteData);
+      if (result.status === 'success' && result.data) {
+        const updatedWebsite = result.data;
+        setWebsites((prevWebsites) => {
+          const websites = prevWebsites.map((website) =>
+            website.id === websiteId ? updatedWebsite : website
+          );
+          setSessionWebsites(websites);
+          return websites;
+        });
+        return updatedWebsite;
+      }
+    } catch (error) {
+      console.error('Error updating website:', error);
+    } finally {
+      setIsWebsitesLoading(false);
+    }
+    return;
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -332,6 +361,7 @@ export function DataContextProvider({ children }: { children: ReactNode }) {
         deletedCategories,
         websites,
         addWebsite,
+        updateWebsite,
         deleteWebsite,
         isProjectLoading,
         isWebsitesLoading,

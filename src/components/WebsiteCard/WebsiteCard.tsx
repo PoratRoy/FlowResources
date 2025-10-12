@@ -1,12 +1,14 @@
 import type { Website } from '@/models/types/website';
 import Link from 'next/link';
-import { FiExternalLink } from 'react-icons/fi';
+import { FiExternalLink, FiEdit } from 'react-icons/fi';
 import BannerImg from '../cardUI/BannerImg/BannerImg';
 import SiteIconImg from '../cardUI/SiteIconImg/SiteIconImg';
 import { useDataContext } from '@/context/DataContext';
 import CardContent from '../cardUI/CardContent/CardContent';
 import DeleteWebsiteBtn from '../UI/btn/DeleteWebsiteBtn/DeleteWebsiteBtn';
 import { useActionContext } from '@/context/ActionContext';
+import { usePopup } from '@/context/PopupContext';
+import PopupUpdateWebsite from '../popups/PopupUpdateWebsite/PopupUpdateWebsite';
 import './WebsiteCard.css';
 
 type WebsiteCardProps = {
@@ -16,10 +18,15 @@ type WebsiteCardProps = {
 const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
   const { categories, deleteWebsite } = useDataContext();
   const { isActionOpen, closeAction } = useActionContext();
+  const { openPopup } = usePopup();
 
   const handleDelete = async () => {
     const deletedId = await deleteWebsite(website.id);
     if (deletedId) closeAction();
+  };
+
+  const handleEdit = () => {
+    openPopup('L', <PopupUpdateWebsite website={website} />, 'Update Website');
   };
 
   return (
@@ -40,15 +47,21 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
         </div>
         <CardContent categories={categories} website={website} />
         <div className="website-card-footer">
-          <Link
-            href={website.url.toString()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="visit-site-button"
-          >
-            Visit Site
-            <FiExternalLink className="visit-site-icon" />
-          </Link>
+          <div className="website-card-actions">
+            <button onClick={handleEdit} className="edit-site-button">
+              <FiEdit className="edit-site-icon" />
+              Edit
+            </button>
+            <Link
+              href={website.url.toString()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="visit-site-button"
+            >
+              Visit Site
+              <FiExternalLink className="visit-site-icon" />
+            </Link>
+          </div>
         </div>
       </section>
     </section>
