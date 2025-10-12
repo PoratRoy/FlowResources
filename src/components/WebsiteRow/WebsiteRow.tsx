@@ -5,9 +5,7 @@ import Link from 'next/link';
 import SiteIconImg from '../cardUI/SiteIconImg/SiteIconImg';
 import { useDataContext } from '@/context/DataContext';
 import { detectLanguage, diractionStyle } from '@/utils/language';
-import DeleteWebsiteBtn from '../UI/btn/DeleteWebsiteBtn/DeleteWebsiteBtn';
 import WebsiteDescription from '../WebsiteDescription/WebsiteDescription';
-import { useActionContext } from '@/context/ActionContext';
 import './WebsiteRow.css';
 
 type WebsiteRowProps = {
@@ -16,22 +14,17 @@ type WebsiteRowProps = {
 
 const WebsiteRow: React.FC<WebsiteRowProps> = ({ website }) => {
   const { categories, deleteWebsite } = useDataContext();
-  const { isActionOpen, closeAction } = useActionContext();
+  // const { isActionOpen, closeAction } = useActionContext();
 
   const handleDelete = async () => {
     const deletedId = await deleteWebsite(website.id);
-    if (deletedId) closeAction();
+    // if (deletedId) closeAction();
   };
 
   const category = categories.find((cat) => cat.id === website.category);
 
   return (
     <section className="website-row-container">
-      <DeleteWebsiteBtn
-        onDelete={handleDelete}
-        onClose={closeAction}
-        isShown={isActionOpen('deleteWebsite')}
-      />
       <div className="website-row">
         <div className="website-row-icon">
           <SiteIconImg website={website} />

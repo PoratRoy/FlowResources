@@ -18,9 +18,17 @@ v - no need rating
 
 v - "show more" popup
 
+- confirm popup for delete website
+
+- website icon like google maps category (with emoji)
+
+- switch banner not working good
+
+- allow to click on the project select to open it
+
 - update card, the url is disabled to change, you can add banner or icon url
 
-- on delete website cant scroll down
+v - on delete website cant scroll down
 
 - after delete project he is still selected and in the query
 
@@ -43,7 +51,7 @@ v - on delete popup the index 1 action is the close button and not the input
 
 - improve project template options
 
-- move website into another category
+v - move website into another category
 
 - alert if I already add this site
 
@@ -51,13 +59,17 @@ v - on delete popup the index 1 action is the close button and not the input
 
 - delete category only from the currect project
 
+query params for project
+
 - mobile version
 
 - position on the 'add website' button is not the best
 
-category selection like mobbin selection
+- category selection like mobbin selection
 
-search
+- search 
+show the websites options with thier icon 
+better to show websites from all project with small indecation from which project is
 
 stard category
 

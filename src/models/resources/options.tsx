@@ -7,6 +7,7 @@ import { MdDeleteForever } from 'react-icons/md';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 import { pricingBadgesTitle, usageBadgesTitle } from '../constants/badeges';
+import { FiEdit } from 'react-icons/fi';
 
 export const ActionsOptions = [
   {
@@ -17,15 +18,6 @@ export const ActionsOptions = [
     ),
     relatedTo: 'website',
     openAction: 'reorderWebsite',
-  } as ActionOption,
-  {
-    label: (
-      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Delete Website
-      </span>
-    ),
-    relatedTo: 'website',
-    openAction: 'deleteWebsite',
   } as ActionOption,
   {
     label: (
@@ -44,6 +36,36 @@ export const ActionsOptions = [
     ),
     relatedTo: 'project',
     openPopup: { elm: <PopupDeleteProject />, size: 'M', title: 'Delete Project' },
+  } as ActionOption,
+];
+
+export const CardActionsOptions = [
+  {
+    label: (
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <FiEdit size={20} /> Edit Card
+      </span>
+    ),
+    relatedTo: 'website',
+    openAction: 'updateWebsite',
+  } as ActionOption,
+  {
+    label: (
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <IoReorderFour size={20} /> Move Project
+      </span>
+    ),
+    relatedTo: 'website',
+    openAction: 'moveProject',
+  } as ActionOption,
+  {
+    label: (
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <MdDeleteForever size={20} /> Delete Card
+      </span>
+    ),
+    relatedTo: 'website',
+    openAction: 'deleteWebsite',
   } as ActionOption,
 ];
 

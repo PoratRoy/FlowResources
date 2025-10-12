@@ -6,18 +6,19 @@ import { ActionOption } from '@/models/types/select';
 import { usePopup } from '@/context/PopupContext';
 import { useAccessibility } from '@/hooks/useAccessibility';
 import { useDataContext } from '@/context/DataContext';
-// import { useActionContext } from '@/context/ActionContext';
-import './MoreActionsBtn.css';
+import './MoreCardActionBtn.css';
+import { Website } from '@/models/types/website';
+import PopupUpdateWebsite from '@/components/popups/PopupUpdateWebsite/PopupUpdateWebsite';
 
-type MoreActionsBtnProps = {
+type MoreCardActionsBtnProps = {
   options: ActionOption[];
+  website: Website;
 };
 
-const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
-  const { projects, categories, websites } = useDataContext();
+const MoreCardActionsBtn: React.FC<MoreCardActionsBtnProps> = ({ options, website }) => {
+  const { projects, categories, websites, deleteWebsite } = useDataContext();
   const [isOpen, setIsOpen] = useState(false);
   const { openPopup } = usePopup();
-  // const { openAction } = useActionContext();
   const menuRef = useRef<HTMLDivElement>(null);
 
   const mapdata = {
@@ -40,31 +41,39 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
     onClose: closeMenu,
   });
 
-  const handleClick = (option: ActionOption) => {
-    if (option.openPopup)
-      openPopup(option.openPopup.size, option.openPopup.elm, option.openPopup.title);
-    // else if (option.openAction) openAction(option.openAction);
-    setIsOpen(false);
+  const handleClick = async (option: ActionOption) => {
+    if (option.openAction) {
+      switch (option.openAction) {
+        case 'updateWebsite':
+          openPopup('L', <PopupUpdateWebsite website={website} />, 'Update Website');
+          setIsOpen(false);
+          break;
+        case 'deleteWebsite':
+          const deletedId = await deleteWebsite(website.id);
+          if (deletedId) setIsOpen(false);
+          break;
+      }
+    }
   };
 
   return (
-    <div className="more-actions-container" ref={menuRef}>
+    <div className="more-card-actions-container" ref={menuRef}>
       <button
-        className="more-actions-btn"
+        className="more-card-actions-btn"
         onClick={toggleMenu}
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <BsThreeDotsVertical className="three-dots-icon" size={24} />
+        <BsThreeDotsVertical className="three-dots-card-icon" size={24} />
       </button>
 
       {isOpen && (
-        <div className="more-actions-menu">
+        <div className="more-card-actions-menu">
           {options.map((option, index) => (
             <button
               key={index}
-              className="menu-item"
-              onClick={() => handleClick(option)}
+              className="more-card-actions-menu-item"
+              onClick={async () => handleClick(option)}
               disabled={option.relatedTo ? mapdata[option.relatedTo].length === 0 : false}
             >
               {option.label}
@@ -76,4 +85,4 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
   );
 };
 
-export default MoreActionsBtn;
+export default MoreCardActionsBtn;

@@ -1,0 +1,86 @@
+.more-card-actions-container {
+    position: relative;
+    display: inline-block;
+}
+
+.more-card-actions-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.more-card-actions-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.three-dots-card-icon {
+    color: #64748b;
+}
+
+@keyframes menuAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.more-card-actions-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    min-width: 200px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    margin-top: 4px;
+    animation: menuAppear 0.15s ease-out;
+    transform-origin: top right;
+    cursor: pointer;
+}
+
+.more-card-actions-menu-item {
+    display: block;
+    width: 100%;
+    padding: 8px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #1e293b;
+    cursor: pointer;
+    transition: all 0.15s ease-out;
+    font-size: 1em;
+}
+
+.more-card-actions-menu-item:hover {
+    background-color: #f1f5f9;
+    cursor: pointer;
+}
+
+.more-card-actions-menu-item:first-child {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.more-card-actions-menu-item:last-child {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.more-card-actions-menu-item:disabled {
+    cursor: default;
+    background-color: #f8fafc;
+    color: #94a3b8;
+}

@@ -4,7 +4,7 @@ export type ActionResponse<T> = {
   error?: string;
 };
 
-export type ActionType = 'none' | 'deleteWebsite' | 'reorderWebsite';
+export type ActionType = 'none' | 'deleteWebsite' | 'reorderWebsite' | 'updateWebsite' | 'moveProject';
 
 export type FetchAddType<T> = (object: any, addition: any) => Promise<ActionResponse<T>>;
 export type FetchDeleteType<T> = (id: string) => Promise<ActionResponse<T>>;
