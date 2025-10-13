@@ -20,11 +20,10 @@
 - query params for project
 - mobile version
 - position on the 'add website' button is not the best
-- search 
-show the websites options with thier icon 
-better to show websites from all project with small indecation from which project is
 - stard category
+- search for all the projects not only the specific selected
 
+v - search show the websites options with thier icon better to show websites from all project with small indecation from which project is
 
 TODO
 v - change mongo database from 'test' into 'flow-resources'
