@@ -3,7 +3,7 @@
 import React from 'react';
 import { Website } from '@/models/types/website';
 import { Category } from '@/models/types/category';
-import { FiExternalLink } from 'react-icons/fi';
+import { Icon } from '@/components/UI/Icons/Icons';
 import Link from 'next/link';
 import BannerImg from '@/components/cardUI/BannerImg/BannerImg';
 import SiteIconImg from '@/components/cardUI/SiteIconImg/SiteIconImg';
@@ -52,7 +52,7 @@ const ViewWebsitePopup: React.FC<ViewWebsitePopupProps> = ({ website, categories
           className="visit-site-button"
         >
           Visit Site
-          <FiExternalLink className="visit-site-icon" />
+          <Icon.link className="visit-site-icon" />
         </Link>
       </div>
     </div>

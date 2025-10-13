@@ -2,9 +2,9 @@
 
 import React from 'react';
 import './AddProjectBtn.css';
-import { IoAddCircleOutline } from 'react-icons/io5';
 import { usePopup } from '@/context/PopupContext';
 import PopupAddProject from '@/components/popups/PopupAddProject/PopupAddProject';
+import { Icon } from '../../Icons/Icons';
 
 const AddProjectBtn: React.FC = () => {
   const { openPopup } = usePopup();
@@ -15,7 +15,7 @@ const AddProjectBtn: React.FC = () => {
 
   return (
     <button className="add-button-project" onClick={handleClick}>
-      <IoAddCircleOutline className="plus-icon" size={20} />
+      <Icon.add2 className="plus-icon" size={20} />
       Create Project
     </button>
   );

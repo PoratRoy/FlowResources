@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ActionOption } from '@/models/types/select';
 import { usePopup } from '@/context/PopupContext';
 import { useAccessibility } from '@/hooks/useAccessibility';
 import { useDataContext } from '@/context/DataContext';
 // import { useActionContext } from '@/context/ActionContext';
 import './MoreActionsBtn.css';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 type MoreActionsBtnProps = {
   options: ActionOption[];
@@ -55,7 +55,7 @@ const MoreActionsBtn: React.FC<MoreActionsBtnProps> = ({ options }) => {
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <BsThreeDotsVertical className="three-dots-icon" size={24} />
+        <Icon.dotsVertical className="three-dots-icon" size={24} />
       </button>
 
       {isOpen && (

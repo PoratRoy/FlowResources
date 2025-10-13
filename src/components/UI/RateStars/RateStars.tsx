@@ -1,6 +1,6 @@
 import React from 'react';
 import './RateStars.css';
-import { FaStar } from 'react-icons/fa';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 type RateStarsProps = {
   rating: number;
@@ -12,7 +12,7 @@ const RateStars: React.FC<RateStarsProps> = ({ rating }) => {
       {[...Array(5)].map((_, index) => {
         const ratingValue = index + 1;
         return (
-          <FaStar
+          <Icon.star
             key={index}
             className="rating-star"
             color={ratingValue <= rating ? '#ffc107' : '#e4e5e9'}

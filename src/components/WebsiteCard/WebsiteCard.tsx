@@ -1,12 +1,12 @@
 import type { Website } from '@/models/types/website';
 import Link from 'next/link';
-import { FiExternalLink } from 'react-icons/fi';
 import BannerImg from '../cardUI/BannerImg/BannerImg';
 import SiteIconImg from '../cardUI/SiteIconImg/SiteIconImg';
 import { useDataContext } from '@/context/DataContext';
 import CardContent from '../cardUI/CardContent/CardContent';
 import { CardActionsOptions } from '@/models/resources/options';
 import MoreCardActionsBtn from '../UI/btn/MoreCardActionBtn/MoreCardActionBtn';
+import { Icon } from '@/components/UI/Icons/Icons';
 import './WebsiteCard.css';
 
 type WebsiteCardProps = {
@@ -39,7 +39,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
             className="visit-site-button"
           >
             Visit Site
-            <FiExternalLink className="visit-site-icon" />
+            <Icon.link className="visit-site-icon" size={22} />
           </Link>
         </div>
       </section>

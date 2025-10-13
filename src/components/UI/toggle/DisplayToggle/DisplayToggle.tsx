@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { BsGrid, BsListUl } from 'react-icons/bs';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import './DisplayToggle.css';
+import { Icon } from '../../Icons/Icons';
 
 const DisplayToggle: React.FC = () => {
   const { searchParam, addDisplayQueryParam } = useQueryParam();
@@ -20,14 +20,14 @@ const DisplayToggle: React.FC = () => {
         onClick={() => handleDisplayChange('grid')}
         title="Grid View"
       >
-        <BsGrid />
+        <Icon.grid />
       </button>
       <button
         className={`toggle-btn ${currentDisplay === 'list' ? 'active' : ''}`}
         onClick={() => handleDisplayChange('list')}
         title="List View"
       >
-        <BsListUl />
+        <Icon.list />
       </button>
     </div>
   );

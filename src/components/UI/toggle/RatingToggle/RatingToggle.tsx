@@ -3,7 +3,7 @@
 import FormInputLayout from '@/components/FormInputLayout/FormInputLayout';
 import './RatingToggle.css';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { FaStar } from 'react-icons/fa';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 type RatingToggleProps = {
   setRating: Dispatch<SetStateAction<number>>;
@@ -31,7 +31,7 @@ const RatingToggle: React.FC<RatingToggleProps> = ({
                 value={ratingValue}
                 onClick={() => setRating(ratingValue)}
               />
-              <FaStar
+              <Icon.star
                 className="star"
                 color={ratingValue <= (hover || rating) ? "#2563eb" : "transparent"}
                 stroke={ratingValue <= (hover || rating) ? "transparent" : "#2563eb"}

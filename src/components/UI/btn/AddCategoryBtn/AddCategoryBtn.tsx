@@ -2,9 +2,9 @@
 
 import React from 'react';
 import './AddCategoryBtn.css';
-import { IoMdAdd } from 'react-icons/io';
 import { usePopup } from '@/context/PopupContext';
 import PopupAddCategory from '@/components/popups/PopupAddCategory/PopupAddCategory';
+import { Icon } from '../../Icons/Icons';
 
 const AddCategoryBtn: React.FC = () => {
   const { openPopup } = usePopup();
@@ -13,7 +13,7 @@ const AddCategoryBtn: React.FC = () => {
       className="selection-add"
       onClick={() => openPopup('S', <PopupAddCategory />, 'Add New Category')}
     >
-      <IoMdAdd className="plus-icon" />
+      <Icon.add className="plus-icon" />
       Add Category
     </div>
   );

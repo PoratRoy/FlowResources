@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import './PopupCard.css';
 import { useAccessibility } from '@/hooks/useAccessibility';
 import { PopupSize } from '@/models/types/ui';
-import { FiX } from 'react-icons/fi';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 interface PopupCardProps {
   isOpen: boolean;
@@ -27,13 +27,13 @@ const PopupCard: React.FC<PopupCardProps> = ({ isOpen, onClose, children, size, 
           <header className="popup-card-header">
             <h2 className="popup-card-title">{title}</h2>
             <button className="popup-card-close" onClick={onClose} aria-label="Close">
-              <FiX size={24} />
+              <Icon.close size={24} />
             </button>
           </header>
         )}
         {!title && (
           <button className="popup-card-close-no-header" onClick={onClose} aria-label="Close">
-            <FiX size={24} />
+            <Icon.close size={24} />
           </button>
         )}
         <div className="popup-card-content">{children}</div>

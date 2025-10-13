@@ -2,18 +2,16 @@
 
 import React from 'react';
 import { ActionOption, SelectOption } from '../types/select';
-import { IoReorderFour } from 'react-icons/io5';
-import { MdDeleteForever } from 'react-icons/md';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
 import { pricingBadgesTitle, usageBadgesTitle } from '../constants/badeges';
-import { FiEdit } from 'react-icons/fi';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <IoReorderFour size={20} /> Reorder Websites
+        <Icon.reorder size={20} /> Reorder Websites
       </span>
     ),
     relatedTo: 'website',
@@ -22,7 +20,7 @@ export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Delete Category
+        <Icon.delete size={20} /> Delete Category
       </span>
     ),
     relatedTo: 'category',
@@ -31,7 +29,7 @@ export const ActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Delete Project
+        <Icon.delete size={20} /> Delete Project
       </span>
     ),
     relatedTo: 'project',
@@ -43,7 +41,7 @@ export const CardActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <FiEdit size={20} /> Edit Card
+        <Icon.edit size={20} /> Edit Card
       </span>
     ),
     relatedTo: 'website',
@@ -52,7 +50,7 @@ export const CardActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <IoReorderFour size={20} /> Move Project
+        <Icon.reorder size={20} /> Move Project
       </span>
     ),
     relatedTo: 'website',
@@ -61,7 +59,7 @@ export const CardActionsOptions = [
   {
     label: (
       <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <MdDeleteForever size={20} /> Delete Card
+        <Icon.delete size={20} /> Delete Card
       </span>
     ),
     relatedTo: 'website',

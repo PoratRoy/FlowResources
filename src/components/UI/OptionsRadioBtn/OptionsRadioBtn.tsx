@@ -1,6 +1,6 @@
-import { FaTrash } from 'react-icons/fa';
 import './OptionsRadioBtn.css';
 import { TOption } from '@/models/types/select';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 interface OptionsRadioBtnProps {
   options: TOption[];
@@ -25,7 +25,7 @@ const OptionsRadioBtn: React.FC<OptionsRadioBtnProps> = ({
             <span className="option-text">{option.label}</span>
           </label>
           <button className="delete-btn" type="button" aria-label={`Delete ${option.value}`}>
-            <FaTrash />
+            <Icon.delete />
           </button>
         </div>
       ))}

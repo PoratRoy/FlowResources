@@ -1,31 +1,28 @@
 import React from 'react';
 import { Website } from '@/models/types/website';
-import { FiExternalLink } from 'react-icons/fi';
 import Link from 'next/link';
 import SiteIconImg from '../cardUI/SiteIconImg/SiteIconImg';
 import { useDataContext } from '@/context/DataContext';
 import { detectLanguage, diractionStyle } from '@/utils/language';
 import WebsiteDescription from '../WebsiteDescription/WebsiteDescription';
+import { Icon } from '@/components/UI/Icons/Icons';
 import './WebsiteRow.css';
+import MoreCardActionsBtn from '../UI/btn/MoreCardActionBtn/MoreCardActionBtn';
+import { CardActionsOptions } from '@/models/resources/options';
 
 type WebsiteRowProps = {
   website: Website;
 };
 
 const WebsiteRow: React.FC<WebsiteRowProps> = ({ website }) => {
-  const { categories, deleteWebsite } = useDataContext();
-  // const { isActionOpen, closeAction } = useActionContext();
-
-  const handleDelete = async () => {
-    const deletedId = await deleteWebsite(website.id);
-    // if (deletedId) closeAction();
-  };
+  const { categories } = useDataContext();
 
   const category = categories.find((cat) => cat.id === website.category);
 
   return (
     <section className="website-row-container">
       <div className="website-row">
+        <MoreCardActionsBtn options={CardActionsOptions} website={website} />
         <div className="website-row-icon">
           <SiteIconImg website={website} />
         </div>
@@ -48,7 +45,7 @@ const WebsiteRow: React.FC<WebsiteRowProps> = ({ website }) => {
             className="website-row-visit-button"
           >
             Visit Site
-            <FiExternalLink className="visit-site-icon" />
+            <Icon.link className="visit-site-icon" size={22} />
           </Link>
         </div>
       </div>

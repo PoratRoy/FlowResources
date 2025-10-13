@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { IoAddCircleOutline } from 'react-icons/io5';
 import { useDataContext } from '@/context/DataContext';
 import { usePopup } from '@/context/PopupContext';
 import PopupAddWebsite from '@/components/popups/PopupAddWebsite/PopupAddWebsite';
 import './AddWebsiteBtn.css';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 const AddWebsiteBtn: React.FC = () => {
   const { projects } = useDataContext();
@@ -21,7 +21,7 @@ const AddWebsiteBtn: React.FC = () => {
 
   return (
     <button className="add-button-website" onClick={handleClick}>
-      <IoAddCircleOutline className="plus-icon" size={20} />
+      <Icon.add2 className="plus-icon" size={20} />
       Add Website
     </button>
   );

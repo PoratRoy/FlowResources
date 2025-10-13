@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ActionOption } from '@/models/types/select';
 import { usePopup } from '@/context/PopupContext';
 import { useAccessibility } from '@/hooks/useAccessibility';
@@ -9,6 +8,7 @@ import { useDataContext } from '@/context/DataContext';
 import './MoreCardActionBtn.css';
 import { Website } from '@/models/types/website';
 import PopupUpdateWebsite from '@/components/popups/PopupUpdateWebsite/PopupUpdateWebsite';
+import { Icon } from '@/components/UI/Icons/Icons';
 
 type MoreCardActionsBtnProps = {
   options: ActionOption[];
@@ -64,7 +64,7 @@ const MoreCardActionsBtn: React.FC<MoreCardActionsBtnProps> = ({ options, websit
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <BsThreeDotsVertical className="three-dots-card-icon" size={24} />
+        <Icon.dotsVertical className="three-dots-card-icon" size={24} />
       </button>
 
       {isOpen && (
