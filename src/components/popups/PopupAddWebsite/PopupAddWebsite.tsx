@@ -21,6 +21,7 @@ import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import { getFaviconUrl } from '@/utils/images';
 import './PopupAddWebsite.css';
 import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
+import { defaultBannerColor } from '@/style/colors';
 
 const PopupAddWebsite: React.FC = () => {
   const { pushCategoryQueryParam, searchParam } = useQueryParam();
@@ -36,7 +37,7 @@ const PopupAddWebsite: React.FC = () => {
   const [category, setCategory] = useState<string>('');
   const [thumbnail, setThumbnail] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
-  const [color, setColor] = useState<string>('#357ef3');
+  const [color, setColor] = useState<string>(defaultBannerColor);
   const [pricing, setPricing] = useState<Pricing>('free');
   const [usage, setUsage] = useState<Usage | undefined>(undefined);
   const [websiteType, setWebsiteType] = useState<string>('');

@@ -6,3 +6,5 @@ export const BannerColorOptions = [
   '#06b6d4', // Cyan
   '#0d0d0d', // Black
 ];
+
+export const defaultBannerColor = '#357ef3';

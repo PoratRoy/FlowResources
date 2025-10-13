@@ -4,15 +4,15 @@ import { useDataContext } from '@/context/DataContext';
 import AddCategoryBtn from '../../btn/AddCategoryBtn/AddCategoryBtn';
 import { useEffect } from 'react';
 import { useQueryParam } from '@/hooks/useQueryParam';
-import './FlowToggle.css';
+import './SwitchCategory.css';
 import { AllCategoryID } from '@/models/constants';
 
-type FlowToggleProps = {
+type SwitchCategoryProps = {
   categoryId: string;
   width?: string;
 }
 
-const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' }) => {
+const SwitchCategory: React.FC<SwitchCategoryProps> = ({ categoryId, width = '1200px' }) => {
   const { pushCategoryQueryParam } = useQueryParam();
   //TODO: handle if id is not in the list of categories
   const { categories, deletedCategories, clearDeletedCategories } = useDataContext();
@@ -56,4 +56,4 @@ const FlowToggle: React.FC<FlowToggleProps> = ({ categoryId, width = '1200px' })
   );
 };
 
-export default FlowToggle;
+export default SwitchCategory;

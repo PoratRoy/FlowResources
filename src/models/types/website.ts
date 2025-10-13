@@ -12,6 +12,6 @@ export type Website = {
   usage?: Usage;
 };
 
-export type Pricing = 'free' | 'trial' | 'credits' | 'cost' | 'paying';
+export type Pricing = 'free' | 'trial' | 'credits' | 'cost';
 
 export type Usage = 'new' | 'often' | 'recommend' | 'not_in_use';

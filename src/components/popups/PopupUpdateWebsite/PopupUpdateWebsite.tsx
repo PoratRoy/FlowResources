@@ -21,6 +21,7 @@ import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
 import { getFaviconUrl } from '@/utils/images';
 import './PopupUpdateWebsite.css';
+import { defaultBannerColor } from '@/style/colors';
 
 interface PopupUpdateWebsiteProps {
   website: Website;
@@ -37,7 +38,7 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
   const [category, setCategory] = useState<string>(initialWebsite.category);
   const [thumbnail, setThumbnail] = useState<string>(initialWebsite.image || '');
   const [icon, setIcon] = useState<string>(initialWebsite.icon || '');
-  const [color, setColor] = useState<string>(initialWebsite.color || '#357ef3');
+  const [color, setColor] = useState<string>(initialWebsite.color || defaultBannerColor);
   const [pricing, setPricing] = useState<Pricing>(initialWebsite.pricing as Pricing || 'free');
   const [usage, setUsage] = useState<Usage | undefined>(initialWebsite.usage as Usage | undefined);
   const [websiteType, setWebsiteType] = useState<string>(initialWebsite.websiteType || '');

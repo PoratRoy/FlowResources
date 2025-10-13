@@ -39,7 +39,6 @@
 
 .sizeL {
   width: 700px;
-  min-height: 700px;
   height: 90%;
   max-height: 90vh;
 }
@@ -85,9 +84,10 @@
 
 .modalContent-sizeL {
   padding: 2rem;
+  padding-bottom: 0;
   margin-top: 4.5em;
   overflow-y: scroll;
-  height: 600px;
+  height: calc(90vh - 10rem);
 }
 
 @keyframes fadeIn {

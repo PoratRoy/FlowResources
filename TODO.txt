@@ -18,6 +18,8 @@ v - no need rating
 
 v - "show more" popup
 
+- card more actions for the website list row
+
 - confirm popup for delete website
 
 - website icon like google maps category (with emoji)
@@ -27,6 +29,8 @@ v - "show more" popup
 - allow to click on the project select to open it
 
 - update card, the url is disabled to change, you can add banner or icon url
+
+- reorder projects
 
 v - on delete website cant scroll down
 

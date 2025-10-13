@@ -2,10 +2,9 @@ import { Pricing, Usage } from '../types/website';
 
 export const pricingBadgesTitle: Record<Pricing, string> = {
   free: 'Free',
-  trial: 'Trial',
-  credits: 'Credits',
   cost: 'Cost',
-  paying: 'Paying',
+  trial: 'With Trial',
+  credits: 'Credits',
 };
 
 export const pricingBadgesArray = Object.keys(pricingBadgesTitle);

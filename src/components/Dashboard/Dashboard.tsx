@@ -8,7 +8,7 @@ import SelectProject from '../empty/SelectProject/SelectProject';
 import query from '@/models/constants/queryParams.json';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import WebsiteDisplay from '../WebsiteDisplay/WebsiteDisplay';
-import FlowToggle from '../UI/toggle/FlowToggle/FlowToggle';
+import SwitchCategory from '../UI/toggle/SwitchCategory/SwitchCategory';
 import './Dashboard.css';
 import { Category } from '@/models/types/category';
 import { AllCategoryID } from '@/models/constants';
@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <main className="main-container">
-      {currentCategoryId !== undefined ? <FlowToggle categoryId={currentCategoryId} /> : null}
+      {currentCategoryId !== undefined ? <SwitchCategory categoryId={currentCategoryId} /> : null}
       {currentCategoryId !== undefined ? <WebsiteDisplay categoryId={currentCategoryId} /> : null}
     </main>
   );
