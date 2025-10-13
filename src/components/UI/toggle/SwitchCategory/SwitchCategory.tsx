@@ -29,12 +29,12 @@ const SwitchCategory: React.FC<SwitchCategoryProps> = ({ categoryId, width = '12
   };
 
   return (
-    <div className="selection" style={{ maxWidth: width }}>
-      <div className="selection-links">
+    <div className="switch-category-container">
+      <div className="switch-category-scroll">
         <button
           key="0"
           onClick={() => handleCategoryClick(AllCategoryID)}
-          className={`selection-link ${categoryId === AllCategoryID ? 'active' : ''}`}
+          className={`category-item ${categoryId === AllCategoryID ? 'active' : ''}`}
           type="button"
         >
           All
@@ -43,13 +43,14 @@ const SwitchCategory: React.FC<SwitchCategoryProps> = ({ categoryId, width = '12
           <button
             key={option.id}
             onClick={() => handleCategoryClick(option.id)}
-            className={`selection-link ${categoryId == option.id ? 'active' : ''}`}
+            className={`category-item ${categoryId == option.id ? 'active' : ''}`}
             type="button"
           >
             {option.title}
           </button>
         ))}
-        <div className="divider"></div>
+      </div>
+      <div className="add-category-fixed">
         <AddCategoryBtn />
       </div>
     </div>
