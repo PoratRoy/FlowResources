@@ -1,7 +1,7 @@
 'use client';
 
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Pricing, Usage, Website } from '@/models/types/website';
+import { Website } from '@/models/types/website';
 import { BannerObj, LinkPreviewResponse } from '@/models/types/thumbnail';
 import { isValidURL } from '@/models/validation/url';
 import { useDataContext } from '@/context/DataContext';
@@ -14,9 +14,6 @@ import { useQueryParam } from '@/hooks/useQueryParam';
 import query from '../../../models/constants/queryParams.json';
 import { usePopup } from '@/context/PopupContext';
 import { AllCategoryID } from '@/models/constants';
-import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
-import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
-import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
 import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import { getFaviconUrl } from '@/utils/images';
 import './PopupAddWebsite.css';
@@ -36,9 +33,6 @@ const PopupAddWebsite: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
-  const [pricing, setPricing] = useState<Pricing>('free');
-  const [usage, setUsage] = useState<Usage | undefined>(undefined);
-  const [websiteType, setWebsiteType] = useState<string>('');
   const [hasBannerUrl, setHasBannerUrl] = useState<string | undefined>();
   const [banner, setBanner] = useState<BannerObj>({
     type: 'color',
@@ -61,10 +55,6 @@ const PopupAddWebsite: React.FC = () => {
     setDescription('');
     setCategory('');
     setIcon('');
-    setPricing('free');
-    setWebsiteType('');
-    // setThumbnail('');
-    // setColor('#357ef3');
     setHasBannerUrl(undefined);
     setBanner({ type: 'color', value: defaultBannerColor });
     closePopup();
@@ -123,9 +113,6 @@ const PopupAddWebsite: React.FC = () => {
       icon,
       image,
       color,
-      pricing,
-      usage,
-      websiteType,
     };
 
     try {
@@ -200,12 +187,6 @@ const PopupAddWebsite: React.FC = () => {
           id="description"
           isLoading={false}
         />
-        <UsageToggle usage={usage} setUsage={setUsage} />
-
-        <PricingToggle pricing={pricing} setPricing={setPricing} />
-
-        <TypeSelect websiteType={websiteType} setWebsiteType={setWebsiteType} />
-
         <br />
         <br />
         <section className="form-add-site-btn">

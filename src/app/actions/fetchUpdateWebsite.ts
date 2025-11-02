@@ -26,9 +26,6 @@ const fetchUpdateWebsite = async (
     if (websiteData.description) website.description = websiteData.description;
     if (websiteData.category) website.category = new mongoose.Types.ObjectId(websiteData.category);
     if (websiteData.icon) website.icon = websiteData.icon;
-    if (websiteData.pricing) website.pricing = websiteData.pricing;
-    if ('usage' in websiteData) website.usage = websiteData.usage;
-    if (websiteData.websiteType) website.websiteType = websiteData.websiteType;
     website.image = websiteData.image || '';
     website.color = websiteData.color || '';
 
@@ -47,9 +44,6 @@ const fetchUpdateWebsite = async (
           icon: website.icon,
           color: website.color,
           category: website.category.toString(),
-          websiteType: website.websiteType,
-          pricing: website.pricing,
-          usage: website.usage,
         };
 
     return {

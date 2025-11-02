@@ -2,7 +2,6 @@ import mongoose, { Document, Schema } from 'mongoose';
 import validator from 'validator';
 import { ICategory } from './category.model';
 import { IProject } from './project.model';
-import { pricingBadgesArray, usageBadgesArray } from '../constants/badeges';
 
 export interface IWebsite extends Document {
   title: string;
@@ -11,9 +10,6 @@ export interface IWebsite extends Document {
   image: string;
   icon?: string;
   color?: string;
-  pricing: string;
-  websiteType: string;
-  usage?: string;
   category: mongoose.Types.ObjectId | ICategory;
   project: mongoose.Types.ObjectId | IProject;
   createdAt: Date;
@@ -28,9 +24,6 @@ export interface IWebsite extends Document {
     image: string;
     icon?: string;
     color?: string;
-    pricing: string;
-    websiteType: string;
-    usage?: string;
     category: string;
     project: string;
   };
@@ -85,20 +78,6 @@ const websiteSchema = new Schema<IWebsite>(
       required: false,
       default: '#357ef3',
     },
-    pricing: {
-      type: String,
-      enum: pricingBadgesArray,
-      default: pricingBadgesArray[0],
-    },
-    usage: {
-      type: String,
-      enum: usageBadgesArray,
-      default: usageBadgesArray[0],
-      required: false,
-    },
-    websiteType: {
-      type: String,
-    },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
@@ -149,9 +128,6 @@ websiteSchema.methods.toFormattedJSON = function (this: IWebsite) {
     image: this.image,
     icon: this.icon,
     color: this.color,
-    pricing: this.pricing,
-    websiteType: this.websiteType,
-    usage: this.usage,
     category: this.category
       ? typeof this.category === 'string'
         ? this.category

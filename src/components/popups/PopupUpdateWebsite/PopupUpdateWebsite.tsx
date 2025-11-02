@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Pricing, Usage, Website } from '@/models/types/website';
+import { Website } from '@/models/types/website';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../../UI/Input/Input';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
@@ -11,8 +11,6 @@ import { useQueryParam } from '@/hooks/useQueryParam';
 import query from '../../../models/constants/queryParams.json';
 import { usePopup } from '@/context/PopupContext';
 import { AllCategoryID } from '@/models/constants';
-import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
-import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
 import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
@@ -35,9 +33,6 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
   const [description, setDescription] = useState<string>(initialWebsite.description || '');
   const [category, setCategory] = useState<string>(initialWebsite.category);
   const [icon, setIcon] = useState<string>(initialWebsite.icon || '');
-  const [pricing, setPricing] = useState<Pricing>((initialWebsite.pricing as Pricing) || 'free');
-  const [usage, setUsage] = useState<Usage | undefined>(initialWebsite.usage as Usage | undefined);
-  const [websiteType, setWebsiteType] = useState<string>(initialWebsite.websiteType || '');
   const [hasBannerUrl, setHasBannerUrl] = useState<string | undefined>(
     initialWebsite.image || undefined
   );
@@ -69,8 +64,6 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
     setTitle('');
     setDescription('');
     setCategory('');
-    setPricing('free');
-    setWebsiteType('');
     setHasBannerUrl(undefined);
     setBanner({ type: 'color', value: defaultBannerColor });
     closePopup();
@@ -87,9 +80,6 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
       image,
       icon,
       color,
-      pricing,
-      usage,
-      websiteType,
     };
 
     try {
@@ -162,12 +152,6 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
           id="description"
           isLoading={false}
         />
-        <UsageToggle usage={usage} setUsage={setUsage} />
-
-        <PricingToggle pricing={pricing} setPricing={setPricing} />
-
-        <TypeSelect websiteType={websiteType} setWebsiteType={setWebsiteType} />
-
         <br />
         <br />
         <section className="form-add-site-btn">

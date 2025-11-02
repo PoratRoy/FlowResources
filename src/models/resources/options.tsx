@@ -4,7 +4,6 @@ import React from 'react';
 import { ActionOption, SelectOption } from '../types/select';
 import PopupDeleteCategory from '@/components/popups/PopupDeleteCategory/PopupDeleteCategory';
 import PopupDeleteProject from '@/components/popups/PopupDeleteProject/PopupDeleteProject';
-import { pricingBadgesTitle, usageBadgesTitle } from '../constants/badeges';
 import { Icon } from '@/components/UI/Icons/Icons';
 
 export const ActionsOptions = [
@@ -102,33 +101,3 @@ export const TemplatesOptions = [
 
 export const CreateProjectOption: SelectOption = { value: '0', label: 'Create new project' };
 
-export const WebsiteTypes: SelectOption[] = [
-  { value: 'youtube', label: 'Youtube' },
-  { value: 'facebook', label: 'Facebook' },
-  { value: 'assets', label: 'Assets' },
-  { value: 'uiux', label: 'UI/UX' },
-  { value: 'video', label: 'Video' },
-  { value: 'audio', label: 'Audio' },
-  { value: 'image', label: 'Image' },
-  { value: 'text', label: 'Text' },
-  { value: 'social', label: 'Social Media' },
-  { value: 'documentation', label: 'Documentation' },
-  { value: 'database', label: 'Database' },
-  { value: 'coding', label: 'Coding' },
-  { value: 'gaming', label: 'Gaming' },
-  { value: 'other', label: 'Other' },
-];
-
-export const PricingOptions: SelectOption[] = Object.entries(pricingBadgesTitle).map(
-  ([key, value]) => ({
-    value: key,
-    label: value,
-  })
-);
-
-export const UsageOptions: SelectOption[] = Object.entries(usageBadgesTitle).map(
-  ([key, value]) => ({
-    value: key,
-    label: value,
-  })
-);
