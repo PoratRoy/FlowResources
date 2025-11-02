@@ -1,5 +1,6 @@
 
 - website icon like google maps category (with emoji)
+- option to create labels that saved for the user (AI for example)
 v - switch banner not working good
 - update card, the url is disabled to change, you can add banner or icon url
 - put banner and icon by default 
@@ -7,13 +8,13 @@ v - allow use pdf files or chrome-extension
 chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf
 v - fix white banners (fix allow to select color)
 https://rapidapi.com/hub
-- option to create labels that saved for the user (AI for example)
 
 - alert if I already add this site
 - click on the category if already in -> open add website
 - loading when switching between projects
 - allow to click on the project select to open it
 
+- ?managment projects popup?
 - reorder projects
 - reorder websites
 - reorder categories

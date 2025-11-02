@@ -1,9 +1,13 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import Select, { components, SingleValueProps, OptionProps, DropdownIndicatorProps } from 'react-select';
+import Select, {
+  components,
+  SingleValueProps,
+  OptionProps,
+  DropdownIndicatorProps,
+} from 'react-select';
 import { Website } from '@/models/types/website';
-import SessionStorage, { SKey } from '@/lib/sessionStorage';
 import RefSiteImg from '../cardUI/RefSiteImg/RefSiteImg';
 import { useQueryParam } from '@/hooks/useQueryParam';
 import { usePopupCard } from '@/context/PopupCardContext';
@@ -24,14 +28,10 @@ const Search: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
   const { pushCategoryQueryParam } = useQueryParam();
   const { openPopupCard } = usePopupCard();
-  const { categories } = useDataContext();
+  const { websites, categories } = useDataContext();
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
-
-  const websites: Website[] = useMemo(() => {
-    return SessionStorage.get(SKey.Websites) || [];
   }, []);
 
   const searchOptions: SearchOption[] = useMemo(() => {
@@ -88,9 +88,9 @@ const Search: React.FC = () => {
     return (
       <section className="search-container">
         <div className="search-select search-placeholder">
-          <input 
-            type="text" 
-            placeholder="Search websites..." 
+          <input
+            type="text"
+            placeholder="Search websites..."
             className="search-placeholder-input"
             readOnly
           />
