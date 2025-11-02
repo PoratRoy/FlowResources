@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Select, { components, SingleValueProps, OptionProps, DropdownIndicatorProps } from 'react-select';
 import { Website } from '@/models/types/website';
 import SessionStorage, { SKey } from '@/lib/sessionStorage';
@@ -21,9 +21,14 @@ type SearchOption = SelectOption & {
 const Search: React.FC = () => {
   const [selectedWebsite, setSelectedWebsite] = useState<SearchOption | null>(null);
   const [inputValue, setInputValue] = useState<string>('');
+  const [isMounted, setIsMounted] = useState(false);
   const { pushCategoryQueryParam } = useQueryParam();
   const { openPopupCard } = usePopupCard();
   const { categories } = useDataContext();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const websites: Website[] = useMemo(() => {
     return SessionStorage.get(SKey.Websites) || [];
@@ -78,6 +83,21 @@ const Search: React.FC = () => {
       setSelectedWebsite(null);
     }
   };
+
+  if (!isMounted) {
+    return (
+      <section className="search-container">
+        <div className="search-select search-placeholder">
+          <input 
+            type="text" 
+            placeholder="Search websites..." 
+            className="search-placeholder-input"
+            readOnly
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="search-container">

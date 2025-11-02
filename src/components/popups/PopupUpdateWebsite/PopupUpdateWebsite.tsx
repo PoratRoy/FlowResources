@@ -1,9 +1,7 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pricing, Usage, Website } from '@/models/types/website';
-import { LinkPreviewResponse } from '@/models/types/thumbnail';
-import { isValidURL } from '@/models/validation/url';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../../UI/Input/Input';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
@@ -16,12 +14,12 @@ import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
 import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
-import RefBannerImg from '@/components/cardUI/RefBannerImg/RefBannerImg';
 import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import CardBannerSelect from '@/components/UI/select/CardBannerSelect/CardBannerSelect';
 import { getFaviconUrl } from '@/utils/images';
 import './PopupUpdateWebsite.css';
 import { defaultBannerColor } from '@/style/colors';
+import { BannerObj } from '@/models/types/thumbnail';
 
 interface PopupUpdateWebsiteProps {
   website: Website;
@@ -36,12 +34,24 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
   const [title, setTitle] = useState<string>(initialWebsite.title);
   const [description, setDescription] = useState<string>(initialWebsite.description || '');
   const [category, setCategory] = useState<string>(initialWebsite.category);
-  const [thumbnail, setThumbnail] = useState<string>(initialWebsite.image || '');
   const [icon, setIcon] = useState<string>(initialWebsite.icon || '');
-  const [color, setColor] = useState<string>(initialWebsite.color || defaultBannerColor);
-  const [pricing, setPricing] = useState<Pricing>(initialWebsite.pricing as Pricing || 'free');
+  const [pricing, setPricing] = useState<Pricing>((initialWebsite.pricing as Pricing) || 'free');
   const [usage, setUsage] = useState<Usage | undefined>(initialWebsite.usage as Usage | undefined);
   const [websiteType, setWebsiteType] = useState<string>(initialWebsite.websiteType || '');
+  const [hasBannerUrl, setHasBannerUrl] = useState<string | undefined>(
+    initialWebsite.image || undefined
+  );
+  const [banner, setBanner] = useState<BannerObj>(
+    initialWebsite.image
+      ? {
+          type: 'banner',
+          value: initialWebsite.image,
+        }
+      : {
+          type: 'color',
+          value: defaultBannerColor,
+        }
+  );
 
   const currentCategory = searchParam(query.category, AllCategoryID);
 
@@ -55,18 +65,26 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
 
   const handleClose = (to?: string) => {
     if (to) pushCategoryQueryParam(to);
+    setIcon('');
+    setTitle('');
+    setDescription('');
+    setCategory('');
+    setPricing('free');
+    setWebsiteType('');
+    setHasBannerUrl(undefined);
+    setBanner({ type: 'color', value: defaultBannerColor });
     closePopup();
   };
 
-
-
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const image = banner.type === 'banner' ? banner.value : undefined;
+    const color = banner.type === 'color' ? banner.value : undefined;
     const websiteData: Partial<Omit<Website, 'id' | 'url'>> = {
       title,
       description,
       category: category,
-      image: thumbnail,
+      image,
       icon,
       color,
       pricing,
@@ -123,14 +141,16 @@ const PopupUpdateWebsite: React.FC<PopupUpdateWebsiteProps> = ({ website: initia
             isLoading={false}
           />
           <div className="image-preview">
-            <RefSiteImg website={{ icon: icon || (url ? getFaviconUrl(url, 32) : ''), url, title }} />
+            <RefSiteImg
+              website={{ icon: icon || (url ? getFaviconUrl(url, 32) : ''), url, title }}
+            />
           </div>
         </div>
 
-        <CardBannerSelect 
-          color={color} 
-          setColor={setColor}
-          bannerUrl={thumbnail}
+        <CardBannerSelect
+          hasBannerUrl={hasBannerUrl}
+          setBanner={setBanner}
+          banner={banner}
           title={title}
         />
 

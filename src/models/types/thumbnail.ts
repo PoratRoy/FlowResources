@@ -4,3 +4,5 @@ export type LinkPreviewResponse = {
   image: string;
   url: string;
 };
+
+export type BannerObj = { type: 'banner' | 'color'; value: string };

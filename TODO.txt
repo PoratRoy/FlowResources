@@ -1,29 +1,54 @@
 
-- card more actions for the website list row
-- confirm popup for delete website
 - website icon like google maps category (with emoji)
-- switch banner not working good
-- allow to click on the project select to open it
+v - switch banner not working good
 - update card, the url is disabled to change, you can add banner or icon url
+- put banner and icon by default 
+v - allow use pdf files or chrome-extension
+chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://code.visualstudio.com/shortcuts/keyboard-shortcuts-macos.pdf
+v - fix white banners (fix allow to select color)
+https://rapidapi.com/hub
+- option to create labels that saved for the user (AI for example)
+
+- alert if I already add this site
+- click on the category if already in -> open add website
+- loading when switching between projects
+- allow to click on the project select to open it
+
 - reorder projects
+- reorder websites
+- reorder categories
+- add filtering, not just search
+
+- stard category
+- search for all the projects not only the specific selected
+- delete category only from the currect project
+
+- confirm popup for delete website
 - after delete project he is still selected and in the query
 - handle errors 
 - handle loading
-- click on the category if already in -> open add website
 - if you have category on the query param but you dont find it. put All
-- improve session storage
-- design template, add References 
 - improve project template options
-- alert if I already add this site
-- update the websites list
-- delete category only from the currect project
 - query params for project
-- mobile version
 - position on the 'add website' button is not the best
-- stard category
-- search for all the projects not only the specific selected
+
+- logo
+- seo
+- animations
+- mobile version
+
+- improve session storage
+- use redis cache 
+- authentication
+- view friends dashboard as guest
+
+
+
 
 v - search show the websites options with thier icon better to show websites from all project with small indecation from which project is
+v - card more actions for the website list row
+v - update the websites list
+v - design template, add References 
 
 TODO
 v - change mongo database from 'test' into 'flow-resources'
@@ -57,11 +82,6 @@ v - move website into another category
 
 v - category selection like mobbin selection
 
-reorder websites
-
-authentication
-
-view friends dashboard as guest
 
 
 

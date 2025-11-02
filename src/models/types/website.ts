@@ -3,8 +3,8 @@ export type Website = {
   title: string;
   description: string;
   url: string;
-  image: string;
   icon?: string;
+  image?: string;
   color?: string;
   pricing: Pricing;
   websiteType: string;

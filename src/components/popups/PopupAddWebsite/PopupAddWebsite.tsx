@@ -2,10 +2,11 @@
 
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Pricing, Usage, Website } from '@/models/types/website';
-import { LinkPreviewResponse } from '@/models/types/thumbnail';
+import { BannerObj, LinkPreviewResponse } from '@/models/types/thumbnail';
 import { isValidURL } from '@/models/validation/url';
 import { useDataContext } from '@/context/DataContext';
 import Input from '../../UI/Input/Input';
+import validator from 'validator';
 import SubmitBtn from '../../UI/btn/SubmitBtn/SubmitBtn';
 import CategorySelect from '../../UI/select/CategorySelect/CategorySelect';
 import TextArea from '../../UI/TextArea/TextArea';
@@ -16,7 +17,6 @@ import { AllCategoryID } from '@/models/constants';
 import PricingToggle from '@/components/UI/toggle/PricingToggle/PricingToggle';
 import UsageToggle from '@/components/UI/toggle/UsageToggle/UsageToggle';
 import TypeSelect from '@/components/UI/select/TypeSelect/TypeSelect';
-import RefBannerImg from '@/components/cardUI/RefBannerImg/RefBannerImg';
 import RefSiteImg from '@/components/cardUI/RefSiteImg/RefSiteImg';
 import { getFaviconUrl } from '@/utils/images';
 import './PopupAddWebsite.css';
@@ -35,12 +35,15 @@ const PopupAddWebsite: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [category, setCategory] = useState<string>('');
-  const [thumbnail, setThumbnail] = useState<string>('');
   const [icon, setIcon] = useState<string>('');
-  const [color, setColor] = useState<string>(defaultBannerColor);
   const [pricing, setPricing] = useState<Pricing>('free');
   const [usage, setUsage] = useState<Usage | undefined>(undefined);
   const [websiteType, setWebsiteType] = useState<string>('');
+  const [hasBannerUrl, setHasBannerUrl] = useState<string | undefined>();
+  const [banner, setBanner] = useState<BannerObj>({
+    type: 'color',
+    value: defaultBannerColor,
+  });
 
   const currentCategory = searchParam(query.category, AllCategoryID);
 
@@ -57,11 +60,13 @@ const PopupAddWebsite: React.FC = () => {
     setTitle('');
     setDescription('');
     setCategory('');
-    setThumbnail('');
     setIcon('');
-    setColor('#357ef3');
     setPricing('free');
     setWebsiteType('');
+    // setThumbnail('');
+    // setColor('#357ef3');
+    setHasBannerUrl(undefined);
+    setBanner({ type: 'color', value: defaultBannerColor });
     closePopup();
   };
 
@@ -89,7 +94,15 @@ const PopupAddWebsite: React.FC = () => {
         const data = await handleThumbnail(url);
         setTitle(data.title);
         setDescription(data.description);
-        setThumbnail(data.image);
+        // const thumbnail = validator.isURL(data.image) ? data.image : defaultBannerColor;
+        // setThumbnail(thumbnail);
+        const isThumbnailValid = validator.isURL(data.image);
+        setHasBannerUrl(isThumbnailValid ? data.image : '');
+        setBanner(
+          isThumbnailValid
+            ? { type: 'banner', value: data.image }
+            : { type: 'color', value: defaultBannerColor }
+        );
         setIcon(getFaviconUrl(url, 32));
       }
     } catch (error) {
@@ -100,13 +113,15 @@ const PopupAddWebsite: React.FC = () => {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const image = banner.type === 'banner' ? banner.value : undefined;
+    const color = banner.type === 'color' ? banner.value : undefined;
     const websiteData: Omit<Website, 'id'> = {
       url,
       title,
       description,
       category: category,
-      image: thumbnail,
       icon,
+      image,
       color,
       pricing,
       usage,
@@ -168,10 +183,10 @@ const PopupAddWebsite: React.FC = () => {
                 />
               </div>
             </div>
-            <CardBannerSelect 
-              color={color} 
-              setColor={setColor}
-              bannerUrl={thumbnail}
+            <CardBannerSelect
+              hasBannerUrl={hasBannerUrl}
+              setBanner={setBanner}
+              banner={banner}
               title={title}
             />
           </>

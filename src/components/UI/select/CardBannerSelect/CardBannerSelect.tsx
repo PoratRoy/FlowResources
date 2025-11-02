@@ -1,74 +1,61 @@
-'use client';
-
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
-import './CardBannerSelect.css';
+import React, { Dispatch, SetStateAction } from 'react';
 import FormInputLayout from '@/components/FormInputLayout/FormInputLayout';
 import RefBannerImg from '@/components/cardUI/RefBannerImg/RefBannerImg';
 import { BannerColorOptions } from '@/style/colors';
+import { BannerObj } from '@/models/types/thumbnail';
+import './CardBannerSelect.css';
 
 type CardBannerSelectProps = {
-  color: string;
-  setColor: Dispatch<SetStateAction<string>>;
-  bannerUrl?: string;
+  setBanner: Dispatch<SetStateAction<BannerObj>>;
+  banner: BannerObj;
+  hasBannerUrl: string | undefined;
   title?: string;
   onSelectBanner?: () => void;
 };
 
 const CardBannerSelect: React.FC<CardBannerSelectProps> = ({
-  color,
-  setColor,
-  bannerUrl,
+  setBanner,
+  banner,
+  hasBannerUrl,
   title,
   onSelectBanner,
 }) => {
-  const [selectedOption, setSelectedOption] = React.useState<'banner' | 'color'>(
-    bannerUrl ? 'banner' : 'color'
-  );
-
-  useEffect(() => {
-    if (!color || !BannerColorOptions.includes(color)) {
-      setColor('#357ef3');
-    }
-  }, [color, setColor]);
-
   const handleBannerSelect = () => {
-    setSelectedOption('banner');
-    if (onSelectBanner) {
-      onSelectBanner();
+    if (hasBannerUrl) {
+      setBanner({ type: 'banner', value: hasBannerUrl });
+      if (onSelectBanner) {
+        onSelectBanner();
+      }
     }
   };
 
   const handleColorSelect = (colorOption: string) => {
-    setSelectedOption('color');
-    setColor(colorOption);
+    setBanner({ type: 'color', value: colorOption });
   };
 
   return (
     <FormInputLayout label="Select banner or placeholder color" id="card-banner-select">
       <div className="card-banner-select-container">
-        {bannerUrl && (
+        {hasBannerUrl ? (
           <div
-            className={`card-banner-option ${selectedOption === 'banner' ? 'selected' : ''}`}
+            className={`card-banner-option ${banner.type === 'banner' ? 'selected' : ''}`}
             onClick={handleBannerSelect}
             title="Use banner image"
           >
-            <RefBannerImg website={{ image: bannerUrl, title }} />
+            <RefBannerImg website={{ image: hasBannerUrl, title }} />
           </div>
-        )}
-        
+        ) : null}
+
         {BannerColorOptions.map((colorOption) => (
           <div
             key={colorOption}
             className={`card-color-option ${
-              selectedOption === 'color' && color === colorOption ? 'selected' : ''
+              banner.type === 'color' && banner.value === colorOption ? 'selected' : ''
             }`}
             onClick={() => handleColorSelect(colorOption)}
             title={colorOption}
           >
-            <div 
-              className="card-color-preview"
-              style={{ backgroundColor: colorOption }}
-            />
+            <div className="card-color-preview" style={{ backgroundColor: colorOption }} />
           </div>
         ))}
       </div>
